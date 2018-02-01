@@ -11,8 +11,8 @@
 [assembly: System.Reflection.AssemblyVersion("1.17.0.0")]
 [assembly: System.Reflection.AssemblyFileVersion("1.17.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersion("1.17.0-dev.0+Branch.master.Sha.0c2c9de2cd573d2042ce42110540c0ef84bc5968")]
-[assembly: System.Reflection.AssemblyProduct("Uno Source Generator")]
-[assembly: System.Reflection.AssemblyCompany("nVentive")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright (C) nVentive 2011-2016")]
+[assembly: System.Reflection.AssemblyProduct("Uno.Core")]
+[assembly: System.Reflection.AssemblyCompany("nventive")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright (C) nVentive 2011-2018")]
 
 
