@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+	<ItemGroup>
+		<!--
+		Include uno.core as a source generation dependency, to enable backward 
+		compatibility with the latest Uno.SourceGenerationTasks update which does not 
+		include Uno.Core anymore.
+		-->
+		<SourceGeneratorAdditionalAssemblies Include="$(MSBuildThisFileDirectory)*.dll" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+	<PropertyGroup>
+		<TargetFrameworks>net46</TargetFrameworks>
+		<Product>$(AssemblyName) ($(TargetFramework))</Product>
+		<NoWarn>$(NoWarn);1998;1591;1573;1572;1574;1712;1711;1570</NoWarn>
+		<Description></Description>
+		<BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<TreatSpecificWarningsAsErrors />
+		<Description>A package that includes Uno.Core as a dependency for build tasks and Uno.SourceGeneration binaries.</Description>
+		<DebugType>full</DebugType> 
+		<DebugSymbols>True</DebugSymbols>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+	</PropertyGroup> 
+	<ItemGroup> 
+	  <None Remove="build\Uno.Core.Build.targets" />
+	</ItemGroup>  
+
+	<ItemGroup>
+		<Content Include="..\Uno.Core\bin\$(Configuration)\net46\Uno.Core.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core\bin\$(Configuration)\net46\Microsoft.Extensions.*.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core\bin\$(Configuration)\net46\Microsoft.Practices.ServiceLocation.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="build\Uno.Core.Build.targets">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build">
+			<Version>15.1.1012</Version>
+			<ExcludeAssets>runtime</ExcludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Framework">
+			<Version>15.1.1012</Version>
+			<ExcludeAssets>runtime</ExcludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Tasks.Core">
+			<Version>15.1.1012</Version>
+			<ExcludeAssets>runtime</ExcludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Utilities.Core">
+			<Version>15.1.1012</Version>
+			<ExcludeAssets>runtime</ExcludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<Target Name="Publish" />
+
+	<Target Name="BuildManualDependencies" BeforeTargets="Build">
+		<!-- 
+		This is required because the non-reference dependencies are not properly handled 
+		see: https://developercommunity.visualstudio.com/content/problem/90538/a-cross-targeted-project-incorrectly-treats-soluti.html
+		-->
+		<MSBuild Properties="Configuration=$(Configuration);Platform=AnyCPU" Targets="Build" Projects="..\Uno.Core\Uno.Core.csproj" RebaseOutputs="false" />
+	</Target>
+
+</Project>
