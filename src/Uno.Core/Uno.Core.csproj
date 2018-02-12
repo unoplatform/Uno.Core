@@ -4,7 +4,6 @@
 		<AssemblyName>Uno.Core</AssemblyName>
 		<RootNamespace>Uno.Core</RootNamespace>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
-		<Authors>nventive</Authors>
 		<NoWarn>$(NoWarn);1998;1591;1573;1572;1574;1712;1711;1570</NoWarn>
 		<BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
 		<DocumentationFile>bin\Release\$(TargetFramework)\Uno.Core.xml</DocumentationFile>
@@ -13,6 +12,15 @@
 		<TreatSpecificWarningsAsErrors />
 		<DebugType>full</DebugType>
 		<DebugSymbols>True</DebugSymbols>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>nventive</Authors>
+		<PackageProjectUrl>https://github.com/nventive/Uno.Core</PackageProjectUrl>
+		<PackageIconUrl>https://nv-assets.azurewebsites.net/logos/uno.png</PackageIconUrl>
+		<RepositoryUrl>https://github.com/nventive/Uno.Core</RepositoryUrl>
+		<Description>This package provides a set of helpers and extension methods used to accelerate development.</Description>
+		<Copyright>Copyright (C) 2015-2018 nventive inc. - all rights reserved</Copyright>
 	</PropertyGroup>
 
 	<Import Project="..\Uno.CrossTargeting.props" />
