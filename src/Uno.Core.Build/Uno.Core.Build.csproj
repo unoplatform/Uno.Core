@@ -8,11 +8,20 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<TreatSpecificWarningsAsErrors />
-		<Description>A package that includes Uno.Core as a dependency for build tasks and Uno.SourceGeneration binaries.</Description>
-		<DebugType>full</DebugType> 
+		<DebugType>full</DebugType>
 		<DebugSymbols>True</DebugSymbols>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
-	</PropertyGroup> 
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>nventive</Authors>
+		<PackageProjectUrl>https://github.com/nventive/Uno.Core</PackageProjectUrl>
+		<PackageIconUrl>https://nv-assets.azurewebsites.net/logos/uno.png</PackageIconUrl>
+		<RepositoryUrl>https://github.com/nventive/Uno.Core</RepositoryUrl>
+		<Description>A package that includes Uno.Core as a dependency for build tasks and Uno.SourceGeneration binaries.</Description>
+		<Copyright>Copyright (C) 2015-2018 nventive inc. - all rights reserved</Copyright>
+	</PropertyGroup>
+
 	<ItemGroup> 
 	  <None Remove="build\Uno.Core.Build.targets" />
 	</ItemGroup>  
