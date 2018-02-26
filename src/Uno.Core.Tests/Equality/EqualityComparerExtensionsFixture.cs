@@ -46,16 +46,16 @@ namespace Uno.Core.Tests.Equality
 			var genericComparer = new MyGenericEqualityComparerString();
 			var nonGenericComparer = genericComparer.ToEqualityComparer();
 
-			nonGenericComparer.Equals("a", 2).ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals("a", "A").ShouldBeEquivalentTo(true);
-			nonGenericComparer.Equals("", "").ShouldBeEquivalentTo(true);
-			nonGenericComparer.Equals(2, null).ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals(2, 2).ShouldBeEquivalentTo(false); // !! this is correct.
-			nonGenericComparer.Equals(null, 2).ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals(null, "").ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals(null, null).ShouldBeEquivalentTo(true);
+			nonGenericComparer.Equals("a", 2).Should().Be(false);
+			nonGenericComparer.Equals("a", "A").Should().Be(true);
+			nonGenericComparer.Equals("", "").Should().Be(true);
+			nonGenericComparer.Equals(2, null).Should().Be(false);
+			nonGenericComparer.Equals(2, 2).Should().Be(false); // !! this is correct.
+			nonGenericComparer.Equals(null, 2).Should().Be(false);
+			nonGenericComparer.Equals(null, "").Should().Be(false);
+			nonGenericComparer.Equals(null, null).Should().Be(true);
 
-			nonGenericComparer.GetHashCode(null).ShouldBeEquivalentTo(-100);
+			nonGenericComparer.GetHashCode(null).Should().Be(-100);
 		}
 
 		[TestMethod]
@@ -64,16 +64,16 @@ namespace Uno.Core.Tests.Equality
 			var genericComparer = new MyGenericEqualityComparerInt();
 			var nonGenericComparer = genericComparer.ToEqualityComparer();
 
-			nonGenericComparer.Equals("a", 2).ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals("a", "A").ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals("", "").ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals(2, null).ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals(2, 2).ShouldBeEquivalentTo(true);
-			nonGenericComparer.Equals(null, 2).ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals(null, "").ShouldBeEquivalentTo(false);
-			nonGenericComparer.Equals(null, null).ShouldBeEquivalentTo(false); // this is correct.
+			nonGenericComparer.Equals("a", 2).Should().Be(false);
+			nonGenericComparer.Equals("a", "A").Should().Be(false);
+			nonGenericComparer.Equals("", "").Should().Be(false);
+			nonGenericComparer.Equals(2, null).Should().Be(false);
+			nonGenericComparer.Equals(2, 2).Should().Be(true);
+			nonGenericComparer.Equals(null, 2).Should().Be(false);
+			nonGenericComparer.Equals(null, "").Should().Be(false);
+			nonGenericComparer.Equals(null, null).Should().Be(false); // this is correct.
 
-			nonGenericComparer.GetHashCode(null).ShouldBeEquivalentTo(-1);
+			nonGenericComparer.GetHashCode(null).Should().Be(-1);
 		}
 
 		private class MyEqualityComparerString : IEqualityComparer
@@ -95,7 +95,7 @@ namespace Uno.Core.Tests.Equality
 			var nonGericComparer = new MyEqualityComparerString();
 			var sut = nonGericComparer.ToEqualityComparer<string>();
 
-			sut.Equals("a", "A").ShouldBeEquivalentTo(true);
+			sut.Equals("a", "A").Should().Be(true);
 		}
 	}
 }

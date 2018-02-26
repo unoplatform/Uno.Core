@@ -23,11 +23,11 @@ namespace Uno.Core.Tests.Collections
 			var items = new[] {1, 2, 3, 1, 2, 3};
 			var sut = new ImmutableList<int>(items, copyData: true);
 
-			sut.SequenceEqual(new[] {1, 2, 3, 1, 2, 3}).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new[] {1, 2, 3, 1, 2, 3});
 
 			items[1] = 4; // mutate original array
 
-			sut.SequenceEqual(new[] {1, 2, 3, 1, 2, 3}).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new[] {1, 2, 3, 1, 2, 3});
 		}
 
 		[TestMethod]
@@ -36,11 +36,11 @@ namespace Uno.Core.Tests.Collections
 			var items = new[] { 1, 2, 3, 3, 3, 3 };
 			var sut = new ImmutableList<int>(items);
 
-			sut.IndexOf(8).ShouldBeEquivalentTo(-1);
-			sut.IndexOf(3).ShouldBeEquivalentTo(2);
-			sut.IndexOf(3, index:1, count:5, equalityComparer:null).ShouldBeEquivalentTo(2);
+			sut.IndexOf(8).Should().Be(-1);
+			sut.IndexOf(3).Should().Be(2);
+			sut.IndexOf(3, index:1, count:5, equalityComparer:null).Should().Be(2);
 
-			((Action) (() => sut.IndexOf(8, index: 1, count: 100, equalityComparer: null))).ShouldThrow<IndexOutOfRangeException>();
+			((Action) (() => sut.IndexOf(8, index: 1, count: 100, equalityComparer: null))).Should().Throw<IndexOutOfRangeException>();
 		}
 
 		[TestMethod]
@@ -49,11 +49,11 @@ namespace Uno.Core.Tests.Collections
 			var items = new[] { 1, 2, 3, 1, 2, 3 };
 			var sut = new ImmutableList<int>(items);
 
-			sut.IndexOf(8).ShouldBeEquivalentTo(-1);
-			sut.IndexOf(3).ShouldBeEquivalentTo(2);
-			sut.LastIndexOf(3, index: 1, count: 5, equalityComparer: null).ShouldBeEquivalentTo(5);
+			sut.IndexOf(8).Should().Be(-1);
+			sut.IndexOf(3).Should().Be(2);
+			sut.LastIndexOf(3, index: 1, count: 5, equalityComparer: null).Should().Be(5);
 
-			((Action)(() => sut.LastIndexOf(8, index: 1, count: 100, equalityComparer: null))).ShouldThrow<IndexOutOfRangeException>();
+			((Action)(() => sut.LastIndexOf(8, index: 1, count: 100, equalityComparer: null))).Should().Throw<IndexOutOfRangeException>();
 		}
 
 		[TestMethod]
@@ -62,8 +62,8 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>();
 
 			var result = sut.Add(12);
-			sut.SequenceEqual(new int[] { }).ShouldBeEquivalentTo(true);
-			result.Single().ShouldBeEquivalentTo(12);
+			sut.Should().BeEquivalentTo(new int[] { });
+			result.Single().Should().Be(12);
 		}
 
 		[TestMethod]
@@ -73,8 +73,8 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>(items);
 
 			var result = sut.Add(12);
-			sut.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3 }).ShouldBeEquivalentTo(true);
-			result.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3, 12 }).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3 });
+			result.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3, 12 });
 		}
 
 		[TestMethod]
@@ -83,8 +83,8 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>();
 
 			var result = sut.Insert(0, 12);
-			sut.SequenceEqual(new int[] { }).ShouldBeEquivalentTo(true);
-			result.Single().ShouldBeEquivalentTo(12);
+			sut.Should().BeEquivalentTo(new int[] { });
+			result.Single().Should().Be(12);
 		}
 
 		[TestMethod]
@@ -94,8 +94,8 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>(items);
 
 			var result = sut.Insert(4, 12);
-			sut.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3 }).ShouldBeEquivalentTo(true);
-			result.SequenceEqual(new[] { 1, 2, 3, 1, 12, 2, 3 }).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3 });
+			result.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 12, 2, 3 });
 		}
 
 		[TestMethod]
@@ -104,8 +104,8 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>();
 
 			var result = sut.InsertRange(0, new[] {1, 2});
-			sut.SequenceEqual(new int[] { }).ShouldBeEquivalentTo(true);
-			result.SequenceEqual(new[] { 1, 2 }).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new int[] { });
+			result.Should().BeEquivalentTo(new[] { 1, 2 });
 		}
 
 		[TestMethod]
@@ -115,8 +115,8 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>(items);
 
 			var result = sut.InsertRange(4, new[] { 15, 15 });
-			sut.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3 }).ShouldBeEquivalentTo(true);
-			result.SequenceEqual(new[] { 1, 2, 3, 1, 15, 15, 2, 3 }).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3 });
+			result.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 15, 15, 2, 3 });
 		}
 
 		[TestMethod]
@@ -126,8 +126,8 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>(items);
 
 			var result = sut.InsertRange(6, new[] { 15, 15 });
-			sut.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3 }).ShouldBeEquivalentTo(true);
-			result.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3, 15, 15 }).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3 });
+			result.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3, 15, 15 });
 		}
 
 		[TestMethod]
@@ -159,19 +159,20 @@ namespace Uno.Core.Tests.Collections
 			var sut = new ImmutableList<int>(items);
 
 			var result = sut.Remove(2, null);
-			sut.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3 }).ShouldBeEquivalentTo(true);
-			result.SequenceEqual(new[] { 1, 3, 1, 3 }).ShouldBeEquivalentTo(true);
+			sut.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3 });
+			result.Should().BeEquivalentTo(new[] { 1, 3, 1, 3 });
 		}
 
 		[TestMethod]
-		public void ImmutableList_Remove2()
+		public void ImmutableList_RemoveAfterAdd()
 		{
 			var items = new[] { 1, 2, 3, 1, 2, 3 };
 			var sut = new ImmutableList<int>(items);
 
-			var result = sut.Add(12);
-			sut.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3 }).ShouldBeEquivalentTo(true);
-			result.SequenceEqual(new[] { 1, 2, 3, 1, 2, 3, 12 }).ShouldBeEquivalentTo(true);
+			var result = sut.Add(12).Remove(12);
+			sut.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3 });
+			result.Should().BeEquivalentTo(new[] { 1, 2, 3, 1, 2, 3 });
+			result.Should().NotBeSameAs(sut);
 		}
 	}
 }

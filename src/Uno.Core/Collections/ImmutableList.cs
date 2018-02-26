@@ -179,7 +179,7 @@ namespace Uno.Collections
 		public IImmutableList<T> Remove(T value, IEqualityComparer<T> equalityComparer)
 		{
 			var comparer = equalityComparer ?? EqualityComparer<T>.Default;
-			return RemoveAll(x => comparer.Equals(value));
+			return RemoveAll(x => comparer.Equals(x, value));
 
 		}
 

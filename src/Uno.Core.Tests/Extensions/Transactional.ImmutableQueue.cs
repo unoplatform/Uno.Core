@@ -94,7 +94,7 @@ namespace Uno.Tests.Extensions
 			r3.Should().Be(3);
 
 			Action r4 = () => Transactional.Dequeue<ImmutableQueue<int>, int>(ref queue);
-			r4.ShouldThrow<InvalidOperationException>();
+			r4.Should().Throw<InvalidOperationException>();
 		}
 	}
 }
