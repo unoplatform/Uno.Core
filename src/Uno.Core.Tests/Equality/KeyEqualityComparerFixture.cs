@@ -51,15 +51,15 @@ namespace Uno.Core.Tests.Equality
 			var a2 = new MyEntity("a", "v2");
 			var b1 = new MyEntity("b", "v1");
 
-			sut.Equals(a1, a2).ShouldBeEquivalentTo(true);
-			sut.Equals(a2, a1).ShouldBeEquivalentTo(true);
-			sut.Equals(a1, a1).ShouldBeEquivalentTo(true);
-			sut.Equals(a2, a2).ShouldBeEquivalentTo(true);
-			sut.Equals(null, a2).ShouldBeEquivalentTo(false);
-			sut.Equals(a1, null).ShouldBeEquivalentTo(false);
-			sut.Equals(null, null).ShouldBeEquivalentTo(true);
-			sut.Equals(b1, a2).ShouldBeEquivalentTo(false);
-			sut.Equals(a1, b1).ShouldBeEquivalentTo(false);
+			sut.Equals(a1, a2).Should().Be(true);
+			sut.Equals(a2, a1).Should().Be(true);
+			sut.Equals(a1, a1).Should().Be(true);
+			sut.Equals(a2, a2).Should().Be(true);
+			sut.Equals(null, a2).Should().Be(false);
+			sut.Equals(a1, null).Should().Be(false);
+			sut.Equals(null, null).Should().Be(true);
+			sut.Equals(b1, a2).Should().Be(false);
+			sut.Equals(a1, b1).Should().Be(false);
 		}
 
 		[TestMethod]
@@ -71,24 +71,24 @@ namespace Uno.Core.Tests.Equality
 			var a2 = new MyEntity("a", "v2") as IKeyEquatable;
 			var b1 = new MyEntity("b", "v1") as IKeyEquatable;
 
-			a1.KeyEquals(a2).ShouldBeEquivalentTo(true);
-			a2.KeyEquals(a1).ShouldBeEquivalentTo(true);
-			a1.KeyEquals(a1).ShouldBeEquivalentTo(true);
-			a2.KeyEquals(a2).ShouldBeEquivalentTo(true);
-			a1.KeyEquals(null).ShouldBeEquivalentTo(false);
-			a1.KeyEquals("!!").ShouldBeEquivalentTo(false);
-			b1.KeyEquals(a2).ShouldBeEquivalentTo(false);
-			a1.KeyEquals(b1).ShouldBeEquivalentTo(false);
+			a1.KeyEquals(a2).Should().Be(true);
+			a2.KeyEquals(a1).Should().Be(true);
+			a1.KeyEquals(a1).Should().Be(true);
+			a2.KeyEquals(a2).Should().Be(true);
+			a1.KeyEquals(null).Should().Be(false);
+			a1.KeyEquals("!!").Should().Be(false);
+			b1.KeyEquals(a2).Should().Be(false);
+			a1.KeyEquals(b1).Should().Be(false);
 
-			sut.Equals(a1, a2).ShouldBeEquivalentTo(true);
-			sut.Equals(a2, a1).ShouldBeEquivalentTo(true);
-			sut.Equals(a1, a1).ShouldBeEquivalentTo(true);
-			sut.Equals(a2, a2).ShouldBeEquivalentTo(true);
-			sut.Equals(null, a2).ShouldBeEquivalentTo(false);
-			sut.Equals(a1, null).ShouldBeEquivalentTo(false);
-			sut.Equals(null, null).ShouldBeEquivalentTo(true);
-			sut.Equals(b1, a2).ShouldBeEquivalentTo(false);
-			sut.Equals(a1, b1).ShouldBeEquivalentTo(false);
+			sut.Equals(a1, a2).Should().Be(true);
+			sut.Equals(a2, a1).Should().Be(true);
+			sut.Equals(a1, a1).Should().Be(true);
+			sut.Equals(a2, a2).Should().Be(true);
+			sut.Equals(null, a2).Should().Be(false);
+			sut.Equals(a1, null).Should().Be(false);
+			sut.Equals(null, null).Should().Be(true);
+			sut.Equals(b1, a2).Should().Be(false);
+			sut.Equals(a1, b1).Should().Be(false);
 		}
 	}
 }
