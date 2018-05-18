@@ -15,12 +15,33 @@
 //
 // ******************************************************************
 using System;
+using Uno.Extensions;
 
 namespace Uno
 {
-    public class Predicates
-    {
-        public static readonly Func<object, object, bool> Equal = Predicates<object>.Equal;
-        public static readonly Func<object, object, bool> ReferenceEqual = Predicates<object>.ReferenceEqual;
-    }
+	/// <summary>
+	/// A set of common prediactes
+	/// </summary>
+	public static class Predicates
+	{
+		/// <summary>
+		/// A predicate that checks equality of two objects using the <see cref="EqualityExtensions"/>.
+		/// </summary>
+		public static readonly Func<object, object, bool> Equal = Predicates<object>.Equal;
+
+		/// <summary>
+		/// A predicate that checks if two objects are <see cref="object.ReferenceEquals"/>.
+		/// </summary>
+		public static readonly Func<object, object, bool> ReferenceEqual = Predicates<object>.ReferenceEqual;
+
+		/// <summary>
+		/// A predicate that always returns true.
+		/// </summary>
+		public static readonly Predicate<object> True = Predicates<object>.True;
+
+		/// <summary>
+		/// A predicate that always returns false.
+		/// </summary>
+		public static readonly Predicate<object> False = Predicates<object>.False;
+	}
 }

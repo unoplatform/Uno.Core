@@ -19,10 +19,30 @@ using Uno.Extensions;
 
 namespace Uno
 {
-    public class Predicates<T>
-    {
-        public static readonly Func<T, T, bool> Equal = (x, y) => x.Equality().Equal(y);
+	/// <summary>
+	/// A set of common prediactes
+	/// </summary>
+	/// <typeparam name="T">Type of parameter of predicates</typeparam>
+	public static class Predicates<T>
+	{
+		/// <summary>
+		/// A predicate that checks equality of two instances of <typeparamref name="T"/> using the <see cref="EqualityExtensions"/>.
+		/// </summary>
+		public static readonly Func<T, T, bool> Equal = (x, y) => x.Equality().Equal(y);
 
-        public static readonly Func<T, T, bool> ReferenceEqual = (x, y) => ReferenceEqual(x, y);
-    }
+		/// <summary>
+		/// A predicate that checks if two instances of <typeparamref name="T"/> are <see cref="object.ReferenceEquals"/>.
+		/// </summary>
+		public static readonly Func<T, T, bool> ReferenceEqual = (x, y) => ReferenceEqual(x, y);
+
+		/// <summary>
+		/// A predicate that always returns true.
+		/// </summary>
+		public static readonly Predicate<T> True = _ => true;
+
+		/// <summary>
+		/// A predicate that always returns false.
+		/// </summary>
+		public static readonly Predicate<T> False = _ => false;
+	}
 }
