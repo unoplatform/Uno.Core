@@ -66,6 +66,7 @@ namespace Uno.Threading
 
 		private class AsyncLocalMonitor
 		{
+			private readonly object _exitGate = new object();
 			private readonly FastAsyncLock _owner;
 
 			private int _state = State.Waiting;
@@ -109,8 +110,11 @@ namespace Uno.Threading
 						throw new InvalidOperationException("'ExecutionContext' corrupted.");
 
 					case State.Entered:
-						_count++;
-						return true;
+						Interlocked.Increment(ref _count);
+						lock (_exitGate)
+						{
+							return _state == State.Entered;
+						}
 
 					case State.Aborted:
 					case State.Exited:
@@ -194,20 +198,19 @@ namespace Uno.Threading
 
 			public void Exit()
 			{
-				// Dispose is allowed only from the same ExecutionContext.
-				if (_owner._localMonitor.Value != this)
-				{
-					throw new SynchronizationLockException("AsyncLock was not acquired for the current ExecutionContext");
-				}
+				// As we are running asynchronous, it may occures that the inner task completes from another execution context (e.g. an event).
+				// So unlike the synchronous lock which must be exited from the same execution context / thread (otherwise we receive an SynchronizationLockException),
+				// here we cannot enforce the 'Exit' to be invoked only from the entering execution context (ie. check that '_owner._localMonitor.Value == this')
+				// Consequently, we have to handle concurrency with ReEntrency (Enter{Sync|Async} are not impacted since for those the caller did not received an 'Handle' yet)
 
-				// Starting from here, no concurrency consideration: we are on a single 'ExecutionContext' (i.e. on a single thread at a time)
-
-				if (--_count == 0)
+				if (Interlocked.Decrement(ref _count) == 0)
 				{
-					// Validate that the awaiter was not aborted
-					if (Interlocked.CompareExchange(ref _state, State.Exited, State.Entered) == State.Entered)
+					lock (_exitGate)
 					{
-						_next?.Dequeued();
+						if (_count == 0 && Interlocked.CompareExchange(ref _state, State.Exited, State.Entered) == State.Entered)
+						{
+							_next?.Dequeued();
+						}
 					}
 				}
 			}
