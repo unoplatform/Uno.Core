@@ -474,6 +474,44 @@ namespace Uno.Core.Tests.Threading
 			}
 		}
 
+		[TestMethod]
+		[Timeout(_timeout)]
+		public async Task TestExitFromAnotherExecutionContext()
+		{
+			var sut = new FastAsyncLock();
+			var locking = default(IDisposable);
+			var entryContext = default(AsyncTestContext);
+
+			using (var externalThread = new AsyncTestRunner(ExternalThread))
+			{
+				entryContext = AsyncTestContext.Current;
+				locking = await sut.LockAsync(CancellationToken.None);
+
+				await externalThread.AdvanceTo(1);
+
+				Assert.IsTrue(externalThread.HasLock());
+
+				await externalThread.AdvanceToEnd();
+			}
+
+			async Task ExternalThread(CancellationToken ct, AsyncTestRunner r)
+			{
+				Assert.AreNotEqual(entryContext, AsyncTestContext.Current);
+				locking.Dispose();
+
+				// Try to relock from the external execution context to validate that the lock was effectively released
+				using (await sut.LockAsync(ct))
+				{
+					r.HasLock(true);
+					r.Sync(position: 1);
+					await Task.Yield();
+				}
+
+				r.HasLock(false);
+			}
+		}
+
+
 		private static ActionAsync<AsyncTestRunner> CommonTwoStepsLock(FastAsyncLock @lock) => async (ct, r) =>
 		{
 			using (await @lock.LockAsync(ct))
