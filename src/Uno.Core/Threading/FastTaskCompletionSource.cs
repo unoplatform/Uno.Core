@@ -364,7 +364,25 @@ namespace Uno.Threading
 
 		private async Task<T> CreateAsyncTask()
 		{
-			return await this;
+			var originalContext = SynchronizationContext.Current;
+			try
+			{
+				SynchronizationContext.SetSynchronizationContext(ImmediatePostSyncContext.Instance);
+
+				return await this;
+			}
+			finally
+			{
+				SynchronizationContext.SetSynchronizationContext(originalContext);
+			}
+		}
+
+		private class ImmediatePostSyncContext : SynchronizationContext
+		{
+			public static ImmediatePostSyncContext Instance { get; } = new ImmediatePostSyncContext();
+
+			/// <inheritdoc />
+			public override void Post(SendOrPostCallback action, object state) => action(state);
 		}
 	}
 }
