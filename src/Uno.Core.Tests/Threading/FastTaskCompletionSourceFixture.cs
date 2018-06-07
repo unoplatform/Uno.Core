@@ -15,6 +15,7 @@
 //
 // ******************************************************************
 using System;
+using System.Reactive.Concurrency;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -440,6 +441,162 @@ namespace Uno.Core.Tests.Threading
 
 			action.Should().NotThrow();
 			action.Should().Throw<InvalidOperationException>();
+		}
+
+		[TestMethod]
+		public void TestContinuationWhenSetResultUsingAnotherSyncContext()
+		{
+			var sut = new FastTaskCompletionSource<string>();
+			var scheduler = new TestScheduler();
+			var threadId = Thread.CurrentThread.ManagedThreadId;
+
+			var isRunning = false;
+			var error = default(Exception);
+
+			scheduler.Schedule(async () =>
+			{
+				isRunning = true;
+				try
+				{
+					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+
+					await sut.Task;
+
+					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+				}
+				catch (Exception e)
+				{
+					error = e;
+				}
+				finally
+				{
+					isRunning = false;
+				}
+			});
+			scheduler.Schedule(() =>
+			{
+				isRunning.Should().BeTrue();
+
+				SynchronizationContext.SetSynchronizationContext(new ErrorSyncContext());
+				sut.SetResult("1234");
+
+				isRunning.Should().BeFalse();
+				if (error != null)
+				{
+					ExceptionDispatchInfo.Capture(error).Throw();
+				}
+			});
+
+			scheduler.AdvanceBy(100);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void TestContinuationWhenSetExceptionUsingAnotherSyncContext()
+		{
+			var sut = new FastTaskCompletionSource<string>();
+			var scheduler = new TestScheduler();
+			var threadId = Thread.CurrentThread.ManagedThreadId;
+
+			var isRunning = false;
+			var error = default(Exception);
+
+			scheduler.Schedule(async () =>
+			{
+				isRunning = true;
+				try
+				{
+					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+
+					await sut.Task;
+
+					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+				}
+				catch (Exception e)
+				{
+					error = e;
+				}
+				finally
+				{
+					isRunning = false;
+				}
+			});
+			scheduler.Schedule(() =>
+			{
+				isRunning.Should().BeTrue();
+
+				SynchronizationContext.SetSynchronizationContext(new ErrorSyncContext());
+				sut.SetException(new ArgumentNullException("xxx"));
+
+				isRunning.Should().BeFalse();
+				if (error != null)
+				{
+					ExceptionDispatchInfo.Capture(error).Throw();
+				}
+			});
+
+			scheduler.AdvanceBy(100);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(OperationCanceledException))]
+		public void TestContinuationWhenSetCancelUsingAnotherSyncContext()
+		{
+			var sut = new FastTaskCompletionSource<string>();
+			var scheduler = new TestScheduler();
+			var threadId = Thread.CurrentThread.ManagedThreadId;
+
+			var isRunning = false;
+			var error = default(Exception);
+
+			scheduler.Schedule(async () =>
+			{
+				isRunning = true;
+				try
+				{
+					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+
+					await sut.Task;
+
+					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+				}
+				catch (Exception e)
+				{
+					error = e;
+				}
+				finally
+				{
+					isRunning = false;
+				}
+			});
+			scheduler.Schedule(() =>
+			{
+				isRunning.Should().BeTrue();
+
+				SynchronizationContext.SetSynchronizationContext(new ErrorSyncContext());
+				sut.SetCanceled();
+
+				isRunning.Should().BeFalse();
+				if (error != null)
+				{
+					ExceptionDispatchInfo.Capture(error).Throw();
+				}
+			});
+
+			scheduler.AdvanceBy(100);
+		}
+
+		private class ErrorSyncContext : SynchronizationContext
+		{
+			public override void Post(SendOrPostCallback d, object state)
+			{
+				throw new NotSupportedException("Cannot schedule anything on the ErrorSyncContext");
+			}
+
+			public override void Send(SendOrPostCallback d, object state)
+			{
+				throw new NotSupportedException("Cannot schedule anything on the ErrorSyncContext");
+			}
 		}
 	}
 }
