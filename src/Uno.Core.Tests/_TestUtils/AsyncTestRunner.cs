@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Runtime.CompilerServices;
@@ -31,7 +32,7 @@ namespace Uno.Core.Tests.TestUtils
 	public class AsyncTestRunner : IDisposable
 	{
 #if DEBUG
-		private const int _beatTimeout = 10*1000;
+		private static int _beatTimeout => Debugger.IsAttached ? 10 * 1000 : 100;
 #else
 		private const int _beatTimeout = 100;
 #endif
@@ -199,7 +200,11 @@ namespace Uno.Core.Tests.TestUtils
 		{
 			var flag = new SyncFlag(position);
 			Interlocked.Exchange(ref _syncFlag, flag)?.Canceled();
-			if (position <= _syncPosition)
+			if (position == _syncPosition)
+			{
+				return Task.CompletedTask;
+			}
+			else if (position < _syncPosition)
 			{
 				throw new InvalidOperationException("Thread is already at positon " + _syncPosition);
 			}
