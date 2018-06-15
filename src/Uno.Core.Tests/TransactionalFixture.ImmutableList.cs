@@ -32,7 +32,7 @@ namespace Uno.Core.Tests
 			var list = ImmutableList<object>.Empty;
 			var item = new object();
 
-			Transactional.AddDistinct(ref list, item, EqualityComparer<object>.Default);
+			Transactional.AddDistinct(ref list, item);
 
 			Assert.AreEqual(1, list.Count);
 			Assert.IsTrue(list.Contains(item));
@@ -44,9 +44,97 @@ namespace Uno.Core.Tests
 			var list = ImmutableList<object>.Empty;
 			var item = new object();
 
+			var result1 = Transactional.AddDistinct(ref list, item);
+			var result2 = Transactional.AddDistinct(ref list, item);
+
+			Assert.AreEqual(1, list.Count);
+			Assert.IsTrue(list.Contains(item));
+			Assert.AreSame(result1, result2);
+		}
+
+		[TestMethod]
+		public void When_List_AddDistinctWithComparer_Then_ItemAdded()
+		{
+			var list = ImmutableList<object>.Empty;
+			var item = new object();
+
+			Transactional.AddDistinct(ref list, item, EqualityComparer<object>.Default);
+
+			Assert.AreEqual(1, list.Count);
+			Assert.IsTrue(list.Contains(item));
+		}
+
+		[TestMethod]
+		public void When_List_AddDistinctWithComparer_Twice_Then_ItemAddedOnlyOnce()
+		{
+			var list = ImmutableList<object>.Empty;
+			var item = new object();
+
 			var result1 = Transactional.AddDistinct(ref list, item, EqualityComparer<object>.Default);
 			var result2 = Transactional.AddDistinct(ref list, item, EqualityComparer<object>.Default);
 
+			Assert.AreEqual(1, list.Count);
+			Assert.IsTrue(list.Contains(item));
+			Assert.AreSame(result1, result2);
+		}
+
+		[TestMethod]
+		public void When_List_TryAddDistinct_Then_ItemAdded()
+		{
+			var list = ImmutableList<object>.Empty;
+			var item = new object();
+
+			var added = Transactional.TryAddDistinct(ref list, item);
+
+			Assert.IsTrue(added);
+			Assert.AreEqual(1, list.Count);
+			Assert.IsTrue(list.Contains(item));
+		}
+
+		[TestMethod]
+		public void When_List_TryAddDistinct_Twice_Then_ItemAddedOnlyOnce()
+		{
+			var list = ImmutableList<object>.Empty;
+			var item = new object();
+
+			var added1 = Transactional.TryAddDistinct(ref list, item);
+			var result1 = list;
+			var added2 = Transactional.TryAddDistinct(ref list, item);
+			var result2 = list;
+
+			Assert.IsTrue(added1);
+			Assert.IsFalse(added2);
+			Assert.AreEqual(1, list.Count);
+			Assert.IsTrue(list.Contains(item));
+			Assert.AreSame(result1, result2);
+		}
+
+		[TestMethod]
+		public void When_List_TryAddDistinctWithComparer_Then_ItemAdded()
+		{
+			var list = ImmutableList<object>.Empty;
+			var item = new object();
+
+			var added = Transactional.TryAddDistinct(ref list, item, EqualityComparer<object>.Default);
+
+			Assert.IsTrue(added);
+			Assert.AreEqual(1, list.Count);
+			Assert.IsTrue(list.Contains(item));
+		}
+
+		[TestMethod]
+		public void When_List_TryAddDistinctWithCOmparer_Twice_Then_ItemAddedOnlyOnce()
+		{
+			var list = ImmutableList<object>.Empty;
+			var item = new object();
+
+			var added1 = Transactional.TryAddDistinct(ref list, item, EqualityComparer<object>.Default);
+			var result1 = list;
+			var added2 = Transactional.TryAddDistinct(ref list, item, EqualityComparer<object>.Default);
+			var result2 = list;
+
+			Assert.IsTrue(added1);
+			Assert.IsFalse(added2);
 			Assert.AreEqual(1, list.Count);
 			Assert.IsTrue(list.Contains(item));
 			Assert.AreSame(result1, result2);

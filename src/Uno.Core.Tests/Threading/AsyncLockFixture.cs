@@ -417,18 +417,15 @@ namespace Uno.Core.Tests.Threading
 				await otherThread.AdvanceTo(2);
 				Assert.IsFalse(otherThread.HasLock());
 
-				Task reLocking;
 				using (await sut.LockAsync(CancellationToken.None))
 				{
 					await Task.Yield();
 
-					reLocking = otherThread.AdvanceTo(3);
-					await Task.Delay(10);
-
-					Assert.AreEqual(TaskStatus.WaitingForActivation, reLocking.Status);
+					await otherThread.AdvanceAndFreezeBefore(3);
+					Assert.IsFalse(otherThread.HasLock());
 				}
 
-				await reLocking;
+				await otherThread.AdvanceTo(4);
 				Assert.IsTrue(otherThread.HasLock());
 			}
 
@@ -450,11 +447,11 @@ namespace Uno.Core.Tests.Threading
 					await Task.Yield();
 					r.HasLock(true);
 					r.Sync(position: 3);
+					r.Sync(position: 4);
 				}
 
 				await Task.Yield();
 				r.HasLock(false);
-				r.Sync(position: 4);
 			}
 		}
 
