@@ -272,5 +272,30 @@ namespace Uno.Extensions
 				.ToDivergentEnumerable(startingAt)
 				.FirstOrDefault(predicate);
 		}
+
+		/// <summary>
+		/// Determines the index of a specific item in the <see cref="IList"/>.
+		/// </summary>
+		/// <param name="list">The source list to look into.</param>
+		/// <param name="value">The object to locate in the <see cref="IList"/>.</param>
+		/// <param name="comparer">The comparer to use to locate the <paramref name="value" />.</param>
+		/// <returns>The index of value if found in the list; otherwise, -1.</returns>
+		public static int IndexOf(this IList list, object value, IEqualityComparer comparer)
+		{
+			if (comparer == null)
+			{
+				return list.IndexOf(value);
+			}
+
+			for (var i = 0; i < list.Count; i++)
+			{
+				if (comparer.Equals(value, list[i]))
+				{
+					return i;
+				}
+			}
+
+			return -1;
+		}
 	}
 }
