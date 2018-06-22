@@ -49,37 +49,5 @@ namespace Uno.Core.Tests
 
 			Assert.IsTrue(object.ReferenceEquals(a.Result, b.Result));
 		}
-
-		[TestMethod]
-		[Timeout(_timeout)]
-		public async Task When_AsMemoized_AndNotLocked_ThenNotSameInstance()
-		{
-			var started = new SemaphoreSlim(2);
-			var mre = new ManualResetEvent(false);
-
-			Func<object> myFunc = () => { mre.WaitOne(); return new object(); };
-			var asMemoized = myFunc.AsMemoized();
-
-			var a = Task.Run(() =>
-			{
-				started.Release();
-				return asMemoized();
-			});
-
-			var b = Task.Run(() =>
-			{
-				started.Release();
-				return asMemoized();
-			});
-
-			await started.WaitAsync();
-			await started.WaitAsync();
-			mre.Set();
-			mre.Set();
-
-			await Task.WhenAll(a, b);
-
-			Assert.IsFalse(object.ReferenceEquals(a.Result, b.Result));
-		}
 	}
 }
