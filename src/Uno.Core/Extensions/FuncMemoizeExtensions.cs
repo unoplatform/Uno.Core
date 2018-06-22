@@ -28,322 +28,354 @@ using System.Collections.Concurrent;
 
 namespace Uno.Extensions
 {
-    public static class FuncMemoizeExtensions
-    {
-        /// <summary>
-        /// Parameter less memoizer, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="T">The return type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<T> AsMemoized<T>(this Func<T> func)
-        {
-            bool isSet = false;
-            T value = default(T);
+	public static class FuncMemoizeExtensions
+	{
+		/// <summary>
+		/// Parameter less memoizer, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="T">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<T> AsMemoized<T>(this Func<T> func)
+		{
+			bool isSet = false;
+			T value = default(T);
 
-            return () =>
-            {
-                if (!isSet)
-                {
-                    value = func();
-                    isSet = true;
-                }
+			return () =>
+			{
+				if (!isSet)
+				{
+					value = func();
+					isSet = true;
+				}
 
-                return value;
-            };
-        }
+				return value;
+			};
+		}
 
-        /// <summary>
-        /// Memoizer with one parameter, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="TParam">The return type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TParam, TResult> AsMemoized<TParam, TResult>(this Func<TParam, TResult> func)
-        {
-            Dictionary<TParam, TResult> values = new Dictionary<TParam, TResult>();
-            // It's safe to use default(TParam) as this won't get called anyway if TParam is a value type.
-            var nullValue = Funcs.CreateMemoized(() => func(default(TParam)));
+		/// <summary>
+		/// Memoizer with one parameter, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="TParam">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TParam, TResult> AsMemoized<TParam, TResult>(this Func<TParam, TResult> func)
+		{
+			Dictionary<TParam, TResult> values = new Dictionary<TParam, TResult>();
+			// It's safe to use default(TParam) as this won't get called anyway if TParam is a value type.
+			var nullValue = Funcs.CreateMemoized(() => func(default(TParam)));
 
-            return (v) =>
-            {
-                TResult value;
+			return (v) =>
+			{
+				TResult value;
 
-                if (v == null)
-                {
-                    value = nullValue();
-                }
-                else if (!values.TryGetValue(v, out value))
-                {
-                    value = values[v] = func(v);
-                }
+				if (v == null)
+				{
+					value = nullValue();
+				}
+				else if (!values.TryGetValue(v, out value))
+				{
+					value = values[v] = func(v);
+				}
 
-                return value;
-            };
-        }
+				return value;
+			};
+		}
 
-        /// <summary>
-        /// Memoizer with two parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
-        /// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TParam1, TParam2, TResult> AsMemoized<TParam1, TParam2, TResult>(this Func<TParam1, TParam2, TResult> func)
-        {
-            Dictionary<CachedTuple<TParam1, TParam2>, TResult> values = new Dictionary<CachedTuple<TParam1, TParam2>, TResult>(CachedTuple<TParam1, TParam2>.Comparer);
+		/// <summary>
+		/// Memoizer with two parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
+		/// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TParam1, TParam2, TResult> AsMemoized<TParam1, TParam2, TResult>(this Func<TParam1, TParam2, TResult> func)
+		{
+			Dictionary<CachedTuple<TParam1, TParam2>, TResult> values = new Dictionary<CachedTuple<TParam1, TParam2>, TResult>(CachedTuple<TParam1, TParam2>.Comparer);
 
-            return (arg1, arg2) =>
-            {
-                var tuple = CachedTuple.Create(arg1, arg2);
-                TResult value;
+			return (arg1, arg2) =>
+			{
+				var tuple = CachedTuple.Create(arg1, arg2);
+				TResult value;
 
-                if (!values.TryGetValue(tuple, out value))
-                {
-                    value = values[tuple] = func(arg1, arg2);
-                }
+				if (!values.TryGetValue(tuple, out value))
+				{
+					value = values[tuple] = func(arg1, arg2);
+				}
 
-                return value;
-            };
-        }
+				return value;
+			};
+		}
 
-        /// <summary>
-        /// Memoizer with three parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
-        /// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
-        /// <typeparam name="TParam3">The third parameter type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TParam1, TParam2, TParam3, TResult> AsMemoized<TParam1, TParam2, TParam3, TResult>(this Func<TParam1, TParam2, TParam3, TResult> func)
-        {
-            Dictionary<CachedTuple<TParam1, TParam2, TParam3>, TResult> values = new Dictionary<CachedTuple<TParam1, TParam2, TParam3>, TResult>(CachedTuple<TParam1, TParam2, TParam3>.Comparer);
+		/// <summary>
+		/// Memoizer with three parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
+		/// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
+		/// <typeparam name="TParam3">The third parameter type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TParam1, TParam2, TParam3, TResult> AsMemoized<TParam1, TParam2, TParam3, TResult>(this Func<TParam1, TParam2, TParam3, TResult> func)
+		{
+			Dictionary<CachedTuple<TParam1, TParam2, TParam3>, TResult> values = new Dictionary<CachedTuple<TParam1, TParam2, TParam3>, TResult>(CachedTuple<TParam1, TParam2, TParam3>.Comparer);
 
-            return (arg1, arg2, arg3) =>
-            {
-                var tuple = CachedTuple.Create(arg1, arg2, arg3);
-                TResult value;
+			return (arg1, arg2, arg3) =>
+			{
+				var tuple = CachedTuple.Create(arg1, arg2, arg3);
+				TResult value;
 
-                if (!values.TryGetValue(tuple, out value))
-                {
-                    value = values[tuple] = func(arg1, arg2, arg3);
-                }
+				if (!values.TryGetValue(tuple, out value))
+				{
+					value = values[tuple] = func(arg1, arg2, arg3);
+				}
 
-                return value;
-            };
-        }
+				return value;
+			};
+		}
 
-        /// <summary>
-        /// Memoizer with four parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
-        /// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
-        /// <typeparam name="TParam3">The third parameter type to memoize</typeparam>
-        /// <typeparam name="TParam4">The fourth parameter type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TParam1, TParam2, TParam3, TParam4, TResult> AsMemoized<TParam1, TParam2, TParam3, TParam4, TResult>(this Func<TParam1, TParam2, TParam3, TParam4, TResult> func)
-        {
-            Dictionary<CachedTuple<TParam1, TParam2, TParam3, TParam4>, TResult> values = new Dictionary<CachedTuple<TParam1, TParam2, TParam3, TParam4>, TResult>(CachedTuple<TParam1, TParam2, TParam3, TParam4>.Comparer);
+		/// <summary>
+		/// Memoizer with four parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
+		/// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
+		/// <typeparam name="TParam3">The third parameter type to memoize</typeparam>
+		/// <typeparam name="TParam4">The fourth parameter type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TParam1, TParam2, TParam3, TParam4, TResult> AsMemoized<TParam1, TParam2, TParam3, TParam4, TResult>(this Func<TParam1, TParam2, TParam3, TParam4, TResult> func)
+		{
+			Dictionary<CachedTuple<TParam1, TParam2, TParam3, TParam4>, TResult> values = new Dictionary<CachedTuple<TParam1, TParam2, TParam3, TParam4>, TResult>(CachedTuple<TParam1, TParam2, TParam3, TParam4>.Comparer);
 
-            return (arg1, arg2, arg3, arg4) =>
-            {
-                var tuple = CachedTuple.Create(arg1, arg2, arg3, arg4);
-                TResult value;
+			return (arg1, arg2, arg3, arg4) =>
+			{
+				var tuple = CachedTuple.Create(arg1, arg2, arg3, arg4);
+				TResult value;
 
-                if (!values.TryGetValue(tuple, out value))
-                {
-                    value = values[tuple] = func(arg1, arg2, arg3, arg4);
-                }
+				if (!values.TryGetValue(tuple, out value))
+				{
+					value = values[tuple] = func(arg1, arg2, arg3, arg4);
+				}
 
-                return value;
-            };
-        }
+				return value;
+			};
+		}
 
-        /// <summary>
-        /// Memoizer with five parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
-        /// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
-        /// <typeparam name="TParam3">The third parameter type to memoize</typeparam>
-        /// <typeparam name="TParam4">The fourth parameter type to memoize</typeparam>
-        /// <typeparam name="TParam5">The fifth parameter type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> AsMemoized<TParam1, TParam2, TParam3, TParam4, TParam5, TResult>(this Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> func)
-        {
-            Dictionary<System.Tuple<TParam1, TParam2, TParam3, TParam4, TParam5>, TResult> values = new Dictionary<System.Tuple<TParam1, TParam2, TParam3, TParam4, TParam5>, TResult>();
+		/// <summary>
+		/// Memoizer with five parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter type to memoize</typeparam>
+		/// <typeparam name="TParam2">The second parameter type to memoize</typeparam>
+		/// <typeparam name="TParam3">The third parameter type to memoize</typeparam>
+		/// <typeparam name="TParam4">The fourth parameter type to memoize</typeparam>
+		/// <typeparam name="TParam5">The fifth parameter type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> AsMemoized<TParam1, TParam2, TParam3, TParam4, TParam5, TResult>(this Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> func)
+		{
+			Dictionary<System.Tuple<TParam1, TParam2, TParam3, TParam4, TParam5>, TResult> values = new Dictionary<System.Tuple<TParam1, TParam2, TParam3, TParam4, TParam5>, TResult>();
 
-            return (arg1, arg2, arg3, arg4, arg5) =>
-            {
-                var tuple = System.Tuple.Create(arg1, arg2, arg3, arg4, arg5);
-                TResult value;
+			return (arg1, arg2, arg3, arg4, arg5) =>
+			{
+				var tuple = System.Tuple.Create(arg1, arg2, arg3, arg4, arg5);
+				TResult value;
 
-                if (!values.TryGetValue(tuple, out value))
-                {
-                    value = values[tuple] = func(arg1, arg2, arg3, arg4, arg5);
-                }
+				if (!values.TryGetValue(tuple, out value))
+				{
+					value = values[tuple] = func(arg1, arg2, arg3, arg4, arg5);
+				}
 
-                return value;
-            };
-        }
+				return value;
+			};
+		}
 
-        /// <summary>
-        /// Creates a parameter-less memoizer for the the specified task provider. The task provider is guaranteed to be executed only once.
-        /// </summary>
-        /// <typeparam name="T">The return value type</typeparam>
-        /// <param name="func">A function that will call the create the task.</param>
-        /// <returns>A function that will return a task </returns>
-        [Legacy("NV0115")]
-        public static Func<CancellationToken, Task<T>> AsMemoized<T>(this Func<CancellationToken, Task<T>> func)
-        {
-            Task<T> value = null;
-            object gate = new object();
-
-            return ct =>
-            {
-                if (value == null)
-                {
-                    lock (gate)
-                    {
-                        if (value == null)
-                        {
-                            value = Funcs.Create(async ct2 =>
-                            {
-                                try
-                                {
-                                    return await func(ct2);
-                                }
-                                catch (OperationCanceledException)
-                                {
-                                    lock (gate)
-                                    {
-                                        value = null;
-                                    }
-
-                                    throw;
-                                }
-                            })(ct);
-                        }
-                    }
-                }
-
-                return value;
-            };
-        }
-
-        /// <summary>
-        /// Creates a memoizer with one parameter for the the specified task provider. The task provider is guaranteed to be executed only once per parameter instance.
-        /// </summary>
-        /// <typeparam name="TResult">The return value type</typeparam>
-        /// <typeparam name="TParam"></typeparam>
-        /// <param name="func">A function that will call the create the task.</param>
-        /// <returns>A function that will return a task </returns>
-        [Legacy("NV0115")]
-        public static Func<CancellationToken, TParam, Task<TResult>> AsMemoized<TParam, TResult>(this Func<CancellationToken, TParam, Task<TResult>> func)
-        {
-            var values = new SynchronizedDictionary<TParam, Func<CancellationToken, Task<TResult>>>();
-            // It's safe to use default(TParam) as this won't get called anyway if TParam is a vlue type.
-            var nullValue = Funcs.CreateAsyncMemoized(ct => func(ct, default(TParam)));
-
-            return (ct, param) =>
-            {
-                if (param == null)
-                {
-                    return nullValue(ct);
-                }
-                else
-                {
-                    var memoizedFunc = values.FindOrCreate(param, () => Funcs.CreateMemoized(c => func(c, param)));
-
-                    return memoizedFunc(ct);
-                }
-            };
-        }
-
-        /// <summary>
+		/// <summary>
 		/// Creates a parameter-less memoizer for the the specified task provider. The task provider is guaranteed to be executed only once.
-        /// </summary>
+		/// </summary>
+		/// <typeparam name="T">The return value type</typeparam>
+		/// <param name="func">A function that will call the create the task.</param>
+		/// <returns>A function that will return a task </returns>
+		[Legacy("NV0115")]
+		public static Func<CancellationToken, Task<T>> AsMemoized<T>(this Func<CancellationToken, Task<T>> func)
+		{
+			Task<T> value = null;
+			object gate = new object();
+
+			return ct =>
+			{
+				if (value == null)
+				{
+					lock (gate)
+					{
+						if (value == null)
+						{
+							value = Funcs.Create(async ct2 =>
+							{
+								try
+								{
+									return await func(ct2);
+								}
+								catch (OperationCanceledException)
+								{
+									lock (gate)
+									{
+										value = null;
+									}
+
+									throw;
+								}
+							})(ct);
+						}
+					}
+				}
+
+				return value;
+			};
+		}
+
+		/// <summary>
+		/// Creates a memoizer with one parameter for the the specified task provider. The task provider is guaranteed to be executed only once per parameter instance.
+		/// </summary>
+		/// <typeparam name="TResult">The return value type</typeparam>
+		/// <typeparam name="TParam"></typeparam>
+		/// <param name="func">A function that will call the create the task.</param>
+		/// <returns>A function that will return a task </returns>
+		[Legacy("NV0115")]
+		public static Func<CancellationToken, TParam, Task<TResult>> AsMemoized<TParam, TResult>(this Func<CancellationToken, TParam, Task<TResult>> func)
+		{
+			var values = new SynchronizedDictionary<TParam, Func<CancellationToken, Task<TResult>>>();
+			// It's safe to use default(TParam) as this won't get called anyway if TParam is a vlue type.
+			var nullValue = Funcs.CreateAsyncMemoized(ct => func(ct, default(TParam)));
+
+			return (ct, param) =>
+			{
+				if (param == null)
+				{
+					return nullValue(ct);
+				}
+				else
+				{
+					var memoizedFunc = values.FindOrCreate(param, () => Funcs.CreateMemoized(c => func(c, param)));
+
+					return memoizedFunc(ct);
+				}
+			};
+		}
+
+		/// <summary>
+		/// Creates a parameter-less memoizer for the the specified task provider. The task provider is guaranteed to be executed only once.
+		/// </summary>
 		/// <typeparam name="T">The return value type</typeparam>
 		/// <param name="func">A function that will call the create the task.</param>
 		/// <returns>A function that will return a task </returns>
 		public static FuncAsync<T> AsMemoized<T>(this FuncAsync<T> func)
-        {
-            Task<T> value = null;
-            object gate = new object();
+		{
+			Task<T> value = null;
+			object gate = new object();
 
-            return ct =>
-            {
-                if (value == null)
-                {
-                    lock (gate)
-                    {
-                        if (value == null)
-                        {
-                            value = Funcs.Create(async ct2 =>
-                            {
-                                try
-                                {
-                                    return await func(ct2);
-                                }
-                                catch (OperationCanceledException)
-                                {
-                                    lock (gate)
-                                    {
-                                        value = null;
-                                    }
+			return ct =>
+			{
+				if (value == null)
+				{
+					lock (gate)
+					{
+						if (value == null)
+						{
+							value = Funcs.Create(async ct2 =>
+							{
+								try
+								{
+									return await func(ct2);
+								}
+								catch (OperationCanceledException)
+								{
+									lock (gate)
+									{
+										value = null;
+									}
 
-                                    throw;
-                                }
-                            })(ct);
-                        }
-                    }
-                }
+									throw;
+								}
+							})(ct);
+						}
+					}
+				}
 
-                return value;
-            };
-        }
+				return value;
+			};
+		}
 
-        /// <summary>
-        /// Creates a memoizer with one parameter for the the specified task provider. The task provider is guaranteed to be executed only once per parameter instance.
-        /// </summary>
-        /// <typeparam name="TResult">The return value type</typeparam>
-        /// <typeparam name="TParam"></typeparam>
-        /// <param name="func">A function that will call the create the task.</param>
-        /// <returns>A function that will return a task </returns>
-        public static FuncAsync<TParam, TResult> AsMemoized<TParam, TResult>(this FuncAsync<TParam, TResult> func)
-        {
+		/// <summary>
+		/// Creates a memoizer with one parameter for the the specified task provider. The task provider is guaranteed to be executed only once per parameter instance.
+		/// </summary>
+		/// <typeparam name="TResult">The return value type</typeparam>
+		/// <typeparam name="TParam"></typeparam>
+		/// <param name="func">A function that will call the create the task.</param>
+		/// <returns>A function that will return a task </returns>
+		public static FuncAsync<TParam, TResult> AsMemoized<TParam, TResult>(this FuncAsync<TParam, TResult> func)
+		{
 #if HAS_NO_CONCURRENT_DICT
 			var values = new SynchronizedDictionary<TParam, FuncAsync<TResult>>();
 #else
-            var values = new System.Collections.Concurrent.ConcurrentDictionary<TParam, FuncAsync<TResult>>();
+			var values = new System.Collections.Concurrent.ConcurrentDictionary<TParam, FuncAsync<TResult>>();
 #endif
-            // It's safe to use default(TParam) as this won't get called anyway if TParam is a value type.
-            var nullValue = Funcs.CreateAsyncMemoized(ct => func(ct, default(TParam)));
+			// It's safe to use default(TParam) as this won't get called anyway if TParam is a value type.
+			var nullValue = Funcs.CreateAsyncMemoized(ct => func(ct, default(TParam)));
 
-            return (ct, param) =>
-            {
-                if (param == null)
-                {
-                    return nullValue(ct);
-                }
-                else
-                {
-                    var memoizedFunc = values.GetOrAdd(param, p => Funcs.CreateAsyncMemoized(c => func(c, p)));
+			return (ct, param) =>
+			{
+				if (param == null)
+				{
+					return nullValue(ct);
+				}
+				else
+				{
+					var memoizedFunc = values.GetOrAdd(param, p => Funcs.CreateAsyncMemoized(c => func(c, p)));
 
-                    return memoizedFunc(ct);
-                }
-            };
-        }
+					return memoizedFunc(ct);
+				}
+			};
+		}
 
-        /// <summary>
-        /// Memoizer with one parameter, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="T">The return type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TKey, TResult> AsLockedMemoized<TKey, TResult>(this Func<TKey, TResult> func)
-        {
+
+		/// <summary>
+		/// Parameter less thread-safe memoizer, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="T">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<T> AsLockedMemoized<T>(this Func<T> func)
+		{
+			object gate = new object();
+			bool isSet = false;
+			T value = default(T);
+
+			return () =>
+			{
+				if (!isSet)
+				{
+					lock (gate)
+					{
+						if (!isSet)
+						{
+							value = func();
+							isSet = true;
+						}
+					}
+				}
+
+				return value;
+			};
+		}
+
+
+		/// <summary>
+		/// Memoizer with one parameter, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="T">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TKey, TResult> AsLockedMemoized<TKey, TResult>(this Func<TKey, TResult> func)
+		{
 #if XAMARIN
 			// On Xamarin.iOS, the SynchronizedDictionary type costs a lot in terms of 
 			// generic delegates, where trampolines are used a lot. As simple lock will not create that
@@ -360,34 +392,34 @@ namespace Uno.Extensions
 			};
 
 #elif !HAS_NO_CONCURRENT_DICT
-            var values = new ConcurrentDictionary<TKey, TResult>();
+			var values = new ConcurrentDictionary<TKey, TResult>();
 
-            return (key) => values.GetOrAdd(key, func);
+			return (key) => values.GetOrAdd(key, func);
 #else
-            var values = new SynchronizedDictionary<TKey, TResult>();
+			var values = new SynchronizedDictionary<TKey, TResult>();
 
-            return (key) =>
-            {
-                TResult value = default(TResult);
+			return (key) =>
+			{
+				TResult value = default(TResult);
 
-                values.Lock.Write(
-                    v => v.TryGetValue(key, out value),
-                    v => value = values[key] = func(key)
-                );
+				values.Lock.Write(
+					v => v.TryGetValue(key, out value),
+					v => value = values[key] = func(key)
+				);
 
-                return value;
-            };
+				return value;
+			};
 #endif
-        }
+		}
 
-        /// <summary>
-        /// Memoizer with two parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="T">The return type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TArg1, TArg2, TResult> AsLockedMemoized<TArg1, TArg2, TResult>(this Func<TArg1, TArg2, TResult> func)
-        {
+		/// <summary>
+		/// Memoizer with two parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="T">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TArg1, TArg2, TResult> AsLockedMemoized<TArg1, TArg2, TResult>(this Func<TArg1, TArg2, TResult> func)
+		{
 #if XAMARIN
 			// On Xamarin.iOS, the SynchronizedDictionary type costs a lot in terms of 
 			// generic delegates, where trampolines are used a lot. As simple lock will not create that
@@ -408,47 +440,47 @@ namespace Uno.Extensions
 				}
 			};
 #elif !HAS_NO_CONCURRENT_DICT
-            var values = new ConcurrentDictionary<CachedTuple<TArg1, TArg2>, TResult>(CachedTuple<TArg1, TArg2>.Comparer);
+			var values = new ConcurrentDictionary<CachedTuple<TArg1, TArg2>, TResult>(CachedTuple<TArg1, TArg2>.Comparer);
 
-            return (arg1, arg2) =>
-            {
-                var tuple = CachedTuple.Create(arg1, arg2);
+			return (arg1, arg2) =>
+			{
+				var tuple = CachedTuple.Create(arg1, arg2);
 
-                return values.GetOrAdd(
-                    tuple,
+				return values.GetOrAdd(
+					tuple,
 
-                    // Use the parameter to avoid closure heap allocation
-                    k => func(k.Item1, k.Item2)
-                );
-            };
+					// Use the parameter to avoid closure heap allocation
+					k => func(k.Item1, k.Item2)
+				);
+			};
 #else
-            var values = new SynchronizedDictionary<Tuple<TArg1, TArg2>, TResult>();
+			var values = new SynchronizedDictionary<Tuple<TArg1, TArg2>, TResult>();
 
-            return (arg1, arg2) =>
-            {
-                TResult value = default(TResult);
+			return (arg1, arg2) =>
+			{
+				TResult value = default(TResult);
 
-                var tuple = Tuple.Create(arg1, arg2);
+				var tuple = Tuple.Create(arg1, arg2);
 
-                values.Lock.Write(
-                    v => v.TryGetValue(tuple, out value),
-                    v => value = values[tuple] = func(arg1, arg2)
-                );
+				values.Lock.Write(
+					v => v.TryGetValue(tuple, out value),
+					v => value = values[tuple] = func(arg1, arg2)
+				);
 
-                return value;
-            };
+				return value;
+			};
 #endif
-        }
+		}
 
 #if !HAS_NO_EXTENDED_TUPLE
-        /// <summary>
-        /// Memoizer with three parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="T">The return type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TArg1, TArg2, TArg3, TResult> AsLockedMemoized<TArg1, TArg2, TArg3, TResult>(this Func<TArg1, TArg2, TArg3, TResult> func)
-        {
+		/// <summary>
+		/// Memoizer with three parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="T">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TArg1, TArg2, TArg3, TResult> AsLockedMemoized<TArg1, TArg2, TArg3, TResult>(this Func<TArg1, TArg2, TArg3, TResult> func)
+		{
 #if XAMARIN
 			var values = new Dictionary<CachedTuple<TArg1, TArg2, TArg3>, TResult>(CachedTuple<TArg1, TArg2, TArg3>.Comparer);
 
@@ -468,49 +500,49 @@ namespace Uno.Extensions
 			};
 
 #elif !HAS_NO_CONCURRENT_DICT
-            var values = new ConcurrentDictionary<CachedTuple<TArg1, TArg2, TArg3>, TResult>(CachedTuple<TArg1, TArg2, TArg3>.Comparer);
+			var values = new ConcurrentDictionary<CachedTuple<TArg1, TArg2, TArg3>, TResult>(CachedTuple<TArg1, TArg2, TArg3>.Comparer);
 
-            return (arg1, arg2, arg3) =>
-            {
-                var tuple = CachedTuple.Create(arg1, arg2, arg3);
+			return (arg1, arg2, arg3) =>
+			{
+				var tuple = CachedTuple.Create(arg1, arg2, arg3);
 
-                return values.GetOrAdd(
-                    tuple,
+				return values.GetOrAdd(
+					tuple,
 
-                    // Use the parameter to avoid closure heap allocation
-                    k => func(k.Item1, k.Item2, k.Item3)
-                );
-            };
+					// Use the parameter to avoid closure heap allocation
+					k => func(k.Item1, k.Item2, k.Item3)
+				);
+			};
 #else
 
-            var values = new SynchronizedDictionary<Tuple<TArg1, TArg2, TArg3>, TResult>();
+			var values = new SynchronizedDictionary<Tuple<TArg1, TArg2, TArg3>, TResult>();
 
-            return (arg1, arg2, arg3) =>
-            {
-                TResult value = default(TResult);
+			return (arg1, arg2, arg3) =>
+			{
+				TResult value = default(TResult);
 
 				var tuple = new Tuple<TArg1, TArg2, TArg3>(arg1,arg2, arg3);
 
-                values.Lock.Write(
-                    v => v.TryGetValue(tuple, out value),
-                    v => value = values[tuple] = func(arg1, arg2, arg3)
-                );
+				values.Lock.Write(
+					v => v.TryGetValue(tuple, out value),
+					v => value = values[tuple] = func(arg1, arg2, arg3)
+				);
 
-                return value;
-            };
+				return value;
+			};
 #endif
-        }
+		}
 #endif
 
 #if !HAS_NO_EXTENDED_TUPLE
-        /// <summary>
-        /// Memoizer with four parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="T">The return type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TArg1, TArg2, TArg3, TArg4, TResult> AsLockedMemoized<TArg1, TArg2, TArg3, TArg4, TResult>(this Func<TArg1, TArg2, TArg3, TArg4, TResult> func)
-        {
+		/// <summary>
+		/// Memoizer with four parameters, used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="T">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TArg1, TArg2, TArg3, TArg4, TResult> AsLockedMemoized<TArg1, TArg2, TArg3, TArg4, TResult>(this Func<TArg1, TArg2, TArg3, TArg4, TResult> func)
+		{
 #if XAMARIN
 			var values = new Dictionary<CachedTuple<TArg1, TArg2, TArg3, TArg4>, TResult>(CachedTuple<TArg1, TArg2, TArg3, TArg4>.Comparer);
 
@@ -530,19 +562,19 @@ namespace Uno.Extensions
 			};
 
 #elif !HAS_NO_CONCURRENT_DICT
-            var values = new ConcurrentDictionary<CachedTuple<TArg1, TArg2, TArg3, TArg4>, TResult>(CachedTuple<TArg1, TArg2, TArg3, TArg4>.Comparer);
+			var values = new ConcurrentDictionary<CachedTuple<TArg1, TArg2, TArg3, TArg4>, TResult>(CachedTuple<TArg1, TArg2, TArg3, TArg4>.Comparer);
 
-            return (arg1, arg2, arg3, arg4) =>
-            {
-                var tuple = CachedTuple.Create(arg1, arg2, arg3, arg4);
+			return (arg1, arg2, arg3, arg4) =>
+			{
+				var tuple = CachedTuple.Create(arg1, arg2, arg3, arg4);
 
-                return values.GetOrAdd(
-                    tuple,
+				return values.GetOrAdd(
+					tuple,
 
-                    // Use the parameter to avoid closure heap allocation
-                    k => func(k.Item1, k.Item2, k.Item3, k.Item4)
-                );
-            };
+					// Use the parameter to avoid closure heap allocation
+					k => func(k.Item1, k.Item2, k.Item3, k.Item4)
+				);
+			};
 #else
 
 			var values = new SynchronizedDictionary<Tuple<TArg1, TArg2, TArg3, TArg4>, TResult>();
@@ -561,21 +593,21 @@ namespace Uno.Extensions
 				return value;
 			};
 #endif
-        }
+		}
 #endif
 
-        /// <summary>
-        /// Memoizer with one parameter (kept as weak reference), used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
-        /// </summary>
-        /// <typeparam name="TParam">The return type to memoize</typeparam>
-        /// <param name="func">the function to evaluate</param>
-        /// <returns>A memoized value</returns>
-        public static Func<TParam, TResult> AsWeakLockedMemoized<TParam, TResult>(this Func<TParam, TResult> func)
-            where TParam : class
-        {
-            var values = new WeakAttachedDictionary<TParam, string>();
+		/// <summary>
+		/// Memoizer with one parameter (kept as weak reference), used to perform a lazy-cached evaluation. (see http://en.wikipedia.org/wiki/Memoization)
+		/// </summary>
+		/// <typeparam name="TParam">The return type to memoize</typeparam>
+		/// <param name="func">the function to evaluate</param>
+		/// <returns>A memoized value</returns>
+		public static Func<TParam, TResult> AsWeakLockedMemoized<TParam, TResult>(this Func<TParam, TResult> func)
+			where TParam : class
+		{
+			var values = new WeakAttachedDictionary<TParam, string>();
 
-            return v => values.GetValue(v, "value", () => func(v));
-        }
-    }
+			return v => values.GetValue(v, "value", () => func(v));
+		}
+	}
 }
