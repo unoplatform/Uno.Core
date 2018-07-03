@@ -543,6 +543,29 @@ namespace Uno
 		/// <summary>
 		/// Transactionally add an item to a list if not already present.
 		/// </summary>
+		public static TList AddDistinct<TList, T>(ref TList list, T item)
+			where TList : class, IImmutableList<T>
+		{
+			while (true)
+			{
+				var capture = list;
+				if (capture.IndexOf(item) >= 0)
+				{
+					return capture;
+				}
+
+				var updated = (TList)capture.Add(item);
+
+				if (Interlocked.CompareExchange(ref list, updated, capture) == capture)
+				{
+					return updated;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Transactionally add an item to a list if not already present.
+		/// </summary>
 		public static TList AddDistinct<TList, T>(ref TList list, T item, IEqualityComparer<T> comparer)
 			where TList : class, IImmutableList<T>
 		{
@@ -559,6 +582,54 @@ namespace Uno
 				if (Interlocked.CompareExchange(ref list, updated, capture) == capture)
 				{
 					return updated;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Transactionally try to add an item to a list if not already present.
+		/// </summary>
+		/// <returns>True if item was added, false if item was already present</returns>
+		public static bool TryAddDistinct<TList, T>(ref TList list, T item)
+			where TList : class, IImmutableList<T>
+		{
+			while (true)
+			{
+				var capture = list;
+				if (capture.IndexOf(item) >= 0)
+				{
+					return false;
+				}
+
+				var updated = (TList)capture.Add(item);
+
+				if (Interlocked.CompareExchange(ref list, updated, capture) == capture)
+				{
+					return true;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Transactionally try to add an item to a list if not already present.
+		/// </summary>
+		/// <returns>True if item was added, false if item was already present</returns>
+		public static bool TryAddDistinct<TList, T>(ref TList list, T item, IEqualityComparer<T> comparer)
+			where TList : class, IImmutableList<T>
+		{
+			while (true)
+			{
+				var capture = list;
+				if (capture.IndexOf(item, comparer) >= 0)
+				{
+					return false;
+				}
+
+				var updated = (TList)capture.Add(item);
+
+				if (Interlocked.CompareExchange(ref list, updated, capture) == capture)
+				{
+					return true;
 				}
 			}
 		}

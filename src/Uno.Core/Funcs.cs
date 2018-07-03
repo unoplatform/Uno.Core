@@ -23,280 +23,291 @@ using System.Threading;
 
 namespace Uno
 {
-    public static class Funcs
-    {
-        /// <summary>
-        /// Creates a function, to allow for type inference from the returned value.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static Func<TResult> Create<TResult>(Func<TResult> function)
-        {
-            return function;
-        }
+	public static class Funcs
+	{
+		/// <summary>
+		/// Creates a function, to allow for type inference from the returned value.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static Func<TResult> Create<TResult>(Func<TResult> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a function, to allow for type inference from the returned value.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static Func<TParam, TResult> Create<TParam, TResult>(Func<TParam, TResult> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a function, to allow for type inference from the returned value.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static Func<TParam, TResult> Create<TParam, TResult>(Func<TParam, TResult> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a function, to allow for type inference from the returned value.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static Func<TParam1, TParam2, TResult> Create<TParam1, TParam2, TResult>(Func<TParam1, TParam2, TResult> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a function, to allow for type inference from the returned value.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static Func<TParam1, TParam2, TResult> Create<TParam1, TParam2, TResult>(Func<TParam1, TParam2, TResult> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a function, to allow for type inference from the returned value.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static Func<TParam1, TParam2, TParam3, TResult> Create<TParam1, TParam2, TParam3, TResult>(Func<TParam1, TParam2, TParam3, TResult> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a function, to allow for type inference from the returned value.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static Func<TParam1, TParam2, TParam3, TResult> Create<TParam1, TParam2, TParam3, TResult>(Func<TParam1, TParam2, TParam3, TResult> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a parameterless cancellable async function.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static FuncAsync<TResult> CreateAsync<TResult>(FuncAsync<TResult> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a parameterless cancellable async function.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static FuncAsync<TResult> CreateAsync<TResult>(FuncAsync<TResult> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a parameterized cancellable async function.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static FuncAsync<TParam, TResult> CreateAsync<TParam, TResult>(FuncAsync<TParam, TResult> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a parameterized cancellable async function.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static FuncAsync<TParam, TResult> CreateAsync<TParam, TResult>(FuncAsync<TParam, TResult> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a parameterized cancellable async function.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static FuncAsync<TParam1, TParam2, TResult> CreateAsync<TParam1, TParam2, TResult>(FuncAsync<TParam1, TParam2, TResult> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a parameterized cancellable async function.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static FuncAsync<TParam1, TParam2, TResult> CreateAsync<TParam1, TParam2, TResult>(FuncAsync<TParam1, TParam2, TResult> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a parameterized cancellable async function.
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static FuncAsync<TParam1, TParam2, TParam3, TResult> CreateAsync<TParam1, TParam2, TParam3, TResult>(FuncAsync<TParam1, TParam2, TParam3, TResult> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a parameterized cancellable async function.
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static FuncAsync<TParam1, TParam2, TParam3, TResult> CreateAsync<TParam1, TParam2, TParam3, TResult>(FuncAsync<TParam1, TParam2, TParam3, TResult> function)
+		{
+			return function;
+		}
 
 
-        /// <summary>
-        /// Creates a parameterless cancellable async function.
-        /// </summary>
-        /// <typeparam name="TResult">The return value</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A func of the source</returns>
-        [Legacy("NV0115")]
-        public static Func<CancellationToken, Task<TResult>> Create<TResult>(Func<CancellationToken, Task<TResult>> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a parameterless cancellable async function.
+		/// </summary>
+		/// <typeparam name="TResult">The return value</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A func of the source</returns>
+		[Legacy("NV0115")]
+		public static Func<CancellationToken, Task<TResult>> Create<TResult>(Func<CancellationToken, Task<TResult>> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a parameterized cancellable async function.
-        /// </summary>
-        /// <typeparam name="TResult">The return value</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A func of the source</returns>
-        [Legacy("NV0115")]
-        public static Func<CancellationToken, TParam, Task<TResult>> Create<TParam, TResult>(Func<CancellationToken, TParam, Task<TResult>> function)
-        {
-            return function;
-        }
+		/// <summary>
+		/// Creates a parameterized cancellable async function.
+		/// </summary>
+		/// <typeparam name="TResult">The return value</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A func of the source</returns>
+		[Legacy("NV0115")]
+		public static Func<CancellationToken, TParam, Task<TResult>> Create<TParam, TResult>(Func<CancellationToken, TParam, Task<TResult>> function)
+		{
+			return function;
+		}
 
-        /// <summary>
-        /// Creates a parameterless memoized function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static Func<TResult> CreateMemoized<TResult>(Func<TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterless memoized function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static Func<TResult> CreateMemoized<TResult>(Func<TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterized memoized function.
-        /// </summary>
-        /// <typeparam name="TParam">The parameter</typeparam>
-        /// <typeparam name="TResult">The return value</typeparam>
-        /// <param name="function">The function to memoize</param>
-        /// <returns>The memoized function</returns>
-        public static Func<TParam, TResult> CreateMemoized<TParam, TResult>(Func<TParam, TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterless thread-safe memoized function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static Func<TResult> CreateLockedMemoized<TResult>(Func<TResult> function)
+		{
+			return function.AsLockedMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterized memoized function.
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter</typeparam>
-        /// <typeparam name="TParam2">The second parameter</typeparam>
-        /// <typeparam name="TResult">The return value</typeparam>
-        /// <param name="function">The function to memoize</param>
-        /// <returns>The memoized function</returns>
-        public static Func<TParam1, TParam2, TResult> CreateMemoized<TParam1, TParam2, TResult>(Func<TParam1, TParam2, TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterized memoized function.
+		/// </summary>
+		/// <typeparam name="TParam">The parameter</typeparam>
+		/// <typeparam name="TResult">The return value</typeparam>
+		/// <param name="function">The function to memoize</param>
+		/// <returns>The memoized function</returns>
+		public static Func<TParam, TResult> CreateMemoized<TParam, TResult>(Func<TParam, TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterized memoized function.
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter</typeparam>
-        /// <typeparam name="TParam2">The second parameter</typeparam>
-        /// <typeparam name="TParam3">The third parameter</typeparam>
-        /// <typeparam name="TResult">The return value</typeparam>
-        /// <param name="function">The function to memoize</param>
-        /// <returns>The memoized function</returns>
-        public static Func<TParam1, TParam2, TParam3, TResult> CreateMemoized<TParam1, TParam2, TParam3, TResult>(Func<TParam1, TParam2, TParam3, TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterized memoized function.
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter</typeparam>
+		/// <typeparam name="TParam2">The second parameter</typeparam>
+		/// <typeparam name="TResult">The return value</typeparam>
+		/// <param name="function">The function to memoize</param>
+		/// <returns>The memoized function</returns>
+		public static Func<TParam1, TParam2, TResult> CreateMemoized<TParam1, TParam2, TResult>(Func<TParam1, TParam2, TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterized memoized function.
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter</typeparam>
-        /// <typeparam name="TParam2">The second parameter</typeparam>
-        /// <typeparam name="TParam3">The third parameter</typeparam>
-        /// <typeparam name="TParam4">The fourth parameter</typeparam>
-        /// <typeparam name="TResult">The return value</typeparam>
-        /// <param name="function">The function to memoize</param>
-        /// <returns>The memoized function</returns>
-        public static Func<TParam1, TParam2, TParam3, TParam4, TResult> CreateMemoized<TParam1, TParam2, TParam3, TParam4, TResult>(Func<TParam1, TParam2, TParam3, TParam4, TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterized memoized function.
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter</typeparam>
+		/// <typeparam name="TParam2">The second parameter</typeparam>
+		/// <typeparam name="TParam3">The third parameter</typeparam>
+		/// <typeparam name="TResult">The return value</typeparam>
+		/// <param name="function">The function to memoize</param>
+		/// <returns>The memoized function</returns>
+		public static Func<TParam1, TParam2, TParam3, TResult> CreateMemoized<TParam1, TParam2, TParam3, TResult>(Func<TParam1, TParam2, TParam3, TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterized memoized function.
-        /// </summary>
-        /// <typeparam name="TParam1">The first parameter</typeparam>
-        /// <typeparam name="TParam2">The second parameter</typeparam>
-        /// <typeparam name="TParam3">The third parameter</typeparam>
-        /// <typeparam name="TParam4">The fourth parameter</typeparam>
-        /// <typeparam name="TParam5">The fifth parameter</typeparam>
-        /// <typeparam name="TResult">The return value</typeparam>
-        /// <param name="function">The function to memoize</param>
-        /// <returns>The memoized function</returns>
-        public static Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> CreateMemoized<TParam1, TParam2, TParam3, TParam4, TParam5, TResult>(Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterized memoized function.
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter</typeparam>
+		/// <typeparam name="TParam2">The second parameter</typeparam>
+		/// <typeparam name="TParam3">The third parameter</typeparam>
+		/// <typeparam name="TParam4">The fourth parameter</typeparam>
+		/// <typeparam name="TResult">The return value</typeparam>
+		/// <param name="function">The function to memoize</param>
+		/// <returns>The memoized function</returns>
+		public static Func<TParam1, TParam2, TParam3, TParam4, TResult> CreateMemoized<TParam1, TParam2, TParam3, TParam4, TResult>(Func<TParam1, TParam2, TParam3, TParam4, TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static FuncAsync<TResult> CreateAsyncMemoized<TResult>(FuncAsync<TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterized memoized function.
+		/// </summary>
+		/// <typeparam name="TParam1">The first parameter</typeparam>
+		/// <typeparam name="TParam2">The second parameter</typeparam>
+		/// <typeparam name="TParam3">The third parameter</typeparam>
+		/// <typeparam name="TParam4">The fourth parameter</typeparam>
+		/// <typeparam name="TParam5">The fifth parameter</typeparam>
+		/// <typeparam name="TResult">The return value</typeparam>
+		/// <param name="function">The function to memoize</param>
+		/// <returns>The memoized function</returns>
+		public static Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> CreateMemoized<TParam1, TParam2, TParam3, TParam4, TParam5, TResult>(Func<TParam1, TParam2, TParam3, TParam4, TParam5, TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        public static FuncAsync<TParam, TResult> CreateAsyncMemoized<TParam, TResult>(FuncAsync<TParam, TResult> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static FuncAsync<TResult> CreateAsyncMemoized<TResult>(FuncAsync<TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        [Legacy("NV0115")]
-        public static Func<CancellationToken, Task<TResult>> CreateMemoized<TResult>(Func<CancellationToken, Task<TResult>> function)
-        {
-            return function.AsMemoized();
-        }
+		/// <summary>
+		/// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		public static FuncAsync<TParam, TResult> CreateAsyncMemoized<TParam, TResult>(FuncAsync<TParam, TResult> function)
+		{
+			return function.AsMemoized();
+		}
 
-        /// <summary>
-        /// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
-        /// </summary>
-        /// <typeparam name="TResult">The returned type</typeparam>
-        /// <param name="function">The source function</param>
-        /// <returns>A function</returns>
-        [Legacy("NV0115")]
-        public static Func<CancellationToken, TParam, Task<TResult>> CreateMemoized<TParam, TResult>(Func<CancellationToken, TParam, Task<TResult>> function)
-        {
-            return function.AsMemoized();
-        }
-    }
+		/// <summary>
+		/// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		[Legacy("NV0115")]
+		public static Func<CancellationToken, Task<TResult>> CreateMemoized<TResult>(Func<CancellationToken, Task<TResult>> function)
+		{
+			return function.AsMemoized();
+		}
 
-    public static class Funcs<T>
-    {
-        public static readonly Func<T, object> CastFrom = Funcs<T, object>.Cast;
-        public static readonly Func<object, T> CastTo = Funcs<object, T>.Cast;
-        public static readonly Func<T> CreateInstance = Funcs<T, T>.CreateInstance;
-        public static readonly Func<T> Default = () => default(T);
+		/// <summary>
+		/// Creates a parameterless memoized task providing function. <seealso cref="Uno.Extensions.FuncMemoizeExtensions"/>
+		/// </summary>
+		/// <typeparam name="TResult">The returned type</typeparam>
+		/// <param name="function">The source function</param>
+		/// <returns>A function</returns>
+		[Legacy("NV0115")]
+		public static Func<CancellationToken, TParam, Task<TResult>> CreateMemoized<TParam, TResult>(Func<CancellationToken, TParam, Task<TResult>> function)
+		{
+			return function.AsMemoized();
+		}
+	}
 
-        public static Func<T, bool> IsDefault
-        {
-            get { return item => item.Extensions().IsDefault(); }
-        }
+	public static class Funcs<T>
+	{
+		public static readonly Func<T, object> CastFrom = Funcs<T, object>.Cast;
+		public static readonly Func<object, T> CastTo = Funcs<object, T>.Cast;
+		public static readonly Func<T> CreateInstance = Funcs<T, T>.CreateInstance;
+		public static readonly Func<T> Default = () => default(T);
 
-        public static Func<T, bool> IsNotDefault
-        {
-            get { return IsDefault.Not(); }
-        }
-    }
+		public static Func<T, bool> IsDefault
+		{
+			get { return item => item.Extensions().IsDefault(); }
+		}
 
-    public static class Funcs<TParam, TResult>
-    {
-        public static readonly Func<TParam, TResult> Cast = item => (TResult)(object)item;
+		public static Func<T, bool> IsNotDefault
+		{
+			get { return IsDefault.Not(); }
+		}
+	}
 
-        public static readonly Func<TParam, TResult> Convert = item => item.Conversion().To<TResult>();
+	public static class Funcs<TParam, TResult>
+	{
+		public static readonly Func<TParam, TResult> Cast = item => (TResult)(object)item;
 
-        public static readonly Func<TParam> CreateInstance = () => typeof(TResult).New<TParam>();
-    }
+		public static readonly Func<TParam, TResult> Convert = item => item.Conversion().To<TResult>();
 
-    public static class NullableFuncs<T>
-        where T : struct
-    {
-        public static readonly Func<T?, T> FromNullable = item => item.GetValueOrDefault();
-        public static readonly Func<T, T?> ToNullable = item => item;
-    }
+		public static readonly Func<TParam> CreateInstance = () => typeof(TResult).New<TParam>();
+	}
+
+	public static class NullableFuncs<T>
+		where T : struct
+	{
+		public static readonly Func<T?, T> FromNullable = item => item.GetValueOrDefault();
+		public static readonly Func<T, T?> ToNullable = item => item;
+	}
 }
