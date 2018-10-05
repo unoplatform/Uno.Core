@@ -315,15 +315,27 @@ namespace Uno.Tests.Extensions
 		[TestMethod]
 		public void CustomStringFormatsWithMultipleValues()
 		{
-			Assert.AreEqual(
-				StringExtensions.Format("For {0} and {1}?", 42, 3.1416),
-				"For 42 and 3.1416?");
-			Assert.AreEqual(
-				StringExtensions.Format("For {0:#.##;(#.##);ZERO} and {1:#.##;(#.##);ZERO}?", 42, 3.1416),
-				"For 42 and 3.14?");
-			Assert.AreEqual(
-				StringExtensions.Format("For {0:#.##;(#.##);ZERO;ONE}, {1:#.##;(#.##);ZERO;ONE} and {2:#.##;(#.##);ZERO;ONE}?", 42, 3.1416, 1.004),
-				"For 42, 3.14 and ONE?");
+			var previous = CultureInfo.CurrentUICulture;
+			try
+			{
+				CultureInfo.CurrentUICulture = new CultureInfo("en-US", false);
+
+				Assert.AreEqual(
+					StringExtensions.Format("For {0} and {1}?", 42, 3.1416),
+					"For 42 and 3.1416?");
+				Assert.AreEqual(
+					StringExtensions.Format("For {0:#.##;(#.##);ZERO} and {1:#.##;(#.##);ZERO}?", 42, 3.1416),
+					"For 42 and 3.14?");
+				Assert.AreEqual(
+					StringExtensions.Format(
+						"For {0:#.##;(#.##);ZERO;ONE}, {1:#.##;(#.##);ZERO;ONE} and {2:#.##;(#.##);ZERO;ONE}?", 42,
+						3.1416, 1.004),
+					"For 42, 3.14 and ONE?");
+			}
+			finally
+			{
+				CultureInfo.CurrentUICulture = previous;
+			}
 		}
 	}
 }
