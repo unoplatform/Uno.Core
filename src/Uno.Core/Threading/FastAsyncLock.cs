@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 namespace Uno.Threading
 {
 	/// <summary>
-	/// An re-entrant asynchronous lock, that can be used in conjuction with C# async/await
+	/// An re-entrant asynchronous lock, that can be used in conjunction with C# async/await
 	/// </summary>
 	public sealed class FastAsyncLock
 	{
@@ -159,7 +159,7 @@ namespace Uno.Threading
 
 			private void Dequeued()
 			{
-				// Dequeing may occures more than once. So move to next step only if item is really waiting!
+				// Dequeing may occured more than once. So move to next step only if item is really waiting!
 				switch (Interlocked.CompareExchange(ref _state, State.Entered, State.Waiting))
 				{
 					case State.Waiting:
@@ -201,7 +201,7 @@ namespace Uno.Threading
 				// As we are running asynchronous, it may occures that the inner task completes from another execution context (e.g. an event).
 				// So unlike the synchronous lock which must be exited from the same execution context / thread (otherwise we receive an SynchronizationLockException),
 				// here we cannot enforce the 'Exit' to be invoked only from the entering execution context (ie. check that '_owner._localMonitor.Value == this')
-				// Consequently, we have to handle concurrency with ReEntrency (Enter{Sync|Async} are not impacted since for those the caller did not received an 'Handle' yet)
+				// Consequently, we have to handle concurrency with Reentrency (Enter{Sync|Async} are not impacted since for those the caller did not received an 'Handle' yet)
 
 				if (Interlocked.Decrement(ref _count) == 0)
 				{
@@ -217,7 +217,7 @@ namespace Uno.Threading
 		}
 
 		/// <summary>
-		/// An handle on an async lock which makes sure that disposing it mutiple times won't exit the monitor multiple times
+		/// An handle on an async lock which makes sure that disposing it multiple times won't exit the monitor multiple times
 		/// </summary>
 		private class Handle : IDisposable
 		{
