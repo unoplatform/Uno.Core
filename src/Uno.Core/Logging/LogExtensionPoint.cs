@@ -67,13 +67,20 @@ namespace Uno.Extensions
 
 					throw new InvalidOperationException($"The service {service?.GetType()} is not of type ILoggerFactory.");
 				}
-				catch (Exception e) when (e is NullReferenceException || e is InvalidOperationException)
+				catch (Exception e)
 				{
+					if (e is NullReferenceException || e is InvalidOperationException)
+					{
 #if HAS_CONSOLE
-					Console.WriteLine("***** WARNING *****");
-					Console.WriteLine("Unable to get the service locator ({0}), using the default logger to System.Diagnostics.Debug", e.Message);
+						Console.WriteLine("***** WARNING *****");
+						Console.WriteLine("Unable to get the service locator ({0}), using the default logger to System.Diagnostics.Debug", e.Message);
 #endif
-					return new LoggerFactory();
+						return new LoggerFactory();
+					}
+					else
+					{
+						throw;
+					}
 				}
 			}
 			else
