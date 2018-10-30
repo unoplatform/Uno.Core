@@ -11,3 +11,7 @@ and increasing the predictability of the api. It consists of a set of helpers, e
 
 ## Documentation
 _Coming soon._
+
+# Have questions? Feature requests? Issues?
+
+Make sure to visit our [StackOverflow](https://stackoverflow.com/questions/tagged/uno-platform), [create an issue](https://github.com/nventive/Uno.SourceGeneration/issues) or [visit our gitter](https://gitter.im/uno-platform/Lobby).
