@@ -136,7 +136,7 @@ namespace Uno.Equality
 		/// .ctor
 		/// </summary>
 		/// <param name="valueSelector">Selector to get the value used for comparison of objects.</param>
-		public FuncEqualityComparer(Func<T, TValue> valueSelector, IEqualityComparer<TValue> valueEqualityComparer = null)
+		public FuncEqualityComparer(Func<T, TValue> valueSelector, IEqualityComparer<TValue>? valueEqualityComparer = null)
 		{
 			_valueSelector = valueSelector;
 			_valueEqualityComparer = valueEqualityComparer ?? EqualityComparer<TValue>.Default;

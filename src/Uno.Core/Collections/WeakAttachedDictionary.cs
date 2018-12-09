@@ -64,27 +64,27 @@ namespace Uno.Collections
 		/// <param name="key">The key to get</param>
 		/// <param name="defaultSelector">The selector called when the value does not exist for the specified owner. Otherwise, default(TValue) is used.</param>
 		/// <returns>The value</returns>
-		public TValue GetValue<TValue>(TOwner owner, TKey key, Func<TValue> defaultSelector = null)
+		public TValue GetValue<TValue>(TOwner owner, TKey key, Func<TValue>? defaultSelector = null) where TValue : object
 		{
 			defaultSelector = defaultSelector ?? Funcs<TValue>.Default;
 
 			var values = _instances.GetValue(owner, CreateDictionary);
 
-			return (TValue)values.GetOrAdd(key, k => defaultSelector());
+			return (TValue)values.GetOrAdd(key, k => defaultSelector!());
 		}
 
-		/// <summary>
-		/// Gets the value associated with the specified key, for the specified owner instance.
-		/// </summary>
-		/// <param name="owner">The owner instance for the specified key</param>
-		/// <param name="key">The key to get</param>
-		/// <param name="defaultSelector">The selector called when the value does not exist for the specified owner. Otherwise, default(TValue) is used.</param>
-		/// <returns>The value</returns>
-		public TValue GetValue<TValue>(TOwner owner, TKey key, Func<TKey, TValue> defaultSelector)
-		{
+        /// <summary>
+        /// Gets the value associated with the specified key, for the specified owner instance.
+        /// </summary>
+        /// <param name="owner">The owner instance for the specified key</param>
+        /// <param name="key">The key to get</param>
+        /// <param name="defaultSelector">The selector called when the value does not exist for the specified owner. Otherwise, default(TValue) is used.</param>
+        /// <returns>The value</returns>
+        public TValue GetValue<TValue>(TOwner owner, TKey key, Func<TKey, TValue> defaultSelector) where TValue : object
+        {
 			var values = _instances.GetValue(owner, CreateDictionary);
 
-			return (TValue)values.GetOrAdd(key, k => defaultSelector(k) as object);
+			return (TValue)values.GetOrAdd(key, k => defaultSelector(k));
 		}
 
 		/// <summary>
@@ -94,8 +94,8 @@ namespace Uno.Collections
 		/// <param name="owner"></param>
 		/// <param name="key"></param>
 		/// <param name="value"></param>
-		public void SetValue<TValue>(TOwner owner, TKey key, TValue value)
-		{
+		public void SetValue<TValue>(TOwner owner, TKey key, TValue value) where TValue : object
+        {
 			var values = _instances.GetValue(owner, CreateDictionary);
 
 			values[key] = value;

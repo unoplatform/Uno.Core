@@ -26,7 +26,7 @@ namespace Uno.Collections
         {
         }
 
-        public ListDecorator(IList<T> target)
+        public ListDecorator(IList<T>? target)
             : base(target)
         {
         }

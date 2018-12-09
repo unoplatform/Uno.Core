@@ -30,7 +30,7 @@ namespace Uno.Logging
         /// <param name="log"></param>
         /// <param name="messageSelector"></param>
         /// <param name="error"></param>
-        public static void DebugIfEnabled(this ILogger log, Func<string> messageSelector, Exception error = null)
+        public static void DebugIfEnabled(this ILogger log, Func<string> messageSelector, Exception? error = null)
         {
             if (log.IsEnabled(LogLevel.Debug))
             {
@@ -45,7 +45,7 @@ namespace Uno.Logging
         /// <param name="log"></param>
         /// <param name="messageSelector"></param>
         /// <param name="error"></param>
-        public static void InfoIfEnabled(this ILogger log, Func<string> messageSelector, Exception error = null)
+        public static void InfoIfEnabled(this ILogger log, Func<string> messageSelector, Exception? error = null)
         {
             if (log.IsEnabled(LogLevel.Information))
             {
@@ -60,7 +60,7 @@ namespace Uno.Logging
         /// <param name="log"></param>
         /// <param name="messageSelector"></param>
         /// <param name="error"></param>
-        public static void WarnIfEnabled(this ILogger log, Func<string> messageSelector, Exception error = null)
+        public static void WarnIfEnabled(this ILogger log, Func<string> messageSelector, Exception? error = null)
         {
             if (log.IsEnabled(LogLevel.Warning))
             {
@@ -75,7 +75,7 @@ namespace Uno.Logging
         /// <param name="log"></param>
         /// <param name="messageSelector"></param>
         /// <param name="error"></param>
-        public static void ErrorIfEnabled(this ILogger log, Func<string> messageSelector, Exception error = null)
+        public static void ErrorIfEnabled(this ILogger log, Func<string> messageSelector, Exception? error = null)
         {
             if (log.IsEnabled(LogLevel.Error))
             {
@@ -90,7 +90,7 @@ namespace Uno.Logging
         /// <param name="log"></param>
         /// <param name="messageSelector"></param>
         /// <param name="error"></param>
-        public static void CriticalIfEnabled(this ILogger log, Func<string> messageSelector, Exception error = null)
+        public static void CriticalIfEnabled(this ILogger log, Func<string> messageSelector, Exception? error = null)
         {
             if (log.IsEnabled(LogLevel.Critical))
             {

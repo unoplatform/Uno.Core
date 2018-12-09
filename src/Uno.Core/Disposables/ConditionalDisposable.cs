@@ -30,7 +30,7 @@ namespace Uno.Disposables
 
 		private readonly Action _action;
 		private bool _disposed;
-		private readonly WeakReference _conditionSource;
+		private readonly WeakReference? _conditionSource;
 
 #if DEBUG
 		private readonly WeakReference _target;
@@ -43,7 +43,7 @@ namespace Uno.Disposables
 		/// <param name="action">The action to be executed when target has been collected</param>
 		/// <param name="conditionSource">An optional secondary reference, used to avoid calling action if it has been collected</param>
 		/// <param name="target">The instance to use to keep the disposable alive</param>
-		public ConditionalDisposable(object target, Action action, WeakReference conditionSource = null)
+		public ConditionalDisposable(object target, Action action, WeakReference? conditionSource = null)
 		{
 			_action = action;
 			_conditionSource = conditionSource;

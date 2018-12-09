@@ -32,7 +32,7 @@ namespace Uno.Conversion
     /// </remarks>
     public sealed class EnumConversionStrategy : IConversionStrategy
     {
-        private static Func<Type, string, CultureInfo, string> _findValue;
+        private static Func<Type, string, CultureInfo?, string?> _findValue;
 
         static EnumConversionStrategy()
         {
@@ -42,7 +42,7 @@ namespace Uno.Conversion
 
         #region IConversionStrategy Members
 
-        public bool CanConvert(object value, Type toType, CultureInfo culture = null)
+        public bool CanConvert(object? value, Type toType, CultureInfo? culture = null)
         {
 #if HAS_CRIPPLEDREFLECTION
 			if (toType.GetTypeInfo().IsEnum)
@@ -51,7 +51,7 @@ namespace Uno.Conversion
 #endif
             {
                 // NOTE: To be tested
-                var text = _findValue(toType, value as string ?? value.ToString(), culture);
+                var text = _findValue(toType, value as string ?? value?.ToString() ?? "", culture);
 
                 return text != null;
             }
@@ -66,7 +66,7 @@ namespace Uno.Conversion
                    toType == typeof(string);
         }
 
-        public object Convert(object value, Type toType, CultureInfo culture = null)
+        public object? Convert(object? value, Type toType, CultureInfo? culture = null)
         {
 #if HAS_CRIPPLEDREFLECTION
 			if (toType.GetTypeInfo().IsEnum)
@@ -75,7 +75,7 @@ namespace Uno.Conversion
 #endif
             {
                 // NOTE: To be tested
-                var text = _findValue(toType, value as string ?? value.ToString(), culture);
+                var text = _findValue(toType, value as string ?? value?.ToString() ?? "", culture);
 
                 return Enum.Parse(toType, text, true);
             }
@@ -86,7 +86,7 @@ namespace Uno.Conversion
 #else
             else
             {
-                var text = value.ToString();
+                var text = value?.ToString();
 
                 var attribute = value.Reflection().GetDescriptor(text).FindAttribute<DescriptionAttribute>();
 
@@ -97,10 +97,10 @@ namespace Uno.Conversion
 
         #endregion
 
-        private static string SourceFindValue(Type enumType, string text, CultureInfo culture)
+        private static string? SourceFindValue(Type enumType, string text, CultureInfo? culture)
         {
             text = text.Trim();
-            FieldInfo unkownFieldInfo = null;
+            FieldInfo? unkownFieldInfo = null;
 
 #if !HAS_TYPEINFO && !HAS_CRIPPLEDREFLECTION && !WINDOWS_UWP
             var comparisonType =
@@ -153,7 +153,7 @@ namespace Uno.Conversion
 				}
 			}
 
-            return unkownFieldInfo == null ? null : unkownFieldInfo.Name;
+            return unkownFieldInfo?.Name;
         }
     }
 }

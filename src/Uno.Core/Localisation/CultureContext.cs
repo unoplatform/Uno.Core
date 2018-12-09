@@ -26,7 +26,7 @@ namespace Uno.Localisation
 		private readonly CultureInfo _previousUICulture;
 		private readonly CultureInfo _previousCulture;
 
-		public CultureContext(CultureInfo uiCulture, CultureInfo culture = null)
+		public CultureContext(CultureInfo uiCulture, CultureInfo? culture = null)
 		{
 			_previousUICulture = CultureInfo.CurrentUICulture;
 			_previousCulture = CultureInfo.CurrentCulture;
@@ -39,7 +39,7 @@ namespace Uno.Localisation
 			SetCurrentCulture(_previousUICulture, _previousCulture);
 		}
 
-		public static void SetCurrentCulture(CultureInfo uiCulture, CultureInfo culture = null)
+		public static void SetCurrentCulture(CultureInfo uiCulture, CultureInfo? culture = null)
 		{
 			if(uiCulture == null)
 			{

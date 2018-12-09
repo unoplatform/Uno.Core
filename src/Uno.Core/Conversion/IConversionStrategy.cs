@@ -25,12 +25,12 @@ namespace Uno.Conversion
 		/// If the strategy can support a specific value as input
 		/// </summary>
 		/// <returns>true=supported</returns>
-		bool CanConvert(object value, Type toType, CultureInfo culture = null);
+		bool CanConvert(object? value, Type toType, CultureInfo? culture = null);
 		
 		/// <summary>
 		/// Issue the conversion result
 		/// </summary>
 		/// <returns>result</returns>
-		object Convert(object value, Type toType, CultureInfo culture = null);
+		object? Convert(object? value, Type toType, CultureInfo? culture = null);
 	}
 }

@@ -50,7 +50,7 @@ namespace Uno.Extensions
             throw new NotSupportedException();
         }
 
-		public static T IsTrue<T>(this ValidationExtensionPoint<T> extensionPoint, Func<T, bool> validation, string paramName, string message = null) where T : class
+		public static T IsTrue<T>(this ValidationExtensionPoint<T> extensionPoint, Func<T, bool> validation, string paramName, string? message = null) where T : class
 		{
 			if(!validation(extensionPoint.ExtendedValue))
 			{
@@ -60,7 +60,7 @@ namespace Uno.Extensions
 			return extensionPoint.ExtendedValue;
 		}
 
-		public static T IsFalse<T>(this ValidationExtensionPoint<T> extensionPoint, Func<T, bool> validation, string paramName, string message = null) where T : class
+		public static T IsFalse<T>(this ValidationExtensionPoint<T> extensionPoint, Func<T, bool> validation, string paramName, string? message = null) where T : class
 		{
 			if (validation(extensionPoint.ExtendedValue))
 			{

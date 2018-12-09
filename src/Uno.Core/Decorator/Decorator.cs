@@ -28,7 +28,7 @@ namespace Uno.Decorator
         /// Constructs a new Decorator for a default(T) target.
         /// </summary>
         public Decorator()
-            : this(default(T))
+            : this(default)
         {
         }
 

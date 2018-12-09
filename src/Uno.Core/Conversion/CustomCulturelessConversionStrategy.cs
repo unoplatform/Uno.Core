@@ -30,12 +30,12 @@ namespace Uno.Conversion
 			_conversion = conversion;
 		}
 
-		public bool CanConvert(object value, Type toType, CultureInfo culture = null)
+		public bool CanConvert(object? value, Type toType, CultureInfo? culture = null)
 		{
 			return value is TFrom && typeof(TTo).IsAssignableFrom(toType);
 		}
 
-		public object Convert(object value, Type toType, CultureInfo culture = null)
+		public object? Convert(object? value, Type toType, CultureInfo? culture = null)
 		{
 			return _conversion((TFrom)value);
 		}

@@ -42,7 +42,7 @@ namespace Uno.Conversion
 		/// Check if it's possible to do a conversion
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		bool CanConvert(ConversionExtensionPoint extensionPoint, object value, Type toType, CultureInfo culture = null);
+		bool CanConvert(ConversionExtensionPoint extensionPoint, object value, Type toType, CultureInfo? culture = null);
 
 		/// <summary>
 		/// Initiate the conversion
@@ -52,7 +52,7 @@ namespace Uno.Conversion
 		/// </remarks>
 		/// <returns>Conversion result</returns>
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		object To(ConversionExtensionPoint extensionPoint, Type toType, CultureInfo culture = null);
+		object? To(ConversionExtensionPoint extensionPoint, Type toType, CultureInfo? culture = null);
 	}
 
 	public static class ConversionExtensionsExtensions
@@ -99,7 +99,7 @@ namespace Uno.Conversion
 		/// Convert source to a specified generic type
 		/// </summary>
 		/// <returns>Conversion result</returns>
-		public static T To<T>(this IConversionExtensions conversionExtensions, ConversionExtensionPoint extensionPoint, CultureInfo culture = null)
+		public static T To<T>(this IConversionExtensions conversionExtensions, ConversionExtensionPoint extensionPoint, CultureInfo? culture = null)
 		{
 			return (T)conversionExtensions.To(extensionPoint, typeof(T), culture);
 		}

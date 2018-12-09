@@ -57,14 +57,14 @@ namespace Uno
 		/// <summary>
 		/// Gets a bool which indicates if this otion is <see cref="Some{T}"/> or not and send back the value.
 		/// </summary>
-		public bool MatchSome(out object value)
+		public bool MatchSome(out object? value)
 		{
 			value = Type == OptionType.Some ? GetValue() : default(object);
 
 			return Type == OptionType.Some;
 		}
 
-		protected abstract object GetValue();
+		protected abstract object? GetValue();
 	}
 
 	/// <summary>
@@ -86,7 +86,7 @@ namespace Uno
 		/// </summary>
 		public bool MatchSome(out T value)
 		{
-			value = Type == OptionType.Some ? (T)GetValue() : default(T);
+			value = Type == OptionType.Some ? (T)GetValue() : default!;
 
 			return Type == OptionType.Some;
 		}
@@ -102,7 +102,7 @@ namespace Uno
 		{
 			if (o == null || o.MatchNone())
 			{
-				return default(T);
+				return default!;
 			}
 			return ((Some<T>)o).Value;
 		}

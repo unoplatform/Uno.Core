@@ -274,7 +274,13 @@ namespace Uno.Extensions
 		{
 			T result = items.SingleOrDefault();
 
-			return result.Extensions().IsDefault() ? default(TResult) : selector(result);
+            var r = Enumerable.Empty<string>().MinOrDefault();
+            r.ToString();
+
+            var r2 = Enumerable.Empty<int>().MinOrDefault();
+            r2.ToString();
+
+            return result.Extensions().IsDefault() ? default(TResult)! : selector(result);
 		}
 
 		public static T MinOrDefault<T>(this IEnumerable<T> items)
@@ -285,7 +291,7 @@ namespace Uno.Extensions
 			}
 			else
 			{
-				return default(T);
+				return default(T)!;
 			}
 		}
 
@@ -297,7 +303,7 @@ namespace Uno.Extensions
 			}
 			else
 			{
-				return default(T);
+				return default(T)!;
 			}
 		}
 
@@ -443,7 +449,7 @@ namespace Uno.Extensions
 		/// <remarks>
 		/// The copy is done synchronously, before this method returns.
 		/// </remarks>
-		public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerableList)
+		public static ObservableCollection<T>? ToObservableCollection<T>(this IEnumerable<T> enumerableList)
 		{
 			if (enumerableList != null)
 			{
@@ -546,7 +552,8 @@ namespace Uno.Extensions
 			}
 		}
 
-		/// <summary>
+#nullable disable
+        /// <summary>
 		/// Check if all items of an enumerable are equals, using an optional comparer
 		/// </summary>
 		public static bool AllEquals<T>(this IEnumerable<T> items, IEqualityComparer<T> comparer = null)
@@ -570,6 +577,7 @@ namespace Uno.Extensions
 			}
 			return true;
 		}
+#nullable enable
 
 		/// <summary>
 		/// Determines whether all elements of a sequence are true.
@@ -690,7 +698,7 @@ namespace Uno.Extensions
 		/// <typeparam name="T"></typeparam>
 		/// <param name="source"></param>
 		/// <returns></returns>
-		public static long ConsecutiveValueCount<T>(this IEnumerable<T> source)
+		public static long ConsecutiveValueCount<T>(this IEnumerable<T> source) where T:object
 		{
 			var enumerator = source.GetEnumerator();
 			long count = 0;
@@ -876,7 +884,7 @@ namespace Uno.Extensions
 			Func<T1, T2, TResult> projection,
 			T1 defaultLeft = default(T1),
 			T2 defaultRight = default(T2),
-			IEqualityComparer<TKey> keyComparer = null)
+			IEqualityComparer<TKey>? keyComparer = null)
 		{
 			keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
 
@@ -938,9 +946,11 @@ namespace Uno.Extensions
 		public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
 		{
 			if (source == null)
-				throw new ArgumentNullException(nameof(source));
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
 
-			return
+            return
 				count <= 0
 					? source :
 				(count == 1

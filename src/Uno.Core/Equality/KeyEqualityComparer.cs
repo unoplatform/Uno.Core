@@ -39,7 +39,7 @@ namespace Uno.Equality
 		/// </summary>
 		public static IEqualityComparer Default { get; } = new KeyEqualityComparer();
 
-		public KeyEqualityComparer(IEqualityComparer fallbackComparer = null)
+		public KeyEqualityComparer(IEqualityComparer? fallbackComparer = null)
 		{
 			_fallbackComparer = fallbackComparer ?? EqualityComparer<object>.Default;
 		}
@@ -80,7 +80,7 @@ namespace Uno.Equality
 			return GetKeyEquatable(obj)?.GetKeyHashCode() ?? 0;
 		}
 
-		private IKeyEquatable GetKeyEquatable(object o)
+		private IKeyEquatable? GetKeyEquatable(object o)
 		{
 			if (o is IKeyEquatable ike)
 			{
@@ -98,7 +98,7 @@ namespace Uno.Equality
 	/// </summary>
 	/// <typeparam name="T">Type of the object to compare</typeparam>
 	public class KeyEqualityComparer<T> : IEqualityComparer<T>, IEqualityComparer
-		where T : IKeyEquatable<T>
+		where T : object, IKeyEquatable<T>
 	{
 		/// <summary>
 		/// Gets the default instance of the <see cref="KeyEqualityComparer{T}"/>.
@@ -106,9 +106,9 @@ namespace Uno.Equality
 		public static IEqualityComparer<T> Default { get; } = new KeyEqualityComparer<T>();
 
 		private readonly IEqualityComparer<T> _fallbackComparer;
-		private IEqualityComparer _innerNonGeneric;
+		private IEqualityComparer? _innerNonGeneric;
 
-		public KeyEqualityComparer(IEqualityComparer<T> fallbackComparer = null)
+		public KeyEqualityComparer(IEqualityComparer<T>? fallbackComparer = null)
 		{
 			_fallbackComparer = fallbackComparer ?? EqualityComparer<T>.Default;
 		}

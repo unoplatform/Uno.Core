@@ -186,7 +186,7 @@ namespace Uno.Validation
 		/// <returns>
 		///   <c>true</c> if the specified input is valid currency; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsCurrency(string input, IFormatProvider currentCulture = null)
+		public static bool IsCurrency(string input, IFormatProvider? currentCulture = null)
 		{
 			currentCulture = currentCulture ?? CultureInfo.CurrentCulture;
 			double dummy;

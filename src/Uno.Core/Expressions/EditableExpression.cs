@@ -25,7 +25,7 @@ namespace Uno.Expressions
     {
         private readonly bool nodeTypeEditable;
         private readonly T originalExpression;
-        private Expression expressionOverride;
+        private Expression? expressionOverride;
         private ExpressionType nodeType;
 
         // TODO: convert to protected

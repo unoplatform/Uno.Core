@@ -43,7 +43,7 @@ namespace Uno
 		/// </summary>
 		public T Value { get; }
 
-		protected override object GetValue() => Value;
+		protected override object? GetValue() => Value;
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) => Equals(obj as Some<T>);

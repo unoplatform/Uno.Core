@@ -49,7 +49,7 @@ namespace Uno.Conversion
             _fallbackRegistrations.Add(strategy);
         }
 
-        public bool CanConvert(ConversionExtensionPoint extensionPoint, object value, Type toType, CultureInfo culture = null)
+        public bool CanConvert(ConversionExtensionPoint extensionPoint, object value, Type toType, CultureInfo? culture = null)
         {
             return GetConversionStrategy(value, toType, culture) != null;
         }
@@ -59,7 +59,7 @@ namespace Uno.Conversion
             return new ConversionExtensionPoint(value);
         }
 
-        public object To(ConversionExtensionPoint extensionPoint, Type toType, CultureInfo culture = null)
+        public object? To(ConversionExtensionPoint extensionPoint, Type toType, CultureInfo? culture = null)
         {
             if (extensionPoint == null || extensionPoint.ExtendedValue == null)
             {
@@ -69,7 +69,7 @@ namespace Uno.Conversion
             return To(extensionPoint.ExtendedValue, toType, culture);
         }
 
-        public object To(object value, Type toType, CultureInfo culture = null)
+        public object? To(object value, Type toType, CultureInfo? culture = null)
         {
             var strategy = GetConversionStrategy(value, toType, culture);
 
@@ -88,7 +88,7 @@ namespace Uno.Conversion
             return strategy.Convert(value, toType, culture);
         }
 
-        private IConversionStrategy GetConversionStrategy(object value, Type toType, CultureInfo culture)
+        private IConversionStrategy GetConversionStrategy(object value, Type toType, CultureInfo? culture)
         {
             return _registrations
                 .Concat(_fallbackRegistrations)

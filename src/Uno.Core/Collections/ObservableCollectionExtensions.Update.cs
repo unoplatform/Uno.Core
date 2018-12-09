@@ -38,7 +38,7 @@ namespace Uno.Extensions
 		/// <em>ONLY PASS true WHEN USING DIFFERENT INSTANCES THAT USE EQUALS TO MATCH EXISTING INSTANCES. Matching items are not compared by reference.</em></param>
 		/// <remarks>If items come from an AVVM, make sure it's not configured to automatically dispose all previous items. Otherwise, this extension
 		/// will keep items in the collection that are getting disposed by the AVVM.</remarks>
-		public static void Update<T>(this IList<T> collection, IEnumerable<T> updated, bool tryDispose = false, IEqualityComparer<T> comparer = null)
+		public static void Update<T>(this IList<T> collection, IEnumerable<T> updated, bool tryDispose = false, IEqualityComparer<T>? comparer = null) where T : object
 		{
 			collection.InternalUpdate(updated, tryDispose, comparer: comparer);
 		}
@@ -54,12 +54,29 @@ namespace Uno.Extensions
 		/// <remarks>If items come from an AVVM, make sure it's not configured to automatically dispose all previous items. Otherwise, this extension
 		/// will keep items in the collection that are getting disposed by the AVVM.</remarks>
 		/// <returns>A instance of <see cref="ObservableCollectionUpdateResults{T}"/> which details what the update has done.</returns>
-		public static ObservableCollectionUpdateResults<T> UpdateWithResults<T>(this IList<T> collection, IEnumerable<T> updated, bool tryDispose = false, IEqualityComparer<T> comparer = null)
-		{
+		public static ObservableCollectionUpdateResults<T> UpdateWithResults<T>(
+            this IList<T> collection, 
+            IEnumerable<T> updated, 
+            bool tryDispose = false, 
+            IEqualityComparer<T>? comparer = null
+        ) where T : object
+        {
 			var results = collection.InternalUpdate(updated, tryDispose, comparer: comparer);
 
 			return new ObservableCollectionUpdateResults<T>(results.added, results.moved, results.removed);
 		}
+
+        class UpdateItem<T> where T : object
+        {
+            public UpdateItem(IUpdatable<T>? updatable, T update)
+            {
+                Updatable = updatable;
+                Update = update;
+            }
+
+            public IUpdatable<T>? Updatable { get; set; }
+            public T Update { get; set; }
+        }
 
 		/// <summary>
 		/// Updates an ObservableCollection using the provided enumerable, resulting in equal sequences. For any item that was
@@ -72,12 +89,18 @@ namespace Uno.Extensions
 		/// <param name="tryDispose"></param>
 		/// <param name="comparer"></param>
 		/// <returns></returns>
-		public static Task UpdateAsync<T>(this IList<T> collection, CancellationToken ct, IEnumerable<T> updated, bool tryDispose = false, IEqualityComparer<T> comparer = null)
-		{
+		public static Task UpdateAsync<T>(
+            this IList<T> collection,
+            CancellationToken ct,
+            IEnumerable<T> updated,
+            bool tryDispose = false, 
+            IEqualityComparer<T>? comparer = null
+        ) where T : object
+        {
 			var updatables = collection
 				.InternalUpdate(updated, tryDispose, true, comparer)
 				.kept
-				.Select(info => new { Updatable = info.OldItem as IUpdatable<T>, Update = info.NewItem })
+				.Select(info => new UpdateItem<T>(updatable: info.OldItem as IUpdatable<T>, update: info.NewItem))
 				.ToArray();
 
 			// Avoid "if" inside.
@@ -117,13 +140,13 @@ namespace Uno.Extensions
 		/// We assume the caller will perform the async update, then dispose NewItem.</param>
 		/// <param name="comparer"></param>
 		/// <returns></returns>
-		private static (IEnumerable<T> added, IEnumerable<T> moved, IEnumerable<T> removed, KeptInfo<T>[] kept) InternalUpdate<T>(
+		private static (IEnumerable<T> added, IEnumerable<T> moved, IEnumerable<T> removed, KeptInfo<T>[]? kept) InternalUpdate<T>(
 			this IList<T> collection,
 			IEnumerable<T> updated,
 			bool tryDispose = false,
 			bool needKept = false,
-			IEqualityComparer<T> comparer = null
-		)
+			IEqualityComparer<T>? comparer = null
+		) where T : object
 		{
 			try
 			{
@@ -236,8 +259,8 @@ namespace Uno.Extensions
 			indexes.ForEach(i => collection.Insert(i.Index, i.Value));
 		}
 
-		private static void ManipulateItems<T>(IList<T> collection, KeptInfo<T>[] kept)
-		{
+		private static void ManipulateItems<T>(IList<T> collection, KeptInfo<T>[] kept) where T : object
+        {
 			Action<int, int, T> updater;
 
 			var observable = collection as ObservableCollection<T>;
@@ -283,33 +306,41 @@ namespace Uno.Extensions
 			}
 		}
 
-		private static KeptInfo<T>[] GetKeptItems<T>(IList<T> collection, T[] array, IEqualityComparer<T> comparer)
-		{
-			// Move existing items if required. Newly added items must have their entry, which can get
-			// affected by other moves, and will adjust just like others.
-			return array
+		private static KeptInfo<T>[] GetKeptItems<T>(IList<T> collection, T[] array, IEqualityComparer<T> comparer) where T : object
+        {
+            // Move existing items if required. Newly added items must have their entry, which can get
+            // affected by other moves, and will adjust just like others.
+            return array
 				.Select((item, index) =>
 				{
 					var oldIndex = collection.IndexOf(item, comparer);
 
-					return new KeptInfo<T>()
-					{
-						OldItem = (oldIndex == -1) ? item : collection[oldIndex],
-						OldIndex = (oldIndex == -1) ? index : oldIndex,
-						NewItem = item,
-						NewIndex = index
-					};
+					return new KeptInfo<T>(
+					
+						oldItem: (oldIndex == -1) ? item : collection[oldIndex],
+						oldIndex: (oldIndex == -1) ? index : oldIndex,
+						newItem: item,
+						newIndex: index
+					);
 				})
 				.OrderBy(info => info.NewIndex)
 				.ToArray();
 		}
 
-		private class KeptInfo<T>
-		{
-			public T OldItem { get; set; }
-			public T NewItem { get; set; }
-			public int OldIndex { get; set; }
-			public int NewIndex { get; set; }
-		}
+        private class KeptInfo<T> where T : object
+        {
+            public KeptInfo(T oldItem, T newItem, int oldIndex, int newIndex)
+            {
+                OldIndex = oldIndex;
+                NewIndex = newIndex;
+                OldItem = oldItem;
+                NewItem = newItem;
+            }
+
+            public T OldItem { get; }
+            public T NewItem { get; }
+            public int OldIndex { get; set; }
+            public int NewIndex { get; set; }
+        }
 	}
 }

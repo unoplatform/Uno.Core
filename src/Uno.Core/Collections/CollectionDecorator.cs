@@ -27,7 +27,7 @@ namespace Uno.Collections
         {
         }
 
-        public CollectionDecorator(ICollection<T> target)
+        public CollectionDecorator(ICollection<T>? target)
             : base(target)
         {
         }

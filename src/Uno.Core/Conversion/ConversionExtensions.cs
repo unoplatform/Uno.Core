@@ -32,17 +32,17 @@ namespace Uno.Extensions
 			return Extensions.Conversion(instance);
 		}
 
-		public static bool CanConvert(this ConversionExtensionPoint extensionPoint, Type toType, CultureInfo culture = null)
+		public static bool CanConvert(this ConversionExtensionPoint extensionPoint, Type toType, CultureInfo? culture = null)
 		{
 			return Extensions.CanConvert(extensionPoint, toType, toType, culture);
 		}
 
-		public static T To<T>(this ConversionExtensionPoint extensionPoint, CultureInfo culture = null)
+		public static T To<T>(this ConversionExtensionPoint extensionPoint, CultureInfo? culture = null)
 		{
 			return Extensions.To<T>(extensionPoint, culture);
 		}
 
-		public static object To(this ConversionExtensionPoint extensionPoint, Type toType, CultureInfo culture = null)
+		public static object To(this ConversionExtensionPoint extensionPoint, Type toType, CultureInfo? culture = null)
 		{
 			return Extensions.To(extensionPoint, toType, culture);
 		}

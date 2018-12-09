@@ -22,15 +22,15 @@ using System.Threading.Tasks;
 
 namespace Uno
 {
-	/// <summary>
-	/// Identifies an object that can get refreshed from another object of the same type. 	/// 
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <remarks> This is useful for items bound to the view. When a newer instance with its Equals
-	/// returning true for the old item comes in play, the old item is kept, but updated from that
-	/// new instance.</remarks>
-    public interface IUpdatable<T>
+    /// <summary>
+    /// Identifies an object that can get refreshed from another object of the same type. 	/// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <remarks> This is useful for items bound to the view. When a newer instance with its Equals
+    /// returning true for the old item comes in play, the old item is kept, but updated from that
+    /// new instance.</remarks>
+    public interface IUpdatable<T> where T : object
     {
-		Task UpdateAsync(CancellationToken ct, T newerInstance);
+        Task UpdateAsync(CancellationToken ct, T newerInstance);
     }
 }

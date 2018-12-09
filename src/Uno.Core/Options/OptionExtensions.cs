@@ -71,7 +71,7 @@ namespace Uno
 		/// </summary>
 		/// <param name="option">The source option from which the value have to be extracted</param>
 		/// <returns>The value of the option or default(object) if none.</returns>
-		public static object SomeOrDefault(this Option option, object defaultValue = null)
+		public static object? SomeOrDefault(this Option option, object? defaultValue = null)
 			=> option.MatchSome(out var value)
 				? value
 				: defaultValue;

@@ -27,13 +27,13 @@ namespace Uno.Equality
 	/// </summary>
 	public class CollectionEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
 	{
-		private readonly IEqualityComparer<T> _comparer;
+		private readonly IEqualityComparer<T>? _comparer;
 
 		/// <summary>
 		/// ctor
 		/// </summary>
 		/// <param name="comparer">Comparer to use to compare each item</param>
-		public CollectionEqualityComparer(IEqualityComparer<T> comparer = null)
+		public CollectionEqualityComparer(IEqualityComparer<T>? comparer = null)
 		{
 			_comparer = comparer;
 		}
@@ -49,9 +49,9 @@ namespace Uno.Equality
 		/// <inheritdoc/>
 		public int GetHashCode(IEnumerable<T> source)
 		{
-			return source
-				.Safe()
-				.Aggregate(0, (hash, item) => hash ^ item.GetHashCode());
+            return source
+                .Safe()
+                .Aggregate(0, (hash, item) => hash ^ item?.GetHashCode() ?? 0);
 		}
 	}
 }

@@ -64,7 +64,7 @@ namespace Uno.Disposables
 		/// <summary>
 		/// Dispose the object if not null
 		/// </summary>
-		public static void SafeDispose(this IDisposable disposable)
+		public static void SafeDispose(this IDisposable? disposable)
 		{
 			if (null != disposable)
 			{
@@ -78,7 +78,7 @@ namespace Uno.Disposables
 		/// <returns>
 		/// True means the object was successfully disposed.
 		/// </returns>
-		public static bool TryDispose(this object maybeDisposableObject)
+		public static bool TryDispose(this object? maybeDisposableObject)
 		{
 			var disposable = maybeDisposableObject as IDisposable;
 			if (disposable != null)
@@ -92,7 +92,7 @@ namespace Uno.Disposables
 		/// <summary>
 		/// Dispose the dispoable, and if an error is raised log it
 		/// </summary>
-		public static void DisposeOrLog(this IDisposable disposable, string errorLogMessage)
+		public static void DisposeOrLog(this IDisposable? disposable, string errorLogMessage)
 		{
 			try
 			{

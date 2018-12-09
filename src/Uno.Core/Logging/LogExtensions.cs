@@ -212,7 +212,7 @@ namespace Uno.Logging
 		public static void DebugFormat(this ILogger log, string format, object arg0)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
-			log.Log<object>(LogLevel.Debug, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Debug, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -225,7 +225,7 @@ namespace Uno.Logging
 		public static void DebugFormat(this ILogger log, string format, object arg0, object arg1)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
-			log.Log<object>(LogLevel.Debug, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Debug, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -238,7 +238,7 @@ namespace Uno.Logging
 		public static void DebugFormat(this ILogger log, string format, object arg0, object arg1, object arg2)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
-			log.Log<object>(LogLevel.Debug, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Debug, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -251,7 +251,7 @@ namespace Uno.Logging
 		public static void DebugFormat(this ILogger log, string format, params object[] args)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, args);
-			log.Log<object>(LogLevel.Debug, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Debug, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -270,7 +270,7 @@ namespace Uno.Logging
 		{
 			if (log.IsEnabled(LogLevel.Debug))
 			{
-				log.Log<object>(LogLevel.Debug, 0, null, exception, (_, __) => messageBuilder()?.ToString());
+				log.Log<object?>(LogLevel.Debug, 0, null, exception, (_, __) => messageBuilder()?.ToString());
 			}
 		}
 
@@ -298,7 +298,7 @@ namespace Uno.Logging
 		public static void InfoFormat(this ILogger log, string format, object arg0)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
-			log.Log<object>(LogLevel.Information, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Information, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -312,7 +312,7 @@ namespace Uno.Logging
 		public static void InfoFormat(this ILogger log, string format, object arg0, object arg1)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
-			log.Log<object>(LogLevel.Information, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Information, 0, null!, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -326,7 +326,7 @@ namespace Uno.Logging
 		public static void InfoFormat(this ILogger log, string format, object arg0, object arg1, object arg2)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
-			log.Log<object>(LogLevel.Information, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Information, 0, null!, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -340,7 +340,7 @@ namespace Uno.Logging
 		public static void InfoFormat(this ILogger log, string format, params object[] args)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, args);
-			log.Log<object>(LogLevel.Information, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Information, 0, null!, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -359,7 +359,7 @@ namespace Uno.Logging
 		{
 			if (log.IsEnabled(LogLevel.Information))
 			{
-				log.Log<object>(LogLevel.Information, 0, null, exception, (_, __) => messageBuilder()?.ToString());
+				log.Log<object?>(LogLevel.Information, 0, null!, exception, (_, __) => messageBuilder()?.ToString());
 			}
 		}
 
@@ -387,7 +387,7 @@ namespace Uno.Logging
 		public static void WarnFormat(this ILogger log, string format, object arg0)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
-			log.Log<object>(LogLevel.Warning, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Warning, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -401,7 +401,7 @@ namespace Uno.Logging
 		public static void WarnFormat(this ILogger log, string format, object arg0, object arg1)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
-			log.Log<object>(LogLevel.Warning, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Warning, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -415,7 +415,7 @@ namespace Uno.Logging
 		public static void WarnFormat(this ILogger log, string format, object arg0, object arg1, object arg2)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
-			log.Log<object>(LogLevel.Warning, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Warning, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>

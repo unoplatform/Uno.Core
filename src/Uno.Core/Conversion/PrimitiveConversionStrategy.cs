@@ -25,7 +25,7 @@ namespace Uno.Conversion
 {
     public class PrimitiveConversionStrategy : IConversionStrategy
     {
-        public bool CanConvert(object value, Type toType, CultureInfo culture = null)
+        public bool CanConvert(object? value, Type toType, CultureInfo? culture = null)
         {
             var targetNullableType = Nullable.GetUnderlyingType(toType);
             if (targetNullableType != null)
@@ -62,7 +62,7 @@ namespace Uno.Conversion
             return isSourcePrimitive;
         }
 
-        public object Convert(object value, Type toType, CultureInfo culture = null)
+        public object? Convert(object? value, Type toType, CultureInfo? culture = null)
         {
             var targetNullableType = Nullable.GetUnderlyingType(toType);
             if (targetNullableType != null)
