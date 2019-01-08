@@ -7,7 +7,7 @@ and increasing the predictability of the api. It consists of a set of helpers, e
 
 | Target | Branch | Status | Recommended Nuget packages version |
 | ------ | ------ | ------ | ------ |
-| development | master |[![Build status](https://ci.appveyor.com/api/projects/status/2h6icw8bwdvf2x68/branch/master?svg=true)](https://ci.appveyor.com/project/nventivedevops/uno-core/branch/master) | [![NuGet](https://img.shields.io/nuget/v/Uno.Core.svg)](https://www.nuget.org/packages/Uno.Core/) |
+| development | master |[![Build Status](https://dev.azure.com/uno-platform/Uno%20Platform/_apis/build/status/Uno%20Platform/Uno.Core-CI?branchName=master)](https://dev.azure.com/uno-platform/Uno%20Platform/_build/latest?definitionId=39?branchName=master) | [![NuGet](https://img.shields.io/nuget/v/Uno.Core.svg)](https://www.nuget.org/packages/Uno.Core/) |
 
 ## Documentation
 _Coming soon._
