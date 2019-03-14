@@ -3,6 +3,7 @@
 ## Next version
 
  * Direct compatibility with projects targeting uap 10.0.17763
+ * Adds a log extension point with a provided log level and message builder.
 
 ### Features
 
