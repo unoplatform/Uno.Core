@@ -23,6 +23,90 @@ namespace Uno.Logging
 	public static partial class LogExtensions
 	{
 		/// <summary>
+		/// Send a log message of the provided log level to configured loggers.
+		/// </summary>
+		/// <remarks>
+		/// If the construction of the message is costly, you should check the .IsEnabled
+		/// first to prevent useless processing constructing a logging message.
+		/// </remarks>
+		public static void LogFormat(this ILogger log, LogLevel level, object message)
+		{
+			log.Log<object>(level, 0, null, null, (_, __) => message?.ToString());
+		}
+
+		/// <summary>
+		/// Send a log message of the provided log level to configured loggers.
+		/// </summary>
+		/// <remarks>
+		/// If the construction of the message is costly, you should check the .IsEnabled
+		/// first to prevent useless processing constructing a logging message.
+		/// </remarks>
+		public static void LogFormat(this ILogger log, LogLevel level, string format, object arg0)
+		{
+			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
+			log.Log<object>(level, 0, null, null, (_, __) => message);
+		}
+
+		/// <summary>
+		/// Send a log message of the provided log level to configured loggers.
+		/// </summary>
+		/// <remarks>
+		/// If the construction of the message is costly, you should check the .IsEnabled
+		/// first to prevent useless processing constructing a logging message.
+		/// </remarks>
+		public static void LogFormat(this ILogger log, LogLevel level, string format, object arg0, object arg1)
+		{
+			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
+			log.Log<object>(level, 0, null, null, (_, __) => message);
+		}
+
+		/// <summary>
+		/// Send a log message of the provided log level to configured loggers.
+		/// </summary>
+		/// <remarks>
+		/// If the construction of the message is costly, you should check the .IsEnabled
+		/// first to prevent useless processing constructing a logging message.
+		/// </remarks>
+		public static void LogFormat(this ILogger log, LogLevel level, string format, object arg0, object arg1, object arg2)
+		{
+			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
+			log.Log<object>(level, 0, null, null, (_, __) => message);
+		}
+
+		/// <summary>
+		/// Send a log message of the provided log level to configured loggers.
+		/// </summary>
+		/// <remarks>
+		/// If the construction of the message is costly, you should check the .IsEnabled
+		/// first to prevent useless processing constructing a logging message.
+		/// </remarks>
+		public static void LogFormat(this ILogger log, LogLevel level, string format, params object[] args)
+		{
+			var message = string.Format(CultureInfo.InvariantCulture, format, args);
+			log.Log<object>(level, 0, null, null, (_, __) => message);
+		}
+
+		/// <summary>
+		/// Send a log message of the provided log level to configured loggers.
+		/// </summary>
+		public static void Log(this ILogger log, LogLevel level, string message, Exception exception = null)
+		{
+			log.Log<object>(level, 0, null, exception, (_, __) => message);
+		}
+		
+		/// <summary>
+		/// Send a log message of the provided log level to configured loggers using a deferred action to build the message,
+		/// if the log level is enabled.
+		/// </summary>
+		public static void Log(this ILogger log, LogLevel level, Func<object> messageBuilder, Exception exception = null)
+		{
+			if (log.IsEnabled(level))
+			{
+				log.Log<object>(level, 0, null, exception, (_, __) => messageBuilder()?.ToString());
+			}
+		}
+
+		/// <summary>
 		/// Send a "Trace" message to configured loggers.
 		/// </summary>
 		/// <remarks>
