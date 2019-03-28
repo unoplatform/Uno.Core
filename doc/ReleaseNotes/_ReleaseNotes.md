@@ -3,6 +3,7 @@
 ## Next version
 
 ### Features
+* Add Span<T> and Memory<T> extensions
 
 ### Breaking changes
 
