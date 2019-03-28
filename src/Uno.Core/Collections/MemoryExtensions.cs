@@ -283,7 +283,7 @@ namespace Uno.Collections
         /// <param name="span">The span to analyze</param>
         /// <param name="predicate">The predicate to filter the values</param>
         /// <returns><c>true</c> if the predicate returned true, otherwise <c>false</c></returns>
-        public static bool Contains<T>(this Span<T> span, Func<T, bool> predicate)
+        public static bool Any<T>(this Span<T> span, Func<T, bool> predicate)
         {
             foreach (var value in span)
             {

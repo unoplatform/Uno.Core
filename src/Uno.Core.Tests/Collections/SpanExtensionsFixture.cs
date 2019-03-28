@@ -160,19 +160,19 @@ namespace Uno.Core.Tests.Collections
         }
 
         [TestMethod]
-        public void When_Contains()
+        public void When_Any()
         {
             Span<int> s = stackalloc int[] { 1, 2, 3 };
 
-            Assert.IsTrue(s.Contains(v => v == 2));
+            Assert.IsTrue(s.Any(v => v == 2));
         }
 
         [TestMethod]
-        public void When_Not_Contains()
+        public void When_Not_Any()
         {
             Span<int> s = stackalloc int[] { 1, 2, 3 };
 
-            Assert.IsFalse(s.Contains(v => v == 4));
+            Assert.IsFalse(s.Any(v => v == 4));
         }
 
         [TestMethod]
