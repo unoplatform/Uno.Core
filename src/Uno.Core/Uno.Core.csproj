@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="MSBuild.Sdk.Extras" ToolsVersion="15.0">
 	<PropertyGroup>
 		<TargetFrameworks>uap10.0;net46;netstandard2.0</TargetFrameworks>
 		<AssemblyName>Uno.Core</AssemblyName>
@@ -20,15 +20,13 @@
 		<PackageIconUrl>https://nv-assets.azurewebsites.net/logos/uno.png</PackageIconUrl>
 		<RepositoryUrl>https://github.com/nventive/Uno.Core</RepositoryUrl>
 		<Description>This package provides a set of helpers and extension methods used to accelerate development.</Description>
-		<Copyright>Copyright (C) 2015-2018 nventive inc. - all rights reserved</Copyright>
+		<Copyright>Copyright (C) 2015-2019 nventive inc. - all rights reserved</Copyright>
 	</PropertyGroup>
 
 	<Import Project="..\Uno.CrossTargeting.props" />
 	<Import Project="..\Uno.Common.props" />
 
 	<ItemGroup>
-		<PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.1" PrivateAssets="All" />
-
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
 		<PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
 		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
@@ -40,13 +38,12 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
+    <PackageReference Include="System.Memory" Version="4.5.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
 		<PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform " Version="5.4.0" />
 	</ItemGroup>
-
-	<Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
 		<DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;HAS_DICT_GETVALUEORDEFAULT</DefineConstants>
