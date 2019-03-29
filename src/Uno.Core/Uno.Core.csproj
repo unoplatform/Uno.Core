@@ -21,6 +21,7 @@
     <RepositoryUrl>https://github.com/nventive/Uno.Core</RepositoryUrl>
     <Description>This package provides a set of helpers and extension methods used to accelerate development.</Description>
     <Copyright>Copyright (C) 2015-2019 nventive inc. - all rights reserved</Copyright>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <Import Project="..\Uno.CrossTargeting.props" />
