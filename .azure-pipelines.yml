@@ -21,6 +21,15 @@ steps:
 
   - powershell: './build/build.ps1 -Script build/build.cake'
 
+  - task: VSTest@2
+    inputs:
+      testAssemblyVer2: |
+        **\*test*.dll
+        !**\obj\**
+      vstestLocationMethod: version
+      vsTestVersion: latest
+      testSelector: testAssemblies
+
   - task: CopyFiles@2
     inputs:
       SourceFolder: $(Build.SourcesDirectory)/build
