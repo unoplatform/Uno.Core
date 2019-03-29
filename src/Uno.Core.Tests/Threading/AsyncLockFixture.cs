@@ -39,7 +39,8 @@ namespace Uno.Core.Tests.Threading
 
 		[TestMethod]
 		[Timeout(_timeout)]
-		public async Task TestUnlockReleaseNextSynchronously()
+        [Ignore] // https://github.com/nventive/Uno.Core/issues/48
+        public async Task TestUnlockReleaseNextSynchronously()
 		{
 			Console.WriteLine($"Running on thread {Thread.CurrentThread.ManagedThreadId}");
 
