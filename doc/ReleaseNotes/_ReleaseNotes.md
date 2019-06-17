@@ -3,11 +3,16 @@
 ## Next version
 
 ### Features
-* Add Span<T> and Memory<T> extensions
-
+* 
 ### Breaking changes
-
+* 
 ### Bug fixes
+* 
+
+## Release 1.28.0
+
+### Features
+* Add Span<T> and Memory<T> extensions
 
 ## Release 1.27.0
 
