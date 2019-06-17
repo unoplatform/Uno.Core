@@ -6,14 +6,18 @@ trigger:
     include:
       - master
       - beta
+      - release/beta/*
       - stable
+      - release/stable/*
 
 pr: 
   branches:
     include:
       - master
       - beta
+      - release/beta/*
       - stable
+      - release/stable/*
 
 steps:
   - checkout: self
