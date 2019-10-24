@@ -163,7 +163,12 @@ namespace Uno.Extensions
 							}
 						}
 
-						return (addedInner ?? Enumerable.Empty<T>(), Enumerable.Empty<T>(), removedInner ?? Enumerable.Empty<T>(), GetKeptItems(collection, array, comparer));
+						return (
+							addedInner ?? Enumerable.Empty<T>(), 
+							Enumerable.Empty<T>(), 
+							removedInner ?? Enumerable.Empty<T>(), 
+							GetKeptItems(collection, array, comparer)
+						);
 					}
 				}
 
