@@ -7,7 +7,7 @@
 ### Breaking changes
 * 
 ### Bug fixes
-* 
+* #55: AppendLine insert new line at the end
 
 ## Release 1.28.0
 
