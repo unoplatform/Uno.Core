@@ -28,11 +28,11 @@ namespace Uno.Extensions
 {
 	public static class ObservableCollectionExtensions
 	{
-        /// <summary>
-        /// Updates an ObservableCollection using the provided enumerable, resulting in equal sequences.
-        /// </summary>
-        /// <param name="collection">The collection to update</param>
-        /// <param name="updated">The enumerable to update from</param>
+		/// <summary>
+		/// Updates an ObservableCollection using the provided enumerable, resulting in equal sequences.
+		/// </summary>
+		/// <param name="collection">The collection to update</param>
+		/// <param name="updated">The enumerable to update from</param>
 		/// <param name="tryDispose">Tells the method to try disposing removed items and new items that were not added.
 		/// <param name="comparer"></param>
 		/// <em>ONLY PASS true WHEN USING DIFFERENT INSTANCES THAT USE EQUALS TO MATCH EXISTING INSTANCES. Matching items are not compared by reference.</em></param>
@@ -119,9 +119,9 @@ namespace Uno.Extensions
 		/// <returns></returns>
 		private static (IEnumerable<T> added, IEnumerable<T> moved, IEnumerable<T> removed, KeptInfo<T>[] kept) InternalUpdate<T>(
 			this IList<T> collection,
-			IEnumerable<T> updated, 
-			bool tryDispose = false, 
-			bool needKept = false, 
+			IEnumerable<T> updated,
+			bool tryDispose = false,
+			bool needKept = false,
 			IEqualityComparer<T> comparer = null
 		)
 		{
@@ -130,6 +130,42 @@ namespace Uno.Extensions
 				comparer = comparer ?? EqualityComparer<T>.Default;
 
 				var array = updated as T[] ?? updated.ToArray();
+
+				{
+					if (collection.SequenceKeyEqual(array))
+					{
+						// If the new items are key-equal to the previous items, we just need to do a replace operation for those elements 
+						// which have changed.
+						List<T> removedInner = null;
+						List<T> addedInner = null;
+						for (int i = 0; i < array.Length; i++)
+						{
+							if (!EqualsWithComparer(collection[i], array[i]))
+							{
+								removedInner = removedInner ?? new List<T>();
+								addedInner = addedInner ?? new List<T>();
+
+								removedInner.Add(collection[i]);
+								addedInner.Add(array[i]);
+
+								var old = collection[i];
+								// Do a replace for modified item
+								collection[i] = array[i];
+
+								if (tryDispose)
+								{
+									old.TryDispose();
+								}
+							}
+							else if (tryDispose && !needKept && !ReferenceEquals(collection[i], array[i]))
+							{
+								array[i].TryDispose();
+							}
+						}
+
+						return (addedInner ?? Enumerable.Empty<T>(), Enumerable.Empty<T>(), removedInner ?? Enumerable.Empty<T>(), GetKeptItems(collection, array, comparer));
+					}
+				}
 
 				// Materialize removed and added items before modifying collection.
 				var removed = collection.Except(array, comparer).ToArray();
@@ -167,12 +203,12 @@ namespace Uno.Extensions
 				var movedItems = kept.Where(k => k.OldIndex != k.NewIndex).Select(i => i.NewItem);
 
 				return needKept
-					? (added: added, moved: movedItems, removed:removed, kept: kept)
-					: (added: added, moved: movedItems, removed:removed, kept: (KeptInfo<T>[])null);
+					? (added: added, moved: movedItems, removed: removed, kept: kept)
+					: (added: added, moved: movedItems, removed: removed, kept: (KeptInfo<T>[])null);
 			}
 			catch (ArgumentOutOfRangeException e)
 			{
-				if(updated.Distinct().Count() != updated.Count())
+				if (updated.Distinct().Count() != updated.Count())
 				{
 					throw new InvalidOperationException(
 						"There are duplicate items in the updated collection, which is not supported in ObservableCollection.Update helper.",
@@ -183,7 +219,9 @@ namespace Uno.Extensions
 				{
 					throw;
 				}
-            }
+			}
+
+			bool EqualsWithComparer(T objA, T objB) => comparer != null ? comparer.Equals(objA, objB) : Equals(objA, objB);
 		}
 
 		private static void InsertNewItems<T>(IList<T> collection, T[] array, T[] added, IEqualityComparer<T> comparer)
