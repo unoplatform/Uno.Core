@@ -86,7 +86,7 @@ namespace Uno.Extensions
 
 		public virtual void AppendLine(string text)
 		{
-			_stringBuilder.Append(text.Indent(CurrentLevel));
+			_stringBuilder.AppendLine(text.Indent(CurrentLevel));
 		}
 
 		public override string ToString()
