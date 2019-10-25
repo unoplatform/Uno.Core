@@ -407,6 +407,7 @@ namespace Uno.Core.Tests.Threading
 
 		[TestMethod]
 		[Timeout(_timeout)]
+		[Ignore] // https://github.com/unoplatform/Uno.Core/issues/59
 		public async Task TestReleaseThenReAcquireWithConcurrentAccess()
 		{
 			var sut = new FastAsyncLock();

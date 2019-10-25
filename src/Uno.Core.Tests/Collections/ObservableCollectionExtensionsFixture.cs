@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using Uno.Extensions;
+using Uno.Equality;
 
 namespace Uno.Core.Tests.Collections
 {
@@ -266,6 +267,69 @@ namespace Uno.Core.Tests.Collections
 			Assert.AreEqual(4, results.Removed.ElementAt(0));
 			Assert.AreEqual(0, results.Added.Count());
 			Assert.AreEqual(0, results.Moved.Count());
+		}
+
+		[TestMethod]
+		public void Update_KeyEquatable()
+		{
+			var changes = new List<NotifyCollectionChangedEventArgs>();
+
+			var c = new ObservableCollection<HasKey>(Enumerable.Range(0, 10).Select(i => new HasKey(i.ToString(), i)));
+
+			c.CollectionChanged += (s, e) => changes.Add(e);
+
+			var updated = c.ToList();
+			updated[7] = new HasKey("7a", 7);
+			c.Update(updated);
+
+			Assert.AreEqual(1, changes.Count);
+			Assert.AreEqual(NotifyCollectionChangedAction.Replace, changes.Single().Action);
+			Assert.AreEqual("7a", c[7].Content);
+		}
+
+		public class HasKey : IKeyEquatable<HasKey>, IKeyEquatable
+		{
+			public HasKey(string content, int id)
+			{
+				Content = content;
+				Id = id;
+			}
+
+			public string Content { get; }
+			public int Id { get; }
+
+			public override int GetHashCode()
+			{
+				return Id.GetHashCode();
+			}
+
+			public override bool Equals(object obj)
+			{
+				if (obj is HasKey hasKey)
+				{
+					return Content == hasKey.Content
+						&& Id == hasKey.Id;
+				}
+
+				return false;
+			}
+
+			public int GetKeyHashCode() => Id.GetHashCode();
+
+			public bool KeyEquals(HasKey other)
+			{
+				return Id == other.Id;
+			}
+
+			public bool KeyEquals(object other)
+			{
+				if (other is HasKey hasKey)
+				{
+					return KeyEquals(hasKey);
+				}
+
+				return false;
+			}
 		}
 	}
 }
