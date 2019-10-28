@@ -83,7 +83,7 @@ namespace Uno.Extensions
 		/// Appends a newline.
 		/// </summary>
 		/// <remarks>
-		/// This method presents correct behavior, as opposed to it's `AppendLine(String)`
+		/// This method presents correct behavior, as opposed to its <see cref="AppendLine(String)"/>
 		/// overload. Therefore, this method should be used whenever a newline is desired.
 		/// </remarks>
 		public virtual void AppendLine()
@@ -96,10 +96,9 @@ namespace Uno.Extensions
 		/// </summary>
 		/// <param name="text">The string to append.</param>
 		/// <remarks>
-		/// Even though this method seems like it appends a newline, it doesn't. It would be a
-		/// huge breaking change to fix this, so we're stuck with it for now. To append a
-		/// newline, call `AppendLine()` after this method, as the parameterless overload has
-		/// the correct behavior.
+		/// Even though this method seems like it appends a newline, it doesn't. To append a
+		/// newline, call <see cref="AppendLine()"/> after this method, as the parameterless
+		/// overload has the correct behavior.
 		/// </remarks>
 		public virtual void AppendLine(string text)
 		{
