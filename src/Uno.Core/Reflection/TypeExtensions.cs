@@ -248,16 +248,18 @@ namespace Uno.Extensions
             return type.GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() as TAttribute;
         }
 
-
+		/// <summary>
+		/// Gets the inheritance hierarchy of supplied type.
+		/// </summary>
         public static IEnumerable<Type> GetBaseTypes(this Type type)
         {
             var previousType = type;
             while (true)
             {
 #if !WINDOWS_UWP
-                var baseType = type.BaseType;
+                var baseType = previousType.BaseType;
 #else
-				var baseType = type.GetTypeInfo().BaseType;
+				var baseType = previousType.GetTypeInfo().BaseType;
 #endif
                 if (baseType == null || baseType.FullName == previousType.FullName)
                 {
