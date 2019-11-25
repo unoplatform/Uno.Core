@@ -13,7 +13,7 @@ Tagging is the main driver for planning releases.
 ## Creating a release
 
 ### When planning for a beta
-- Once a release is planned, make a branch in `release/beta` (e.g. `release/beta/1.29`), and tag the commit using the requested version (e.g. `1.29`). Tagging will automatically the version in the `master` increased by a **minor** number.
+- Once a release is planned, make a branch in `release/beta` (e.g. `release/beta/1.29`), and tag the commit using the requested version (e.g. `1.29`). Tagging will automatically increased the version in the `master` branch by a **minor** number.
 - Make stabilisation fixes to the `release/beta/1.29` branch.
 - Once the stabilization fixes are done, take the last `release/beta/1.29` commit and make a `release/stable/1.29` branch. Commits to this branch will automatically keep the `1.29` version, as the base **beta branch** was tagged `1.29`.
 
