@@ -1,6 +1,5 @@
-#addin "Cake.FileHelpers"
-#addin "Cake.Powershell"
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0" 
+#addin "nuget:?package=Cake.FileHelpers&version=3.2.1"
+#addin "nuget:?package=Cake.Powershell&version=0.4.8"
 
 using System;
 using System.Linq;
@@ -16,7 +15,6 @@ var target = Argument("target", "Default");
 // VERSIONS
 //////////////////////////////////////////////////////////////////////
 
-var gitVersioningVersion = "2.0.41";
 var signClientVersion = "0.9.0";
 
 //////////////////////////////////////////////////////////////////////
@@ -26,7 +24,6 @@ var signClientVersion = "0.9.0";
 var baseDir = MakeAbsolute(Directory("../")).ToString();
 var buildDir = baseDir + "/build";
 var Solution = baseDir + "/src/Uno.Core.sln";
-GitVersion versionInfo = null;
 
 //////////////////////////////////////////////////////////////////////
 // METHODS
@@ -83,7 +80,6 @@ void VerifyHeaders(bool Replace)
 //////////////////////////////////////////////////////////////////////
 
 Task("Build")
-    .IsDependentOn("Version")
     .IsDependentOn("ValidateHeaders")
     .Description("Build all projects and get the assemblies")
     .Does(() =>
@@ -94,8 +90,8 @@ Task("Build")
     {
     }
     .SetConfiguration("Release")
-    .WithProperty("PackageVersion", versionInfo.FullSemVer)
-    .WithProperty("InformationalVersion", versionInfo.InformationalVersion)
+    .WithProperty("PackageVersion", EnvironmentVariable("GITVERSION_FULLSEMVER"))
+    .WithProperty("InformationalVersion", EnvironmentVariable("GITVERSION_INFORMATIONALVERSION"))
     .WithProperty("PackageOutputPath", buildDir)
     .WithTarget("Restore")
     .WithTarget("Build")
@@ -124,18 +120,6 @@ Task("ValidateHeaders")
     .Does(() =>
 {
     VerifyHeaders(false);
-});
-
-Task("Version")
-    .Description("Updates target versions")
-    .Does(() =>
-{
-	versionInfo = GitVersion(new GitVersionSettings {
-        UpdateAssemblyInfo = true,
-		UpdateAssemblyInfoFilePath = baseDir + "/build/AssemblyVersion.cs"
-    });
-
-    Information($"FullSemVer: {versionInfo.FullSemVer} Sha: {versionInfo.Sha}");
 });
 
 //////////////////////////////////////////////////////////////////////

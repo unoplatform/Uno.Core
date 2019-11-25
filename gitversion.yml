@@ -9,6 +9,12 @@ branches:
     tag: dev
     increment: Minor
 
+  pull-request:
+    regex: ^(pull|pull\-requests|pr)[/-]
+    mode: ContinuousDeployment
+    tag: PullRequest
+    increment: Inherit
+
   stable:
     regex: release/stable/.*
     tag: ''
@@ -24,6 +30,7 @@ branches:
     source-branches: ['master']
 
   dev:
+    mode: ContinuousDeployment
     regex: dev/.*?/(.*?)
     tag: dev.{BranchName}
     source-branches: ['master', 'release', 'projects', 'feature']
