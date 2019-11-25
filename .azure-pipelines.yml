@@ -23,6 +23,12 @@ steps:
   - checkout: self
     clean: true
 
+  - task: GitVersion@5
+    inputs:
+      useConfigFile: true
+      configFilePath: GitVersion.yml
+      updateAssemblyInfo: false
+
   - powershell: './build/build.ps1 -Script build/build.cake'
 
   - task: VSTest@2
