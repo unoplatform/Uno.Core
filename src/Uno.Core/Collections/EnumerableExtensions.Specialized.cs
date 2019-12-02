@@ -101,7 +101,7 @@ namespace Uno.Extensions.Specialized
 			}
 		}
 
-		public static System.Object ElementAt(this IEnumerable items, int position)
+		public static System.Object? ElementAt(this IEnumerable items, int position)
 		{
 			if (items == null)
 				return null;
@@ -121,7 +121,7 @@ namespace Uno.Extensions.Specialized
 			return enumerator.Current;
 		}
 
-		public static System.Object ElementAtOrDefault(this IEnumerable items, int position)
+		public static System.Object? ElementAtOrDefault(this IEnumerable items, int position)
 		{
 			if (items == null)
 				return null;
@@ -182,7 +182,7 @@ namespace Uno.Extensions.Specialized
 
 			if (list == null)
 			{
-				IEnumerator enumerator = null;
+				IEnumerator? enumerator = null;
 				try
 				{
 					enumerator = source.GetEnumerator();
@@ -192,7 +192,7 @@ namespace Uno.Extensions.Specialized
 				{
 					if (enumerator is IDisposable)
 					{
-						(enumerator as IDisposable).Dispose();
+						(enumerator as IDisposable)!.Dispose();
 					}
 				}
 			}

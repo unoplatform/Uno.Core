@@ -31,7 +31,7 @@ namespace Uno.Logging
 		/// </remarks>
 		public static void LogFormat(this ILogger log, LogLevel level, object message)
 		{
-			log.Log<object>(level, 0, null, null, (_, __) => message?.ToString());
+			log.Log<object?>(level, 0, null, null, (_, __) => message?.ToString());
 		}
 
 		/// <summary>
@@ -44,7 +44,7 @@ namespace Uno.Logging
 		public static void LogFormat(this ILogger log, LogLevel level, string format, object arg0)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
-			log.Log<object>(level, 0, null, null, (_, __) => message);
+			log.Log<object?>(level, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace Uno.Logging
 		public static void LogFormat(this ILogger log, LogLevel level, string format, object arg0, object arg1)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
-			log.Log<object>(level, 0, null, null, (_, __) => message);
+			log.Log<object?>(level, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -70,7 +70,7 @@ namespace Uno.Logging
 		public static void LogFormat(this ILogger log, LogLevel level, string format, object arg0, object arg1, object arg2)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
-			log.Log<object>(level, 0, null, null, (_, __) => message);
+			log.Log<object?>(level, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -83,26 +83,26 @@ namespace Uno.Logging
 		public static void LogFormat(this ILogger log, LogLevel level, string format, params object[] args)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, args);
-			log.Log<object>(level, 0, null, null, (_, __) => message);
+			log.Log<object?>(level, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a log message of the provided log level to configured loggers.
 		/// </summary>
-		public static void Log(this ILogger log, LogLevel level, string message, Exception exception = null)
+		public static void Log(this ILogger log, LogLevel level, string message, Exception? exception = null)
 		{
-			log.Log<object>(level, 0, null, exception, (_, __) => message);
+			log.Log<object?>(level, 0, null, exception, (_, __) => message);
 		}
 		
 		/// <summary>
 		/// Send a log message of the provided log level to configured loggers using a deferred action to build the message,
 		/// if the log level is enabled.
 		/// </summary>
-		public static void Log(this ILogger log, LogLevel level, Func<object> messageBuilder, Exception exception = null)
+		public static void Log(this ILogger log, LogLevel level, Func<object> messageBuilder, Exception? exception = null)
 		{
 			if (log.IsEnabled(level))
 			{
-				log.Log<object>(level, 0, null, exception, (_, __) => messageBuilder()?.ToString());
+				log.Log<object?>(level, 0, null, exception, (_, __) => messageBuilder()?.ToString());
 			}
 		}
 
@@ -115,7 +115,7 @@ namespace Uno.Logging
 		/// </remarks>
 		public static void TraceFormat(this ILogger log, object message)
 		{
-			log.Log<object>(LogLevel.Trace, 0, null, null, (_, __) => message?.ToString());
+			log.Log<object?>(LogLevel.Trace, 0, null, null, (_, __) => message?.ToString());
 		}
 
 		/// <summary>
@@ -128,7 +128,7 @@ namespace Uno.Logging
 		public static void TraceFormat(this ILogger log, string format, object arg0)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
-			log.Log<object>(LogLevel.Trace, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Trace, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -141,7 +141,7 @@ namespace Uno.Logging
 		public static void TraceFormat(this ILogger log, string format, object arg0, object arg1)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
-			log.Log<object>(LogLevel.Trace, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Trace, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -154,7 +154,7 @@ namespace Uno.Logging
 		public static void TraceFormat(this ILogger log, string format, object arg0, object arg1, object arg2)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
-			log.Log<object>(LogLevel.Trace, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Trace, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -167,26 +167,26 @@ namespace Uno.Logging
 		public static void TraceFormat(this ILogger log, string format, params object[] args)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, args);
-			log.Log<object>(LogLevel.Trace, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Trace, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Trace" message to configured loggers.
 		/// </summary>
-		public static void Trace(this ILogger log, string message, Exception exception = null)
+		public static void Trace(this ILogger log, string message, Exception? exception = null)
 		{
-			log.Log<object>(LogLevel.Trace, 0, null, exception, (_, __) => message);
+			log.Log<object?>(LogLevel.Trace, 0, null, exception, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Trace" message to configured loggers using a deferred action to build the message,
 		/// if the Trace log level is enabled.
 		/// </summary>
-		public static void Trace(this ILogger log, Func<object> messageBuilder, Exception exception = null)
+		public static void Trace(this ILogger log, Func<object> messageBuilder, Exception? exception = null)
 		{
 			if (log.IsEnabled(LogLevel.Trace))
 			{
-				log.Log<object>(LogLevel.Trace, 0, null, exception, (_, __) => messageBuilder()?.ToString());
+				log.Log<object?>(LogLevel.Trace, 0, null, exception, (_, __) => messageBuilder()?.ToString());
 			}
 		}
 
@@ -199,7 +199,7 @@ namespace Uno.Logging
 		/// </remarks>
 		public static void DebugFormat(this ILogger log, object message)
 		{
-			log.Log<object>(LogLevel.Debug, 0, null, null, (_, __) => message?.ToString());
+			log.Log<object?>(LogLevel.Debug, 0, null, null, (_, __) => message?.ToString());
 		}
 
 		/// <summary>
@@ -257,16 +257,16 @@ namespace Uno.Logging
 		/// <summary>
 		/// Send a "Debug" message to configured loggers.
 		/// </summary>
-		public static void Debug(this ILogger log, string message, Exception exception = null)
+		public static void Debug(this ILogger log, string message, Exception? exception = null)
 		{
-			log.Log<object>(LogLevel.Debug, 0, null, exception, (_, __) => message);
+			log.Log<object?>(LogLevel.Debug, 0, null, exception, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Debug" message to configured loggers using a deferred action to build the message,
 		/// if the Debug log level is enabled.
 		/// </summary>
-		public static void Debug(this ILogger log, Func<object> messageBuilder, Exception exception = null)
+		public static void Debug(this ILogger log, Func<object> messageBuilder, Exception? exception = null)
 		{
 			if (log.IsEnabled(LogLevel.Debug))
 			{
@@ -284,7 +284,7 @@ namespace Uno.Logging
 		/// </remarks>
 		public static void InfoFormat(this ILogger log, object message)
 		{
-			log.Log<object>(LogLevel.Information, 0, null, null, (_, __) => message?.ToString());
+			log.Log<object?>(LogLevel.Information, 0, null, null, (_, __) => message?.ToString());
 		}
 
 		/// <summary>
@@ -346,16 +346,16 @@ namespace Uno.Logging
 		/// <summary>
 		/// Send a "Info" message to configured loggers.
 		/// </summary>
-		public static void Info(this ILogger log, string message, Exception exception = null)
+		public static void Info(this ILogger log, string message, Exception? exception = null)
 		{
-			log.Log<object>(LogLevel.Information, 0, null, exception, (_, __) => message);
+			log.Log<object?>(LogLevel.Information, 0, null, exception, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Info" message to configured loggers using a deferred action to build the message,
 		/// if the Info log level is enabled.
 		/// </summary>
-		public static void Info(this ILogger log, Func<object> messageBuilder, Exception exception = null)
+		public static void Info(this ILogger log, Func<object> messageBuilder, Exception? exception = null)
 		{
 			if (log.IsEnabled(LogLevel.Information))
 			{
@@ -373,7 +373,7 @@ namespace Uno.Logging
 		/// </remarks>
 		public static void WarnFormat(this ILogger log, object message)
 		{
-			log.Log<object>(LogLevel.Warning, 0, null, null, (_, __) => message?.ToString());
+			log.Log<object?>(LogLevel.Warning, 0, null, null, (_, __) => message?.ToString());
 		}
 
 		/// <summary>
@@ -429,27 +429,27 @@ namespace Uno.Logging
 		public static void WarnFormat(this ILogger log, string format, params object[] args)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, args);
-			log.Log<object>(LogLevel.Warning, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Warning, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Warn" message to configured loggers using a deferred action to build the message,
 		/// if the Warn log level is enabled.
 		/// </summary>
-		public static void Warn(this ILogger log, Func<object> messageBuilder, Exception exception = null)
+		public static void Warn(this ILogger log, Func<object> messageBuilder, Exception? exception = null)
 		{
 			if (log.IsEnabled(LogLevel.Warning))
 			{
-				log.Log<object>(LogLevel.Warning, 0, null, exception, (_, __) => messageBuilder()?.ToString());
+				log.Log<object?>(LogLevel.Warning, 0, null, exception, (_, __) => messageBuilder()?.ToString());
 			}
 		}
 
 		/// <summary>
 		/// Send a "Warn" message to configured loggers.
 		/// </summary>
-		public static void Warn(this ILogger log, string message, Exception exception = null)
+		public static void Warn(this ILogger log, string message, Exception? exception = null)
 		{
-			log.Log<object>(LogLevel.Warning, 0, null, exception, (_, __) => message);
+			log.Log<object?>(LogLevel.Warning, 0, null, exception, (_, __) => message);
 		}
 
 		/// <summary>
@@ -462,7 +462,7 @@ namespace Uno.Logging
 		/// </remarks>
 		public static void ErrorFormat(this ILogger log, object message)
 		{
-			log.Log<object>(LogLevel.Error, 0, null, null, (_, __) => message?.ToString());
+			log.Log<object?>(LogLevel.Error, 0, null, null, (_, __) => message?.ToString());
 		}
 
 		/// <summary>
@@ -476,7 +476,7 @@ namespace Uno.Logging
 		public static void ErrorFormat(this ILogger log, string format, object arg0)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
-			log.Log<object>(LogLevel.Error, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Error, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -490,7 +490,7 @@ namespace Uno.Logging
 		public static void ErrorFormat(this ILogger log, string format, object arg0, object arg1)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
-			log.Log<object>(LogLevel.Error, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Error, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -504,7 +504,7 @@ namespace Uno.Logging
 		public static void ErrorFormat(this ILogger log, string format, object arg0, object arg1, object arg2)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
-			log.Log<object>(LogLevel.Error, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Error, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -518,27 +518,27 @@ namespace Uno.Logging
 		public static void ErrorFormat(this ILogger log, string format, params object[] args)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, args);
-			log.Log<object>(LogLevel.Error, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Error, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Error" message to configured loggers using a deferred action to build the message,
 		/// if the Error log level is enabled.
 		/// </summary>
-		public static void Error(this ILogger log, string message, Exception exception = null)
+		public static void Error(this ILogger log, string message, Exception? exception = null)
 		{
-			log.Log<object>(LogLevel.Error, 0, null, exception, (_, __) => message);
+			log.Log<object?>(LogLevel.Error, 0, null, exception, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Error" message to configured loggers using a deferred action to build the message,
 		/// if the Error log level is enabled.
 		/// </summary>
-		public static void Error(this ILogger log, Func<object> messageBuilder, Exception exception = null)
+		public static void Error(this ILogger log, Func<object> messageBuilder, Exception? exception = null)
 		{
 			if (log.IsEnabled(LogLevel.Error))
 			{
-				log.Log<object>(LogLevel.Error, 0, null, exception, (_, __) => (messageBuilder()?.ToString()));
+				log.Log<object?>(LogLevel.Error, 0, null, exception, (_, __) => (messageBuilder()?.ToString()));
 			}
 		}
 
@@ -552,7 +552,7 @@ namespace Uno.Logging
 		/// </remarks>
 		public static void CriticalFormat(this ILogger log, object message)
 		{
-			log.Log<object>(LogLevel.Critical, 0, null, null, (_, __) => message?.ToString());
+			log.Log<object?>(LogLevel.Critical, 0, null, null, (_, __) => message?.ToString());
 		}
 
 		/// <summary>
@@ -566,7 +566,7 @@ namespace Uno.Logging
 		public static void CriticalFormat(this ILogger log, string format, object arg0)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0);
-			log.Log<object>(LogLevel.Critical, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Critical, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -580,7 +580,7 @@ namespace Uno.Logging
 		public static void CriticalFormat(this ILogger log, string format, object arg0, object arg1)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1);
-			log.Log<object>(LogLevel.Critical, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Critical, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -594,7 +594,7 @@ namespace Uno.Logging
 		public static void CriticalFormat(this ILogger log, string format, object arg0, object arg1, object arg2)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, arg0, arg1, arg2);
-			log.Log<object>(LogLevel.Critical, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Critical, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
@@ -608,27 +608,27 @@ namespace Uno.Logging
 		public static void CriticalFormat(this ILogger log, string format, params object[] args)
 		{
 			var message = string.Format(CultureInfo.InvariantCulture, format, args);
-			log.Log<object>(LogLevel.Critical, 0, null, null, (_, __) => message);
+			log.Log<object?>(LogLevel.Critical, 0, null, null, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Critical" message to configured loggers using a deferred action to build the message,
 		/// if the Critical log level is enabled.
 		/// </summary>
-		public static void Critical(this ILogger log, string message, Exception exception = null)
+		public static void Critical(this ILogger log, string message, Exception? exception = null)
 		{
-			log.Log<object>(LogLevel.Critical, 0, null, exception, (_, __) => message);
+			log.Log<object?>(LogLevel.Critical, 0, null, exception, (_, __) => message);
 		}
 
 		/// <summary>
 		/// Send a "Critical" message to configured loggers using a deferred action to build the message,
 		/// if the Critical log level is enabled.
 		/// </summary>
-		public static void Critical(this ILogger log, Func<object> messageBuilder, Exception exception = null)
+		public static void Critical(this ILogger log, Func<object> messageBuilder, Exception? exception = null)
 		{
 			if (log.IsEnabled(LogLevel.Critical))
 			{
-				log.Log<object>(LogLevel.Critical, 0, null, exception, (_, __) => (messageBuilder()?.ToString()));
+				log.Log<object?>(LogLevel.Critical, 0, null, exception, (_, __) => (messageBuilder()?.ToString()));
 			}
 		}
 	}

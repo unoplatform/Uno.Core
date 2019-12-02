@@ -30,13 +30,13 @@ namespace Uno.Extensions
 	public static partial class EnumerableExtensions
 	{
 		//[Obsolete("Refactor to use .Do() instead. Will potentially enumerate the source more than once.")]
-		public static IEnumerable<T> ForEach<T>(this IEnumerable<T> items, Action<KeyValuePair<int, T>> action)
+		public static IEnumerable<T>? ForEach<T>(this IEnumerable<T> items, Action<KeyValuePair<int, T>> action)
 		{
 			return ForEach(items, action.ToAction());
 		}
 
 		//[Obsolete("Refactor to use .Do() instead. Will potentially enumerate the source more than once.")]
-		public static IEnumerable<T> ForEach<T>(this IEnumerable<T> items, Action<int, T> action)
+		public static IEnumerable<T>? ForEach<T>(this IEnumerable<T>? items, Action<int, T> action)
 		{
 			if (items != null)
 			{
@@ -52,7 +52,7 @@ namespace Uno.Extensions
 		}
 
 		//[Obsolete("Refactor your code to avoid this operator. Will potentially enumerate the source more than once.")]
-		public static IEnumerable<T> ForEach<T>(this IEnumerable<T> items)
+		public static IEnumerable<T>? ForEach<T>(this IEnumerable<T>? items)
 		{
 			if (items != null)
 			{
@@ -68,7 +68,7 @@ namespace Uno.Extensions
 		}
 
 		//[Obsolete("Refactor to use .Do() instead. Will potentially enumerate the source more than once.")]
-		public static IEnumerable<T> ForEach<T>(this IEnumerable<T> items, Action<T> action)
+		public static IEnumerable<T>? ForEach<T>(this IEnumerable<T>? items, Action<T> action)
 		{
 			if (items != null)
 			{
@@ -400,7 +400,10 @@ namespace Uno.Extensions
 			if (fixedCount)
 			{
 				// if the start item is the last we add the number of element we want after, before
-				if (start == collection.Count() - 1) index -= after;
+				if (start == collection.Count() - 1)
+				{
+					index -= after;
+				}
 			}
 
 			return collection.Skip(index).Take(before + after + 1);
@@ -439,7 +442,7 @@ namespace Uno.Extensions
 		{
 			return items
 				.Where(item => item.HasValue)
-				.Select(item => item.Value);
+				.Select(item => item!.Value);
 		}
 
 #if !XAMARIN
@@ -502,7 +505,9 @@ namespace Uno.Extensions
 			}
 
 			if (1 < n)
+			{
 				stdDev = Math.Sqrt(sum / (n - 1));
+			}
 
 			return stdDev;
 		}
@@ -698,7 +703,7 @@ namespace Uno.Extensions
 		/// <typeparam name="T"></typeparam>
 		/// <param name="source"></param>
 		/// <returns></returns>
-		public static long ConsecutiveValueCount<T>(this IEnumerable<T> source) where T:object
+		public static long ConsecutiveValueCount<T>(this IEnumerable<T> source)
 		{
 			var enumerator = source.GetEnumerator();
 			long count = 0;
@@ -711,7 +716,7 @@ namespace Uno.Extensions
 
 				while (enumerator.MoveNext())
 				{
-					if (originalValue.Equals(enumerator.Current))
+					if (originalValue?.Equals(enumerator.Current) ?? false)
 					{
 						++count;
 					}

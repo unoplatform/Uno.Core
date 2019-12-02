@@ -24,7 +24,7 @@ namespace Uno.Async
 {
     public class AsyncResultDecorator : IAsyncResult
     {
-        public AsyncResultDecorator(IAsyncResult result, object state)
+        public AsyncResultDecorator(IAsyncResult result, object? state)
         {
             Inner = result;
             AsyncState = state;
@@ -34,7 +34,7 @@ namespace Uno.Async
 
         #region IAsyncResult Members
 
-        public object AsyncState { get; private set; }
+        public object? AsyncState { get; private set; }
 
         public WaitHandle AsyncWaitHandle
         {

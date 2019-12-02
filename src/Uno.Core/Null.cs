@@ -21,6 +21,8 @@ namespace Uno
     /// </summary>
     public class Null
     {
+        public static Null Instance { get; } = new Null();
+
         /// <summary>
         /// Private constructor, no one will ever construct these things, pass null.
         /// </summary>

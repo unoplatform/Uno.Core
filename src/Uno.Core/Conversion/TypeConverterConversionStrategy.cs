@@ -27,7 +27,7 @@ namespace Uno.Conversion
     {
         #region IConversionStrategy Members
 
-        public bool CanConvert(object value, Type toType, CultureInfo culture = null)
+        public bool CanConvert(object? value, Type toType, CultureInfo? culture = null)
         {
             if (value == null)
             {
@@ -42,7 +42,7 @@ namespace Uno.Conversion
 #endif
         }
 
-        public object Convert(object value, Type toType, CultureInfo culture = null)
+        public object? Convert(object? value, Type toType, CultureInfo? culture = null)
         {
             if (value == null)
             {

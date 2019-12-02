@@ -67,7 +67,7 @@ namespace Uno
 			return new WebRequestCreateDecorator(webRequestProvider, requestDecorator);
 		}
 
-		public static IWebRequestCreate Decorate<TRequest>(this IWebRequestCreate webRequestProvider, Func<TRequest, WebRequest> requestDecorator)
+		public static IWebRequestCreate Decorate<TRequest>(this IWebRequestCreate webRequestProvider, Func<TRequest?, WebRequest> requestDecorator)
 			where TRequest : WebRequest
 		{
 			return new WebRequestCreateDecorator(webRequestProvider, r => (r as TRequest).SelectOrDefault(requestDecorator, r));

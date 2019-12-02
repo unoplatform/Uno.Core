@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -30,13 +31,14 @@ namespace Uno
 		/// <summary>
 		/// Transactionally get or add an item to an ImmutableDictionary.  The factory is called to create the item when required.
 		/// </summary>
+		[return: MaybeNull]
 		public static TValue GetOrAdd<TDictionary, TKey, TValue>(
 			ref TDictionary dictionary,
 			TKey key,
 			Func<TKey, TValue> factory)
 			where TDictionary : class, IImmutableDictionary<TKey, TValue>
 		{
-			var createdValue = default(TValue);
+			var createdValue = default(TValue)!;
 			var hasValue = false;
 
 			while (true)
@@ -68,6 +70,7 @@ namespace Uno
 		/// Transactionally get or add an item to an ImmutableDictionary.  The factory is called to create the item when required.
 		/// </summary>
 		/// <remarks>This overload is used primarily to avoid creating a closure, which are expensive when running under Mono’s full AOT.</remarks>
+		[return: MaybeNull]
 		public static TValue GetOrAdd<TDictionary, TKey, TContext, TValue>(
 			ref TDictionary dictionary,
 			TKey key,
@@ -75,7 +78,7 @@ namespace Uno
 			Func<TKey, TContext, TValue> factory)
 			where TDictionary : class, IImmutableDictionary<TKey, TValue>
 		{
-			var createdValue = default(TValue);
+			var createdValue = default(TValue)!;
 			var hasValue = false;
 
 			while (true)
@@ -106,6 +109,7 @@ namespace Uno
 		/// <summary>
 		/// Transactionally add an item to an ImmutableDictionary if not already present.  The factory is called to create the item when required.
 		/// </summary>
+		[return: MaybeNull]
 		public static bool TryAdd<TDictionary, TKey, TValue>(
 			ref TDictionary dictionary,
 			TKey key,
@@ -113,7 +117,7 @@ namespace Uno
 			out TValue value)
 			where TDictionary : class, IImmutableDictionary<TKey, TValue>
 		{
-			var createdValue = default(TValue);
+			var createdValue = default(TValue)!;
 			var hasValue = false;
 
 			while (true)
@@ -474,7 +478,7 @@ namespace Uno
 		/// Transactionally dequeue an item from a queue.
 		/// </summary>
 		/// <returns>true if successful, false means queue was empty</returns>
-		public static bool TryDequeue<TQueue, T>(ref TQueue queue, out T value)
+		public static bool TryDequeue<TQueue, T>(ref TQueue queue, [MaybeNull] out T value)
 			where TQueue : class, IImmutableQueue<T>
 		{
 			while (true)
@@ -483,7 +487,7 @@ namespace Uno
 
 				if (capture.None())
 				{
-					value = default(T);
+					value = default(T)!;
 					return false;
 				}
 

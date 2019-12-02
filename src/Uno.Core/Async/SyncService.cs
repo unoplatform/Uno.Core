@@ -28,7 +28,7 @@ namespace Uno.Async
         #region IAsyncService Members
 
         public void Invoke<TResult>(
-            Func<AsyncCallback, object, IAsyncResult> begin, 
+            Func<AsyncCallback?, object?, IAsyncResult> begin, 
             Func<IAsyncResult, TResult> end, 
             IObserver<TResult> callback)
         {

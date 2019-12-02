@@ -38,7 +38,7 @@ namespace Uno.Extensions
 		/// <em>ONLY PASS true WHEN USING DIFFERENT INSTANCES THAT USE EQUALS TO MATCH EXISTING INSTANCES. Matching items are not compared by reference.</em></param>
 		/// <remarks>If items come from an AVVM, make sure it's not configured to automatically dispose all previous items. Otherwise, this extension
 		/// will keep items in the collection that are getting disposed by the AVVM.</remarks>
-		public static void Update<T>(this IList<T> collection, IEnumerable<T> updated, bool tryDispose = false, IEqualityComparer<T>? comparer = null) where T : object
+		public static void Update<T>(this IList<T> collection, IEnumerable<T> updated, bool tryDispose = false, IEqualityComparer<T>? comparer = null)
 		{
 			collection.InternalUpdate(updated, tryDispose, comparer: comparer);
 		}
@@ -59,14 +59,14 @@ namespace Uno.Extensions
             IEnumerable<T> updated, 
             bool tryDispose = false, 
             IEqualityComparer<T>? comparer = null
-        ) where T : object
+        )
         {
 			var results = collection.InternalUpdate(updated, tryDispose, comparer: comparer);
 
 			return new ObservableCollectionUpdateResults<T>(results.added, results.moved, results.removed);
 		}
 
-        class UpdateItem<T> where T : object
+        class UpdateItem<T>
         {
             public UpdateItem(IUpdatable<T>? updatable, T update)
             {
@@ -95,7 +95,7 @@ namespace Uno.Extensions
             IEnumerable<T> updated,
             bool tryDispose = false, 
             IEqualityComparer<T>? comparer = null
-        ) where T : object
+        )
         {
 			var updatables = collection
 				.InternalUpdate(updated, tryDispose, true, comparer)
@@ -146,7 +146,7 @@ namespace Uno.Extensions
 			bool tryDispose = false,
 			bool needKept = false,
 			IEqualityComparer<T>? comparer = null
-		) where T : object
+		)
 		{
 			try
 			{
@@ -259,7 +259,7 @@ namespace Uno.Extensions
 			indexes.ForEach(i => collection.Insert(i.Index, i.Value));
 		}
 
-		private static void ManipulateItems<T>(IList<T> collection, KeptInfo<T>[] kept) where T : object
+		private static void ManipulateItems<T>(IList<T> collection, KeptInfo<T>[] kept)
         {
 			Action<int, int, T> updater;
 
@@ -306,7 +306,7 @@ namespace Uno.Extensions
 			}
 		}
 
-		private static KeptInfo<T>[] GetKeptItems<T>(IList<T> collection, T[] array, IEqualityComparer<T> comparer) where T : object
+		private static KeptInfo<T>[] GetKeptItems<T>(IList<T> collection, T[] array, IEqualityComparer<T> comparer)
         {
             // Move existing items if required. Newly added items must have their entry, which can get
             // affected by other moves, and will adjust just like others.
@@ -327,7 +327,7 @@ namespace Uno.Extensions
 				.ToArray();
 		}
 
-        private class KeptInfo<T> where T : object
+        private class KeptInfo<T>
         {
             public KeptInfo(T oldItem, T newItem, int oldIndex, int newIndex)
             {

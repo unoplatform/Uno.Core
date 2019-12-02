@@ -26,7 +26,7 @@ namespace Uno.Extensions
             Read<T, Null>(sync, item =>
                                     {
                                         read(item);
-                                        return null;
+                                        return Null.Instance;
                                     });
         }
 
@@ -35,7 +35,7 @@ namespace Uno.Extensions
             Write<T, Null>(sync, item =>
                                      {
                                          write(item);
-                                         return null;
+                                         return Null.Instance;
                                      });
         }
 

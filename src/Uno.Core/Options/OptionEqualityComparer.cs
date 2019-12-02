@@ -27,7 +27,7 @@ namespace Uno
 	{
 		private readonly IEqualityComparer<T> _innerComparer;
 
-		public OptionEqualityComparer(IEqualityComparer<T> innerComparer = null)
+		public OptionEqualityComparer(IEqualityComparer<T>? innerComparer = null)
 		{
 			_innerComparer = innerComparer ?? EqualityComparer<T>.Default;
 		}
@@ -47,7 +47,7 @@ namespace Uno
 			}
 
 			return x.Type == OptionType.None // both "None"
-				|| _innerComparer.Equals((x as Some<T>).Value, (y as Some<T>).Value); // compare the 2 "Some"
+				|| _innerComparer.Equals((x as Some<T>)!.Value, (y as Some<T>)!.Value); // compare the 2 "Some"
 		}
 
 		/// <inheritdoc />

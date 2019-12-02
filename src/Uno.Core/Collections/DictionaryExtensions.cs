@@ -16,6 +16,7 @@
 // ******************************************************************
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Uno.Collections;
 using Uno.Threading;
@@ -37,9 +38,10 @@ namespace Uno.Extensions
 			return value;
 		}
 
+		[return: MaybeNull]
 		public static TValue FindOrCreate<TKey, TValue>(this SynchronizedDictionary<TKey, TValue> items, TKey key, Func<TValue> factory)
         {
-            TValue value = default(TValue);
+            TValue value = default!;
 
 			using (items.Lock.CreateWriterScope())
 			{
@@ -52,9 +54,10 @@ namespace Uno.Extensions
 			}
         }
 
+		[return: MaybeNull]
 		public static TValue FindOrCreate<TKey, TValue>(this ISynchronizable<IDictionary<TKey, TValue>> items, TKey key, Func<TValue> factory)
         {
-            TValue value = default(TValue);
+            TValue value = default!;
 
             items.Lock.Write(d => d.TryGetValue(key, out value), d => d.Add(key, value = factory()));
 
@@ -75,9 +78,10 @@ namespace Uno.Extensions
 		/// <param name="key">The key of the value to get.</param>
 		/// <param name="defaultValue">Default value if the key does not exsists in dictionary</param>
 		/// <returns>the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter.</returns>
+		[return: MaybeNull]
 		public static TValue UnoGetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
 		{
-			return UnoGetValueOrDefault(dictionary, key, default(TValue));
+			return UnoGetValueOrDefault(dictionary, key, default!);
 		}
 
 		/// <summary>
@@ -89,6 +93,7 @@ namespace Uno.Extensions
 		/// <param name="key">The key of the value to get.</param>
 		/// <param name="defaultValue">Default value if the key does not exsists in dictionary</param>
 		/// <returns>the value associated with the specified key, if the key is found; otherwise, the <paramref name="defaultValue"/>.</returns>
+		[return: MaybeNull]
 		public static TValue UnoGetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
 		{
 			if (dictionary == null)

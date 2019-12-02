@@ -25,21 +25,27 @@ namespace Uno.Async
 {
     public class ActionServiceEntry
     {
-        public Delegate Provider { get; set; }     
-        public Delegate Action { get; set; }
+        public ActionServiceEntry(Delegate provider, Delegate action)
+        {
+            Provider = provider;
+            Action = action;
+        }
+
+        public Delegate Provider { get; }     
+        public Delegate Action { get; }
     }
 
     public class ActionService : IActionService
     {
         private List<ActionServiceEntry> entries = new List<ActionServiceEntry>();
 
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
-		public WindowsIdentity Identity { get; set; }
+#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD
+        public WindowsIdentity Identity { get; set; }
 #endif
 
 		public void Register<T>(Func<T> provider, Action<T> action)
         {
-            entries.Add(new ActionServiceEntry { Provider = provider, Action = action });
+            entries.Add(new ActionServiceEntry(provider: provider, action: action));
         }
 
         private IEnumerable<Action> PrepareActions()
@@ -54,7 +60,7 @@ namespace Uno.Async
 					.ToArray();
         }
 
-		public IAsyncResult Begin(AsyncCallback callback, object asyncState, Action action)
+		public IAsyncResult? Begin(AsyncCallback? callback, object? asyncState, Action action)
         {
             return Begin<Null>(callback, asyncState, () =>
             {
@@ -63,14 +69,14 @@ namespace Uno.Async
 			});
         }
 
-        public IAsyncResult Begin<T>(AsyncCallback callback, object asyncState, Func<T> selector)
+        public IAsyncResult? Begin<T>(AsyncCallback? callback, object? asyncState, Func<T?> selector) where T:class
         {
             //1-
             var actionsOnNewThread = PrepareActions();
 
-            Func<T> selectorOnNewThread = () =>
+            Func<T?> selectorOnNewThread = () =>
                 {
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
+#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD
                     //2- 
 					WindowsImpersonationContext context = null;
 					try
@@ -83,7 +89,7 @@ namespace Uno.Async
 
 					actionsOnNewThread.ForEach(x => x());
 						return selector();
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
+#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD
 					}
 					finally
 					{
@@ -112,7 +118,7 @@ namespace Uno.Async
             End<Null>(result);
         }
 
-        public T End<T>(IAsyncResult result)
+        public T? End<T>(IAsyncResult result) where T : class
         {
             //4- 
             var asyncResult = result as AsyncResultDecorator;
@@ -122,9 +128,9 @@ namespace Uno.Async
                 result = asyncResult.Inner;
             }
 
-            Func<T> selector = result.AsyncState as Func<T>;
+            var selector = result.AsyncState as Func<T?>;
 
-            return selector.EndInvoke(result);
+            return selector?.EndInvoke(result);
         }
     }
 }

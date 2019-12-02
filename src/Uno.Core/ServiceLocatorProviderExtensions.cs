@@ -24,11 +24,11 @@ namespace Uno.Extensions
 {
     public static class ServiceLocatorProviderExtensions
     {
-        public static IServiceLocator ServiceLocation(this object instance)
+        public static IServiceLocator? ServiceLocation(this object instance)
         {
             var provider = instance as IServiceLocatorProvider;
 
-            return provider == null ? null : provider.ServiceLocator;
+            return provider?.ServiceLocator;
         }
     }
 }

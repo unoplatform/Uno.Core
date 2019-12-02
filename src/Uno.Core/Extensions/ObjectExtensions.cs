@@ -70,7 +70,7 @@ namespace Uno.Extensions
 
         public static TResult SelectOrDefault<TInstance, TResult>(this TInstance instance, Func<TInstance, TResult> selector)
         {
-            return SelectOrDefault(instance, selector, default(TResult));
+            return SelectOrDefault(instance, selector, default);
         }
 
         public static TResult SelectOrDefault<TInstance, TResult>(this TInstance instance, Func<TInstance, TResult> selector, TResult defaultValue)

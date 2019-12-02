@@ -136,8 +136,8 @@ namespace Uno.Extensions
 
 		public override int GetHashCode()
 		{
-			return Key.SelectOrDefault(k => k.GetHashCode(), 0)
-				^ Items.Aggregate(0, (hash, i) => hash ^ i.GetHashCode());
+			return Key.SelectOrDefault(k => k!.GetHashCode(), 0)
+				^ Items.Aggregate(0, (hash, i) => hash ^ i?.GetHashCode() ?? 0);
 		}
 	}
 

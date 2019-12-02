@@ -24,7 +24,7 @@ namespace Uno.Async
     public interface IAsyncService
     {
         void Invoke<T>(
-            Func<AsyncCallback, object, IAsyncResult> begin,
+            Func<AsyncCallback?, object?, IAsyncResult> begin,
             Func<IAsyncResult, T> end,
             IObserver<T> callback);
     }

@@ -23,17 +23,17 @@ namespace Uno.Async
     {
         void Register<T>(Func<T> provider, Action<T> action);
 
-		IAsyncResult Begin(AsyncCallback callback, object asyncState, Action action);
+		IAsyncResult? Begin(AsyncCallback? callback, object? asyncState, Action action);
 
-		IAsyncResult Begin<T>(AsyncCallback callback, object asyncState, Func<T> selector);
+		IAsyncResult? Begin<T>(AsyncCallback? callback, object? asyncState, Func<T?> selector) where T:class;
 
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
+#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification="Security feature")]
 		WindowsIdentity Identity { set; }
 #endif
 
         void End(IAsyncResult result);
 
-        T End<T>(IAsyncResult result);
+        T? End<T>(IAsyncResult result) where T : class;
     }
 }

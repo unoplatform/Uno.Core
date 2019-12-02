@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>uap10.0;net46;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <AssemblyName>Uno.Core</AssemblyName>
     <RootNamespace>Uno.Core</RootNamespace>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
@@ -12,6 +12,7 @@
     <TreatSpecificWarningsAsErrors />
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -21,7 +22,7 @@
     <RepositoryUrl>https://github.com/nventive/Uno.Core</RepositoryUrl>
     <Description>This package provides a set of helpers and extension methods used to accelerate development.</Description>
     <Copyright>Copyright (C) 2015-2019 nventive inc. - all rights reserved</Copyright>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <Import Project="..\Uno.CrossTargeting.props" />

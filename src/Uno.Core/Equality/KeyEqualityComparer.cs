@@ -98,7 +98,7 @@ namespace Uno.Equality
 	/// </summary>
 	/// <typeparam name="T">Type of the object to compare</typeparam>
 	public class KeyEqualityComparer<T> : IEqualityComparer<T>, IEqualityComparer
-		where T : object, IKeyEquatable<T>
+		where T : IKeyEquatable<T>
 	{
 		/// <summary>
 		/// Gets the default instance of the <see cref="KeyEqualityComparer{T}"/>.
