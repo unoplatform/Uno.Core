@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Funq;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace Uno.Core.Tests.Conversions
 {

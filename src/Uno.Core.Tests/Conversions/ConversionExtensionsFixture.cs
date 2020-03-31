@@ -15,7 +15,7 @@
 //
 // ******************************************************************
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uno.Extensions;
 using Uno.Conversion;

@@ -18,10 +18,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCopyright("Copyright ©  2017")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
 [assembly: ComVisible(false)]
 
 [assembly: Guid("b554d7e4-17fc-4909-ba06-80b5b2fb0bd1")]

@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net46</TargetFrameworks>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
-		<NoWarn>$(NoWarn);1998;1591;1573;1572;1574;1712;1711;1570</NoWarn>
+		<NoWarn>$(NoWarn);1998;1591;1573;1572;1574;1712;1711;1570;NU5128;NU5105</NoWarn>
 		<Description></Description>
 		<BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -35,7 +35,7 @@
 			<Pack>true</Pack>
 			<PackagePath>build</PackagePath>
 		</Content>
-		<Content Include="..\Uno.Core\bin\$(Configuration)\net46\Microsoft.Practices.ServiceLocation.dll">
+		<Content Include="..\Uno.Core\bin\$(Configuration)\net46\CommonServiceLocator.dll">
 			<Pack>true</Pack>
 			<PackagePath>build</PackagePath>
 		</Content>
