@@ -15,7 +15,7 @@
 //
 // ******************************************************************
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
