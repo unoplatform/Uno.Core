@@ -18,22 +18,25 @@ using System;
 using CommonServiceLocator;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Uno.Extensions
 {
-    public static class LogExtensionPoint
-    {
-        private static ILoggerFactory _loggerFactory;
+	public static class LogExtensionPoint
+	{
+		private static ILoggerFactory _loggerFactory;
 
-        private static class Container<T>
-        {
-            internal static readonly ILogger Logger = AmbientLoggerFactory.CreateLogger<T>();
-        }
+		private static class Container<T>
+		{
+			internal static readonly ILogger Logger =
+				TryGetLoggerFromServiceProvider(typeof(T))
+				?? AmbientLoggerFactory.CreateLogger<T>();
+		}
 
 		/// <summary>
 		/// Retreives the <see cref="ILoggerFactory"/> for this the Uno extension point.
 		/// </summary>
-		public static ILoggerFactory AmbientLoggerFactory 
+		public static ILoggerFactory AmbientLoggerFactory
 			=> Transactional.Update(ref _loggerFactory, l => l ?? GetFactory());
 
 		/// <summary>
@@ -41,8 +44,10 @@ namespace Uno.Extensions
 		/// </summary>
 		/// <param name="forType"></param>
 		/// <returns></returns>
-		public static ILogger Log(this Type forType) 
-			=> AmbientLoggerFactory.CreateLogger(forType);
+		public static ILogger Log(this Type forType)
+			=> 
+			TryGetLoggerFromServiceProvider(forType)
+			?? AmbientLoggerFactory.CreateLogger(forType);
 
 		/// <summary>
 		/// Gets a logger instance for the current types
@@ -88,5 +93,28 @@ namespace Uno.Extensions
 				return new LoggerFactory();
 			}
 		}
+
+		private static ILogger TryGetLoggerFromServiceProvider(Type categoryTypeName)
+		{
+			if (ServiceLocator.IsLocationProviderSet)
+			{
+				try
+				{
+					var service = ServiceLocator.Current.GetService(typeof(ILogger<>).MakeGenericType(categoryTypeName));
+
+					if (service is ILogger logger 
+						&& logger.GetType().GenericTypeArguments.SequenceEqual(new[] { categoryTypeName }) )
+					{
+						return logger;
+					}
+				}
+				catch
+				{
+				}
+			}
+
+			return null;
+		}
+
 	}
 }
