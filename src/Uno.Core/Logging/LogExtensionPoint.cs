@@ -15,10 +15,11 @@
 //
 // ******************************************************************
 using System;
-using CommonServiceLocator;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 using System.Linq;
+
+using CommonServiceLocator;
+
+using Microsoft.Extensions.Logging;
 
 namespace Uno.Extensions
 {
@@ -45,7 +46,7 @@ namespace Uno.Extensions
 		/// <param name="forType"></param>
 		/// <returns></returns>
 		public static ILogger Log(this Type forType)
-			=> 
+			=>
 			TryGetLoggerFromServiceProvider(forType)
 			?? AmbientLoggerFactory.CreateLogger(forType);
 
@@ -102,8 +103,8 @@ namespace Uno.Extensions
 				{
 					var service = ServiceLocator.Current.GetService(typeof(ILogger<>).MakeGenericType(categoryTypeName));
 
-					if (service is ILogger logger 
-						&& logger.GetType().GenericTypeArguments.SequenceEqual(new[] { categoryTypeName }) )
+					if (service is ILogger logger
+						&& logger.GetType().GenericTypeArguments.SequenceEqual(new[] { categoryTypeName }))
 					{
 						return logger;
 					}
@@ -115,6 +116,5 @@ namespace Uno.Extensions
 
 			return null;
 		}
-
 	}
 }
