@@ -69,34 +69,27 @@ namespace Uno.Core.Tests
 
 			var message = "Test logging";
 
-			this.Log().Warn(message);
-			this.Log().Debug(message);
+			5.Log().Warn(message);
+			typeof(string).Log().Debug(message);
 
 			Assert.AreEqual(2, fakeLocator.Outputs.Count);
 
 			var actualWarning = fakeLocator.Outputs[0];
-			Assert.AreEqual(message, actualWarning.State?.ToString());
+			Assert.AreEqual(message, actualWarning.Message);
 			Assert.AreEqual(LogLevel.Warning, actualWarning.LogLevel);
 
 			var actualDebug = fakeLocator.Outputs[1];
-			Assert.AreEqual(actualDebug, actualWarning.State?.ToString());
-			Assert.AreEqual(LogLevel.Debug, actualWarning.LogLevel);
+			Assert.AreEqual(message, actualDebug.Message);
+			Assert.AreEqual(LogLevel.Debug, actualDebug.LogLevel);
 
 			//ensure 'restore'
 			ServiceLocator.SetLocatorProvider(() => originalProvider);
-			if (originalProvider == null)
-			{
-				Assert.IsFalse(ServiceLocator.IsLocationProviderSet);
-			}
-			else
-			{
-				Assert.AreEqual(originalProvider, ServiceLocator.Current);
-			}
+			Assert.AreEqual(originalProvider, ServiceLocator.Current);
 		}
 
 		private class FakeServiceLocator : IServiceLocator
 		{
-			public IList<(LogLevel LogLevel, EventId EventId, object State, Exception Exception)> Outputs { get; } = new List<(LogLevel, EventId, object, Exception)>();
+			public IList<(LogLevel LogLevel, EventId EventId, string Message)> Outputs { get; } = new List<(LogLevel, EventId, string)>();
 
 			public IEnumerable<object> GetAllInstances(Type serviceType) => throw new NotImplementedException();
 			public IEnumerable<TService> GetAllInstances<TService>() => throw new NotImplementedException();
@@ -106,9 +99,12 @@ namespace Uno.Core.Tests
 			public TService GetInstance<TService>(string key) => throw new NotImplementedException();
 			public object GetService(Type serviceType)
 			{
-				if (serviceType.IsInterface && typeof(ILogger).IsAssignableFrom(serviceType) && serviceType.IsGenericType && serviceType.GenericTypeArguments.Length == 1)
+				if (serviceType.IsInterface && typeof(ILogger).IsAssignableFrom(serviceType)
+					&& serviceType.GenericTypeArguments.Length == 1)
 				{
-					return Activator.CreateInstance(typeof(FakeLogger<>).MakeGenericType(serviceType.GenericTypeArguments.Single()), this);
+					return Activator
+						.CreateInstance(typeof(FakeLogger<>)
+						.MakeGenericType(serviceType.GenericTypeArguments.Single()), args: this);
 				}
 				else
 				{
@@ -128,7 +124,7 @@ namespace Uno.Core.Tests
 				public bool IsEnabled(LogLevel logLevel) => throw new NotImplementedException();
 				public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
 				{
-					locator.Outputs.Add((logLevel, eventId, state, exception));
+					locator.Outputs.Add((logLevel, eventId, formatter(state, exception)));
 				}
 			}
 
