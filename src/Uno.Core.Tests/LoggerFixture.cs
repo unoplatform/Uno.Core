@@ -54,7 +54,36 @@ namespace Uno.Core.Tests
 
 
 		[TestMethod]
-		public void TestWithExternalLogger()
+		public void TestNonGenericLogWithExternalLogger()
+		{
+			//setup
+			var originalProvider = ServiceLocator.IsLocationProviderSet
+				? ServiceLocator.Current
+				: default;
+
+			var fakeLocator = new FakeServiceLocator();
+
+			ServiceLocator.SetLocatorProvider(() => fakeLocator);
+
+			Assert.AreEqual(fakeLocator, ServiceLocator.Current);
+
+			var message = "Test logging";
+
+			typeof(string).Log().Debug(message);
+
+			Assert.AreEqual(1, fakeLocator.Outputs.Count);
+
+			var actualDebug = fakeLocator.Outputs.Single();
+			Assert.AreEqual(message, actualDebug.Message);
+			Assert.AreEqual(LogLevel.Debug, actualDebug.LogLevel);
+
+			//ensure 'restore'
+			ServiceLocator.SetLocatorProvider(() => originalProvider);
+			Assert.AreEqual(originalProvider, ServiceLocator.Current);
+		}
+
+		[TestMethod]
+		public void TestGenericLogWithExternalLogger()
 		{
 			//setup
 			var originalProvider = ServiceLocator.IsLocationProviderSet
@@ -70,17 +99,12 @@ namespace Uno.Core.Tests
 			var message = "Test logging";
 
 			5.Log().Warn(message);
-			typeof(string).Log().Debug(message);
 
-			Assert.AreEqual(2, fakeLocator.Outputs.Count);
+			Assert.AreEqual(1, fakeLocator.Outputs.Count);
 
-			var actualWarning = fakeLocator.Outputs[0];
+			var actualWarning = fakeLocator.Outputs.Single();
 			Assert.AreEqual(message, actualWarning.Message);
 			Assert.AreEqual(LogLevel.Warning, actualWarning.LogLevel);
-
-			var actualDebug = fakeLocator.Outputs[1];
-			Assert.AreEqual(message, actualDebug.Message);
-			Assert.AreEqual(LogLevel.Debug, actualDebug.LogLevel);
 
 			//ensure 'restore'
 			ServiceLocator.SetLocatorProvider(() => originalProvider);
