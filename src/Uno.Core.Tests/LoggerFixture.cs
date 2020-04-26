@@ -75,9 +75,18 @@ namespace Uno.Core.Tests
 			Assert.AreEqual(message, actualDebug.Message);
 			Assert.AreEqual(LogLevel.Debug, actualDebug.LogLevel);
 
-			//ensure 'restore'
-			ServiceLocator.SetLocatorProvider(() => originalProvider);
-			Assert.AreEqual(originalProvider, ServiceLocator.Current);
+			//teardown
+			if (originalProvider == null)
+			{
+				ServiceLocator.SetLocatorProvider(null);
+				Assert.IsFalse(ServiceLocator.IsLocationProviderSet);
+			}
+			else
+			{
+				ServiceLocator.SetLocatorProvider(() => originalProvider);
+				Assert.IsTrue(ServiceLocator.IsLocationProviderSet);
+				Assert.AreEqual(originalProvider, ServiceLocator.Current);
+			}
 		}
 
 		[TestMethod]
@@ -104,9 +113,18 @@ namespace Uno.Core.Tests
 			Assert.AreEqual(message, actualWarning.Message);
 			Assert.AreEqual(LogLevel.Warning, actualWarning.LogLevel);
 
-			//ensure 'restore'
-			ServiceLocator.SetLocatorProvider(() => originalProvider);
-			Assert.AreEqual(originalProvider, ServiceLocator.Current);
+			//teardown
+			if (originalProvider == null)
+			{
+				ServiceLocator.SetLocatorProvider(null);
+				Assert.IsFalse(ServiceLocator.IsLocationProviderSet);
+			}
+			else
+			{
+				ServiceLocator.SetLocatorProvider(() => originalProvider);
+				Assert.IsTrue(ServiceLocator.IsLocationProviderSet);
+				Assert.AreEqual(originalProvider, ServiceLocator.Current);
+			}
 		}
 
 		private class FakeServiceLocator : IServiceLocator
