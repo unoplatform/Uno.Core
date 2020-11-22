@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,34 +14,35 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Linq.Expressions;
 
 namespace Uno.Expressions
 {
-    public class EditableParameterExpression : EditableExpression<ParameterExpression>
-    {
-        public EditableParameterExpression(ParameterExpression expression)
-            : base(expression, false)
-        {
-            Type = expression.Type;
-            Name = expression.Name;
-        }
+	public class EditableParameterExpression : EditableExpression<ParameterExpression>
+	{
+		public EditableParameterExpression(ParameterExpression expression)
+			: base(expression, false)
+		{
+			Type = expression.Type;
+			Name = expression.Name;
+		}
 
-        public Type Type { get; set; }
+		public Type Type { get; set; }
 
-        public string Name { get; set; }
+		public string Name { get; set; }
 
-        public override ParameterExpression DoToExpression()
-        {
-            return Expression.Parameter(Type, Name);
-        }
+		public override ParameterExpression DoToExpression()
+		{
+			return Expression.Parameter(Type, Name);
+		}
 
-        protected override bool ShouldUse(ParameterExpression expression)
-        {
-            return expression.Type == Type /* &&
-                    expression.Name == Name*/;
-                //TODO Support Name, Index strategies to compare parameters (Require Parent Collection for index?)
-        }
-    }
+		protected override bool ShouldUse(ParameterExpression expression)
+		{
+			return expression.Type == Type /* &&
+					expression.Name == Name*/;
+				//TODO Support Name, Index strategies to compare parameters (Require Parent Collection for index?)
+		}
+	}
 }

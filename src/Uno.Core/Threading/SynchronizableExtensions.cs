@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,40 +14,41 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using Uno.Threading;
 
 namespace Uno.Extensions
 {
-    public static class SynchronizableExtensions
-    {
-        public static void Read<T>(this ISynchronizableLock<T> sync, Action<T> read)
-        {
-            Read<T, Null>(sync, item =>
-                                    {
-                                        read(item);
-                                        return null;
-                                    });
-        }
+	public static class SynchronizableExtensions
+	{
+		public static void Read<T>(this ISynchronizableLock<T> sync, Action<T> read)
+		{
+			Read<T, Null>(sync, item =>
+									{
+										read(item);
+										return null;
+									});
+		}
 
-        public static void Write<T>(this ISynchronizableLock<T> sync, Action<T> write)
-        {
-            Write<T, Null>(sync, item =>
-                                     {
-                                         write(item);
-                                         return null;
-                                     });
-        }
+		public static void Write<T>(this ISynchronizableLock<T> sync, Action<T> write)
+		{
+			Write<T, Null>(sync, item =>
+									 {
+										 write(item);
+										 return null;
+									 });
+		}
 
-        public static TValue Write<T, TValue>(this ISynchronizableLock<T> sync, Func<T, TValue> write)
-        {
-            return sync.Write(-1, write);
-        }
+		public static TValue Write<T, TValue>(this ISynchronizableLock<T> sync, Func<T, TValue> write)
+		{
+			return sync.Write(-1, write);
+		}
 
-        public static TValue Read<T, TValue>(this ISynchronizableLock<T> sync, Func<T, TValue> read)
-        {
-            return sync.Read(-1, read);
-        }
+		public static TValue Read<T, TValue>(this ISynchronizableLock<T> sync, Func<T, TValue> read)
+		{
+			return sync.Read(-1, read);
+		}
 
 		/// <summary>
 		/// Performs a write operation if the read operation returns false.
@@ -56,18 +57,18 @@ namespace Uno.Extensions
 		/// <param name="write">A lambda that will perform the write if the read failed</param>
 		/// <returns>true if the read succeeded, otherwise false.</returns>
 		public static bool Write<T>(this ISynchronizableLock<T> sync, Func<T, bool> read, Action<T> write)
-        {
-            return sync.Write(-1, read, write);
-        }
+		{
+			return sync.Write(-1, read, write);
+		}
 
-        public static IDisposable CreateReaderScope<T>(this ISynchronizableLock<T> sync)
-        {
-            return sync.CreateReaderScope(-1);
-        }
+		public static IDisposable CreateReaderScope<T>(this ISynchronizableLock<T> sync)
+		{
+			return sync.CreateReaderScope(-1);
+		}
 
-        public static IDisposable CreateWriterScope<T>(this ISynchronizableLock<T> sync)
-        {
-            return sync.CreateWriterScope(-1);
-        }
-    }
+		public static IDisposable CreateWriterScope<T>(this ISynchronizableLock<T> sync)
+		{
+			return sync.CreateWriterScope(-1);
+		}
+	}
 }

@@ -1,13 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27009.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.64
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uno.Core.Tests", "Uno.Core.Tests\Uno.Core.Tests.csproj", "{B554D7E4-17FC-4909-BA06-80B5B2FB0BD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uno.Core.Tests", "Uno.Core.Tests\Uno.Core.Tests.csproj", "{B554D7E4-17FC-4909-BA06-80B5B2FB0BD1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uno.Core", "Uno.Core\Uno.Core.csproj", "{ABB4F177-6966-4C24-A465-A5E941A70680}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uno.Core.Build", "Uno.Core.Build\Uno.Core.Build.csproj", "{E414AC61-1BED-458E-A78C-868514DDA1A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1D12D059-9984-473D-9A9A-2D4FCDC0355E}"
+	ProjectSection(SolutionItems) = preProject
+		..\.azure-pipelines.yml = ..\.azure-pipelines.yml
+		..\build\build.ps1 = ..\build\build.ps1
+		..\build\header.txt = ..\build\header.txt
+		..\Readme.md = ..\Readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

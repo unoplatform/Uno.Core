@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -21,42 +22,42 @@ using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableMethodCallExpression : EditableExpression<MethodCallExpression>
-    {
-        private readonly EditableExpressionCollection<Expression> arguments;
+	public class EditableMethodCallExpression : EditableExpression<MethodCallExpression>
+	{
+		private readonly EditableExpressionCollection<Expression> arguments;
 
-        public EditableMethodCallExpression(MethodCallExpression expression)
-            : base(expression, false)
-        {
-            Method = expression.Method;
-            Object = expression.Object.Edit();
-            arguments = new EditableExpressionCollection<Expression>(expression.Arguments);
-        }
+		public EditableMethodCallExpression(MethodCallExpression expression)
+			: base(expression, false)
+		{
+			Method = expression.Method;
+			Object = expression.Object.Edit();
+			arguments = new EditableExpressionCollection<Expression>(expression.Arguments);
+		}
 
-        public MethodInfo Method { get; set; }
+		public MethodInfo Method { get; set; }
 
-        public IEditableExpression Object { get; set; }
+		public IEditableExpression Object { get; set; }
 
-        public EditableExpressionCollection<Expression> Arguments
-        {
-            get { return arguments; }
-        }
+		public EditableExpressionCollection<Expression> Arguments
+		{
+			get { return arguments; }
+		}
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get
-            {
-                yield return Object;
-                foreach (var item in Arguments.Items)
-                {
-                    yield return item;
-                }
-            }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get
+			{
+				yield return Object;
+				foreach (var item in Arguments.Items)
+				{
+					yield return item;
+				}
+			}
+		}
 
-        public override MethodCallExpression DoToExpression()
-        {
-            return Expression.Call(Object.ToExpression(), Method, arguments.ToExpression());
-        }
-    }
+		public override MethodCallExpression DoToExpression()
+		{
+			return Expression.Call(Object.ToExpression(), Method, arguments.ToExpression());
+		}
+	}
 }

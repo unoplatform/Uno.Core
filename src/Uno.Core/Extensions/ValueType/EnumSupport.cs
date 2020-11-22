@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,49 +14,32 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 
 namespace Uno.Extensions.ValueType
 {
-    public class EnumSupport<T> : ValueSupport<T>
-    {
-        private readonly IValueSupport support;
+	public class EnumSupport<T> : ValueSupport<T>
+	{
+		private readonly IValueSupport support;
 
-        public EnumSupport()
-        {
-            var type = Enum.GetUnderlyingType(typeof (T));
+		public EnumSupport()
+		{
+			var type = Enum.GetUnderlyingType(typeof (T));
 
-            support = ValueSupport.Get(type);
-        }
+			support = ValueSupport.Get(type);
+		}
 
-        protected override T CoreAnd(T lhs, T rhs)
-        {
-            return (T) support.And(lhs, rhs);
-        }
+		protected override T CoreAnd(T lhs, T rhs) => (T) support.And(lhs, rhs);
 
-        protected override T CoreXor(T lhs, T rhs)
-        {
-            return (T) support.Xor(lhs, rhs);
-        }
+		protected override T CoreXor(T lhs, T rhs) => (T) support.Xor(lhs, rhs);
 
-        protected override T CoreAdd(T lhs, T rhs)
-        {
-            return CoreOr(lhs, rhs);
-        }
+		protected override T CoreAdd(T lhs, T rhs) => CoreOr(lhs, rhs);
 
-        protected override T CoreSubstract(T lhs, T rhs)
-        {
-            return (T) support.And(lhs, support.Not(rhs));
-        }
+		protected override T CoreSubstract(T lhs, T rhs) => (T) support.And(lhs, support.Not(rhs));
 
-        protected override T CoreOr(T lhs, T rhs)
-        {
-            return (T) support.Or(lhs, rhs);
-        }
+		protected override T CoreOr(T lhs, T rhs) => (T) support.Or(lhs, rhs);
 
-        protected override T CoreNot(T instance)
-        {
-            return (T) support.Not(instance);
-        }
-    }
+		protected override T CoreNot(T instance) => (T) support.Not(instance);
+	}
 }

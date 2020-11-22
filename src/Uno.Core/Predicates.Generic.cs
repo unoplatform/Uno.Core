@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using Uno.Extensions;
 
 namespace Uno
 {
 	/// <summary>
-	/// A set of common prediactes
+	/// A set of common predicates
 	/// </summary>
 	/// <typeparam name="T">Type of parameter of predicates</typeparam>
 	public static class Predicates<T>

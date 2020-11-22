@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -21,27 +22,27 @@ using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableMemberExpression : EditableExpression<MemberExpression>
-    {
-        public EditableMemberExpression(MemberExpression expression)
-            : base(expression, false)
-        {
-            Member = expression.Member;
-            Expression = expression.Expression.Edit();
-        }
+	public class EditableMemberExpression : EditableExpression<MemberExpression>
+	{
+		public EditableMemberExpression(MemberExpression expression)
+			: base(expression, false)
+		{
+			Member = expression.Member;
+			Expression = expression.Expression.Edit();
+		}
 
-        public MemberInfo Member { get; set; }
+		public MemberInfo Member { get; set; }
 
-        public IEditableExpression Expression { get; set; }
+		public IEditableExpression Expression { get; set; }
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get { yield return Expression; }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get { yield return Expression; }
+		}
 
-        public override MemberExpression DoToExpression()
-        {
-            return System.Linq.Expressions.Expression.MakeMemberAccess(Expression.ToExpression(), Member);
-        }
-    }
+		public override MemberExpression DoToExpression()
+		{
+			return System.Linq.Expressions.Expression.MakeMemberAccess(Expression.ToExpression(), Member);
+		}
+	}
 }

@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,45 +14,46 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableLambdaExpression : EditableExpression<LambdaExpression>
-    {
-        private readonly EditableParameterExpressionCollection parameters;
+	public class EditableLambdaExpression : EditableExpression<LambdaExpression>
+	{
+		private readonly EditableParameterExpressionCollection parameters;
 
-        public EditableLambdaExpression(LambdaExpression expression)
-            : base(expression, false)
-        {
-            Body = expression.Body.Edit();
-            parameters = new EditableParameterExpressionCollection(Body, expression.Parameters);
-        }
+		public EditableLambdaExpression(LambdaExpression expression)
+			: base(expression, false)
+		{
+			Body = expression.Body.Edit();
+			parameters = new EditableParameterExpressionCollection(Body, expression.Parameters);
+		}
 
-        public IEditableExpression Body { get; set; }
+		public IEditableExpression Body { get; set; }
 
-        public EditableParameterExpressionCollection Parameters
-        {
-            get { return parameters; }
-        }
+		public EditableParameterExpressionCollection Parameters
+		{
+			get { return parameters; }
+		}
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get
-            {
-                yield return Body;
-                foreach (var item in Parameters.Items)
-                {
-                    yield return item;
-                }
-            }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get
+			{
+				yield return Body;
+				foreach (var item in Parameters.Items)
+				{
+					yield return item;
+				}
+			}
+		}
 
-        public override LambdaExpression DoToExpression()
-        {
-            return Expression.Lambda(OriginalExpression.Type, Body.ToExpression(), Parameters.ToExpression());
-        }
-    }
+		public override LambdaExpression DoToExpression()
+		{
+			return Expression.Lambda(OriginalExpression.Type, Body.ToExpression(), Parameters.ToExpression());
+		}
+	}
 }

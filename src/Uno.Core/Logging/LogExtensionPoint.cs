@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using CommonServiceLocator;
 using Microsoft.Extensions.Logging;
@@ -21,14 +22,14 @@ using System.Diagnostics;
 
 namespace Uno.Extensions
 {
-    public static class LogExtensionPoint
-    {
-        private static ILoggerFactory _loggerFactory;
+	public static class LogExtensionPoint
+	{
+		private static ILoggerFactory _loggerFactory;
 
-        private static class Container<T>
-        {
-            internal static readonly ILogger Logger = AmbientLoggerFactory.CreateLogger<T>();
-        }
+		private static class Container<T>
+		{
+			internal static readonly ILogger Logger = AmbientLoggerFactory.CreateLogger<T>();
+		}
 
 		/// <summary>
 		/// Retreives the <see cref="ILoggerFactory"/> for this the Uno extension point.

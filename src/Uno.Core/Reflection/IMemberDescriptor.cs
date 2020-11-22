@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,26 +14,27 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Reflection;
 
 namespace Uno.Reflection
 {
-    public interface IMemberDescriptor
-    {
-        Type Type { get; }
+	public interface IMemberDescriptor
+	{
+		Type Type { get; }
 
-        MemberInfo MemberInfo { get; }
+		MemberInfo MemberInfo { get; }
 
-        bool IsStatic { get; }
-        bool IsInstance { get; }
+		bool IsStatic { get; }
+		bool IsInstance { get; }
 
-        bool IsGeneric { get; }
+		bool IsGeneric { get; }
 
-        bool IsOpen { get; }
-        bool IsClosed { get; }
+		bool IsOpen { get; }
+		bool IsClosed { get; }
 
-        IMemberDescriptor Open();
-        IMemberDescriptor Close(params Type[] types);
-    }
+		IMemberDescriptor Open();
+		IMemberDescriptor Close(params Type[] types);
+	}
 }

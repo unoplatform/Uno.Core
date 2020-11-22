@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,53 +14,27 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 namespace Uno.Extensions.ValueType
 {
-    public class Int32Support : ValueSupport<int>
+	public class Int32Support : ValueSupport<int>
     {
-        protected override int CoreAnd(int lhs, int rhs)
-        {
-            return lhs & rhs;
-        }
+        protected override int CoreAnd(int lhs, int rhs) => lhs & rhs;
 
-        protected override int CoreOr(int lhs, int rhs)
-        {
-            return lhs | rhs;
-        }
+        protected override int CoreOr(int lhs, int rhs) => lhs | rhs;
 
-        protected override int CoreXor(int lhs, int rhs)
-        {
-            return lhs ^ rhs;
-        }
+        protected override int CoreXor(int lhs, int rhs) => lhs ^ rhs;
 
-        protected override int CoreAdd(int lhs, int rhs)
-        {
-            return lhs + rhs;
-        }
+        protected override int CoreAdd(int lhs, int rhs) => lhs + rhs;
 
-        protected override int CoreSubstract(int lhs, int rhs)
-        {
-            return lhs - rhs;
-        }
+        protected override int CoreSubstract(int lhs, int rhs) => lhs - rhs;
 
-        protected override int CoreMultiply(int lhs, int rhs)
-        {
-            return lhs*rhs;
-        }
+        protected override int CoreMultiply(int lhs, int rhs) => lhs*rhs;
 
-        protected override int CoreDivide(int lhs, int rhs)
-        {
-            return lhs/rhs;
-        }
+        protected override int CoreDivide(int lhs, int rhs) => lhs/rhs;
 
-        protected override int CoreNegate(int instance)
-        {
-            return -instance;
-        }
+        protected override int CoreNegate(int instance) => -instance;
 
-        protected override int CoreNot(int instance)
-        {
-            return ~instance;
-        }
+        protected override int CoreNot(int instance) => ~instance;
     }
 }

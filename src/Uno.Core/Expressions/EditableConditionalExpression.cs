@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,41 +14,42 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableConditionalExpression : EditableExpression<ConditionalExpression>
-    {
-        public EditableConditionalExpression(ConditionalExpression expression)
-            : base(expression)
-        {
-            Test = expression.Test.Edit();
-            IfTrue = expression.IfTrue.Edit();
-            IfFalse = expression.IfFalse.Edit();
-        }
+	public class EditableConditionalExpression : EditableExpression<ConditionalExpression>
+	{
+		public EditableConditionalExpression(ConditionalExpression expression)
+			: base(expression)
+		{
+			Test = expression.Test.Edit();
+			IfTrue = expression.IfTrue.Edit();
+			IfFalse = expression.IfFalse.Edit();
+		}
 
-        public IEditableExpression Test { get; set; }
+		public IEditableExpression Test { get; set; }
 
-        public IEditableExpression IfTrue { get; set; }
+		public IEditableExpression IfTrue { get; set; }
 
-        public IEditableExpression IfFalse { get; set; }
+		public IEditableExpression IfFalse { get; set; }
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get
-            {
-                yield return Test;
-                yield return IfTrue;
-                yield return IfFalse;
-            }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get
+			{
+				yield return Test;
+				yield return IfTrue;
+				yield return IfFalse;
+			}
+		}
 
-        public override ConditionalExpression DoToExpression()
-        {
-            return Expression.Condition(Test.ToExpression(), IfTrue.ToExpression(), IfFalse.ToExpression());
-        }
-    }
+		public override ConditionalExpression DoToExpression()
+		{
+			return Expression.Condition(Test.ToExpression(), IfTrue.ToExpression(), IfFalse.ToExpression());
+		}
+	}
 }

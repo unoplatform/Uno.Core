@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,22 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using Uno.Extensions;
 
 namespace Uno.Serialization
 {
-    public class SerializationExtensionPoint<T> : ExtensionPoint<T>
-    {
-        public SerializationExtensionPoint(T value)
-            : base(value)
-        {
-        }
+	public class SerializationExtensionPoint<T> : ExtensionPoint<T>
+	{
+		public SerializationExtensionPoint(T value)
+			: base(value)
+		{
+		}
 
-        public SerializationExtensionPoint(Type type)
-            : base(type)
-        {
-        }
-    }
+		public SerializationExtensionPoint(Type type)
+			: base(type)
+		{
+		}
+	}
 }

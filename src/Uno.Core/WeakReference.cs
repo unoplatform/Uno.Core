@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,45 +14,37 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 #if !XAMARIN && !WINDOWS_UWP
 using System;
 
 namespace Uno
 {
-    public class WeakReference<T>
-    {
-        private readonly WeakReference _reference;
-        public WeakReference(T target)
-        {
-            _reference = new WeakReference(target);
-        }
+	public class WeakReference<T>
+	{
+		private readonly WeakReference _reference;
+		public WeakReference(T target)
+		{
+			_reference = new WeakReference(target);
+		}
 
-        public T Target
-        {
-            get { return (T)_reference.Target; }
-            set { _reference.Target = value; }
-        }
+		public T Target
+		{
+			get => (T)_reference.Target;
+			set => _reference.Target = value;
+		}
 
-        public bool IsAlive
-        {
-            get { return _reference.IsAlive; }
-        }
+		public bool IsAlive => _reference.IsAlive;
 
-        public bool TrackResurrection
-        {
-            get { return _reference.TrackResurrection; }
-        }
+		public bool TrackResurrection => _reference.TrackResurrection;
 
-        public bool TryGetTarget(out T target)
-        {
-            target = Target;
-            return _reference.IsAlive;
-        }
+		public bool TryGetTarget(out T target)
+		{
+			target = Target;
+			return _reference.IsAlive;
+		}
 
-        public T GetTarget()
-        {
-            return Target;
-        }
-    }
+		public T GetTarget() => Target;
+	}
 }
 #endif

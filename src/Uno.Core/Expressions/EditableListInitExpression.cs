@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,40 +22,40 @@ using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableListInitExpression : EditableExpression<ListInitExpression>
-    {
-        private readonly List<EditableElementInit> initializers;
+	public class EditableListInitExpression : EditableExpression<ListInitExpression>
+	{
+		private readonly List<EditableElementInit> initializers;
 
-        public EditableListInitExpression(ListInitExpression expression)
-            : base(expression, false)
-        {
-            initializers = new List<EditableElementInit>(expression.Initializers.Select(item => new EditableElementInit(item)));
-            NewExpression = expression.NewExpression.Edit();
-        }
+		public EditableListInitExpression(ListInitExpression expression)
+			: base(expression, false)
+		{
+			initializers = new List<EditableElementInit>(expression.Initializers.Select(item => new EditableElementInit(item)));
+			NewExpression = expression.NewExpression.Edit();
+		}
 
-        public EditableNewExpression NewExpression { get; set; }
+		public EditableNewExpression NewExpression { get; set; }
 
-        public IList<EditableElementInit> Initializers
-        {
-            get { return initializers; }
-        }
+		public IList<EditableElementInit> Initializers
+		{
+			get { return initializers; }
+		}
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get
-            {
-                yield return NewExpression;
-                foreach (var init in Initializers.SelectMany(item => item.Arguments.Items).Cast<IEditableExpression>())
-                {
-                    yield return init;
-                }
-            }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get
+			{
+				yield return NewExpression;
+				foreach (var init in Initializers.SelectMany(item => item.Arguments.Items).Cast<IEditableExpression>())
+				{
+					yield return init;
+				}
+			}
+		}
 
-        public override ListInitExpression DoToExpression()
-        {
-            return Expression.ListInit(NewExpression.DoToExpression(),
-                                       initializers.Select(item => item.ToElementInit()).ToArray());
-        }
-    }
+		public override ListInitExpression DoToExpression()
+		{
+			return Expression.ListInit(NewExpression.DoToExpression(),
+									   initializers.Select(item => item.ToElementInit()).ToArray());
+		}
+	}
 }

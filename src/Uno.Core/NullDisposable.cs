@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,36 +14,37 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 
 namespace Uno
 {
-    /// <summary>
-    /// An empty implementation of the IDisposable class.
-    /// </summary>
-    public class NullDisposable : IDisposable
-    {
-        /// <summary>
-        /// Provider for a instance of the NullDisposable
-        /// </summary>
-        public static readonly IDisposable Instance = new NullDisposable();
+	/// <summary>
+	/// An empty implementation of the IDisposable class.
+	/// </summary>
+	public class NullDisposable : IDisposable
+	{
+		/// <summary>
+		/// Provider for a instance of the NullDisposable
+		/// </summary>
+		public static readonly IDisposable Instance = new NullDisposable();
 
-        /// <summary>
-        /// Private constructor, use Instance.
-        /// </summary>
-        private NullDisposable()
-        {
-        }
+		/// <summary>
+		/// Private constructor, use Instance.
+		/// </summary>
+		private NullDisposable()
+		{
+		}
 
-        #region IDisposable Members
+		#region IDisposable Members
 
-        /// <summary>
-        /// See IDisposable.
-        /// </summary>
-        public void Dispose()
-        {
-        }
+		/// <summary>
+		/// See IDisposable.
+		/// </summary>
+		public void Dispose()
+		{
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

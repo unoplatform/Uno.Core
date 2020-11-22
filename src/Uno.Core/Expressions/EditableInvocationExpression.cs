@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,32 +22,32 @@ using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableInvocationExpression : EditableExpression<InvocationExpression>
-    {
-        private readonly EditableExpressionCollection<Expression> arguments;
+	public class EditableInvocationExpression : EditableExpression<InvocationExpression>
+	{
+		private readonly EditableExpressionCollection<Expression> arguments;
 
-        public EditableInvocationExpression(InvocationExpression expression)
-            : base(expression, false)
-        {
-            Expression = expression.Expression.Edit();
-            arguments = new EditableExpressionCollection<Expression>(expression.Arguments);
-        }
+		public EditableInvocationExpression(InvocationExpression expression)
+			: base(expression, false)
+		{
+			Expression = expression.Expression.Edit();
+			arguments = new EditableExpressionCollection<Expression>(expression.Arguments);
+		}
 
-        public EditableExpressionCollection<Expression> Arguments
-        {
-            get { return arguments; }
-        }
+		public EditableExpressionCollection<Expression> Arguments
+		{
+			get { return arguments; }
+		}
 
-        public IEditableExpression Expression { get; set; }
+		public IEditableExpression Expression { get; set; }
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get { return Arguments.Items.Cast<IEditableExpression>(); }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get { return Arguments.Items.Cast<IEditableExpression>(); }
+		}
 
-        public override InvocationExpression DoToExpression()
-        {
-            return System.Linq.Expressions.Expression.Invoke(Expression.ToExpression(), Arguments.ToExpression());
-        }
-    }
+		public override InvocationExpression DoToExpression()
+		{
+			return System.Linq.Expressions.Expression.Invoke(Expression.ToExpression(), Arguments.ToExpression());
+		}
+	}
 }

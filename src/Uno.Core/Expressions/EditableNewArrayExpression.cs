@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,62 +22,62 @@ using System.Linq.Expressions;
 
 namespace Uno.Expressions
 {
-    public class EditableNewArrayExpression : EditableExpression<NewArrayExpression>
-    {
-        private readonly EditableExpressionCollection<Expression> expressions;
+	public class EditableNewArrayExpression : EditableExpression<NewArrayExpression>
+	{
+		private readonly EditableExpressionCollection<Expression> expressions;
 
-        public EditableNewArrayExpression(NewArrayExpression expression)
-            : base(expression)
-        {
-            Type = expression.Type;
-            expressions = new EditableExpressionCollection<Expression>(expression.Expressions);
-        }
+		public EditableNewArrayExpression(NewArrayExpression expression)
+			: base(expression)
+		{
+			Type = expression.Type;
+			expressions = new EditableExpressionCollection<Expression>(expression.Expressions);
+		}
 
-        public override ExpressionType NodeType
-        {
-            get { return base.NodeType; }
-            set
-            {
-                switch (value)
-                {
-                    case System.Linq.Expressions.ExpressionType.NewArrayInit:
-                    case System.Linq.Expressions.ExpressionType.NewArrayBounds:
-                        base.NodeType = value;
-                        break;
+		public override ExpressionType NodeType
+		{
+			get { return base.NodeType; }
+			set
+			{
+				switch (value)
+				{
+					case System.Linq.Expressions.ExpressionType.NewArrayInit:
+					case System.Linq.Expressions.ExpressionType.NewArrayBounds:
+						base.NodeType = value;
+						break;
 
-                    default:
-                        throw new InvalidOperationException(
-                            "NodeType for NewArrayExpression must be ExpressionType.NewArrayInit or ExpressionType.NewArrayBounds");
-                }
-            }
-        }
+					default:
+						throw new InvalidOperationException(
+							"NodeType for NewArrayExpression must be ExpressionType.NewArrayInit or ExpressionType.NewArrayBounds");
+				}
+			}
+		}
 
-        public Type Type { get; set; }
+		public Type Type { get; set; }
 
-        public EditableExpressionCollection<Expression> Expressions
-        {
-            get { return expressions; }
-        }
+		public EditableExpressionCollection<Expression> Expressions
+		{
+			get { return expressions; }
+		}
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get { return Expressions.Items.Cast<IEditableExpression>(); }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get { return Expressions.Items.Cast<IEditableExpression>(); }
+		}
 
-        public override NewArrayExpression DoToExpression()
-        {
-            switch (NodeType)
-            {
-                case System.Linq.Expressions.ExpressionType.NewArrayInit:
-                    return Expression.NewArrayInit(Type, expressions.ToExpression());
+		public override NewArrayExpression DoToExpression()
+		{
+			switch (NodeType)
+			{
+				case System.Linq.Expressions.ExpressionType.NewArrayInit:
+					return Expression.NewArrayInit(Type, expressions.ToExpression());
 
-                case System.Linq.Expressions.ExpressionType.NewArrayBounds:
-                    return Expression.NewArrayBounds(Type, expressions.ToExpression());
+				case System.Linq.Expressions.ExpressionType.NewArrayBounds:
+					return Expression.NewArrayBounds(Type, expressions.ToExpression());
 
-                default:
-                    throw new InvalidOperationException(
-                        "NodeType for NewArrayExpression must be ExpressionType.NewArrayInit or ExpressionType.NewArrayBounds");
-            }
-        }
-    }
+				default:
+					throw new InvalidOperationException(
+						"NodeType for NewArrayExpression must be ExpressionType.NewArrayInit or ExpressionType.NewArrayBounds");
+			}
+		}
+	}
 }

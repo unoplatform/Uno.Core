@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,37 +14,38 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableBinaryExpression : EditableExpression<BinaryExpression>
-    {
-        public EditableBinaryExpression(BinaryExpression expression)
-            : base(expression)
-        {
-            Left = expression.Left.Edit();
-            Right = expression.Right.Edit();
-        }
+	public class EditableBinaryExpression : EditableExpression<BinaryExpression>
+	{
+		public EditableBinaryExpression(BinaryExpression expression)
+			: base(expression)
+		{
+			Left = expression.Left.Edit();
+			Right = expression.Right.Edit();
+		}
 
-        public IEditableExpression Left { get; set; }
+		public IEditableExpression Left { get; set; }
 
-        public IEditableExpression Right { get; set; }
+		public IEditableExpression Right { get; set; }
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get
-            {
-                yield return Left;
-                yield return Right;
-            }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get
+			{
+				yield return Left;
+				yield return Right;
+			}
+		}
 
-        public override BinaryExpression DoToExpression()
-        {
-            return Expression.MakeBinary(NodeType, Left.ToExpression(), Right.ToExpression());
-        }
-    }
+		public override BinaryExpression DoToExpression()
+		{
+			return Expression.MakeBinary(NodeType, Left.ToExpression(), Right.ToExpression());
+		}
+	}
 }

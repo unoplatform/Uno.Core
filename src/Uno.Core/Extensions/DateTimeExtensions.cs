@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using Uno.Extensions.ValueType;
 
@@ -52,66 +53,66 @@ namespace Uno.Extensions
 			return AddWeekDays(instance, Convert.ToInt32(timeSpan.TotalDays));
 		}
 
-        public static bool Equal(this DateTime lhs, DateTime rhs, DateTimeUnit unit)
-        {
-            if (unit.ContainsAll(DateTimeUnit.Year))
-            {
-                if (lhs.Year != rhs.Year)
-                {
-                    return false;
-                }
-            }
+		public static bool Equal(this DateTime lhs, DateTime rhs, DateTimeUnit unit)
+		{
+			if (unit.ContainsAll(DateTimeUnit.Year))
+			{
+				if (lhs.Year != rhs.Year)
+				{
+					return false;
+				}
+			}
 
-            if (unit.ContainsAll(DateTimeUnit.Month))
-            {
-                if (lhs.Month != rhs.Month)
-                {
-                    return false;
-                }
-            }
+			if (unit.ContainsAll(DateTimeUnit.Month))
+			{
+				if (lhs.Month != rhs.Month)
+				{
+					return false;
+				}
+			}
 
-            if (unit.ContainsAll(DateTimeUnit.Day))
-            {
-                if (lhs.Day != rhs.Day)
-                {
-                    return false;
-                }
-            }
+			if (unit.ContainsAll(DateTimeUnit.Day))
+			{
+				if (lhs.Day != rhs.Day)
+				{
+					return false;
+				}
+			}
 
-            if (unit.ContainsAll(DateTimeUnit.Hour))
-            {
-                if (lhs.Hour != rhs.Hour)
-                {
-                    return false;
-                }
-            }
+			if (unit.ContainsAll(DateTimeUnit.Hour))
+			{
+				if (lhs.Hour != rhs.Hour)
+				{
+					return false;
+				}
+			}
 
-            if (unit.ContainsAll(DateTimeUnit.Minute))
-            {
-                if (lhs.Minute != rhs.Minute)
-                {
-                    return false;
-                }
-            }
+			if (unit.ContainsAll(DateTimeUnit.Minute))
+			{
+				if (lhs.Minute != rhs.Minute)
+				{
+					return false;
+				}
+			}
 
-            if (unit.ContainsAll(DateTimeUnit.Second))
-            {
-                if (lhs.Second != rhs.Second)
-                {
-                    return false;
-                }
-            }
+			if (unit.ContainsAll(DateTimeUnit.Second))
+			{
+				if (lhs.Second != rhs.Second)
+				{
+					return false;
+				}
+			}
 
-            if (unit.ContainsAll(DateTimeUnit.Millisecond))
-            {
-                if (lhs.Millisecond != rhs.Millisecond)
-                {
-                    return false;
-                }
-            }
+			if (unit.ContainsAll(DateTimeUnit.Millisecond))
+			{
+				if (lhs.Millisecond != rhs.Millisecond)
+				{
+					return false;
+				}
+			}
 
-            return true;
-        }
+			return true;
+		}
 
 		public static DateTime Truncate(this DateTime instance, DateTimeUnit unit)
 		{

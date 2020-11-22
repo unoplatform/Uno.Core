@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,30 +22,30 @@ using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableExpressionCollection<T>
-        where T : Expression
-    {
-        private readonly IList<EditableExpression<T>> items;
+	public class EditableExpressionCollection<T>
+		where T : Expression
+	{
+		private readonly IList<EditableExpression<T>> items;
 
-        public EditableExpressionCollection(IEnumerable<Expression> items)
-        {
-            this.items = new List<EditableExpression<T>>(items.Edit().Cast<EditableExpression<T>>());
-        }
+		public EditableExpressionCollection(IEnumerable<Expression> items)
+		{
+			this.items = new List<EditableExpression<T>>(items.Edit().Cast<EditableExpression<T>>());
+		}
 
-        // TODO parameter can be type IEnumerable
-        public EditableExpressionCollection(IEnumerable<T> items)
-            : this(items.Cast<Expression>())
-        {
-        }
+		// TODO parameter can be type IEnumerable
+		public EditableExpressionCollection(IEnumerable<T> items)
+			: this(items.Cast<Expression>())
+		{
+		}
 
-        public IList<EditableExpression<T>> Items
-        {
-            get { return items; }
-        }
+		public IList<EditableExpression<T>> Items
+		{
+			get { return items; }
+		}
 
-        public virtual T[] ToExpression()
-        {
-            return items.Select(item => item.DoToExpression()).ToArray();
-        }
-    }
+		public virtual T[] ToExpression()
+		{
+			return items.Select(item => item.DoToExpression()).ToArray();
+		}
+	}
 }

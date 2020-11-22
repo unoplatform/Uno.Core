@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,43 +14,44 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 
 namespace Uno.Extensions
 {
-    public class ExtensionPoint<T> : IExtensionPoint<T>
-    {
-        private readonly Type type;
-        private readonly T value;
+	public class ExtensionPoint<T> : IExtensionPoint<T>
+	{
+		private readonly Type type;
+		private readonly T value;
 
-        public ExtensionPoint(T value)
-        {
-            this.value = value;
-        }
+		public ExtensionPoint(T value)
+		{
+			this.value = value;
+		}
 
-        public ExtensionPoint(Type type)
-        {
-            this.type = type;
-        }
+		public ExtensionPoint(Type type)
+		{
+			this.type = type;
+		}
 
-        #region IExtensionPoint<T> Members
+		#region IExtensionPoint<T> Members
 
-        public T ExtendedValue
-        {
-            get { return value; }
-        }
+		public T ExtendedValue
+		{
+			get { return value; }
+		}
 
-        object IExtensionPoint.ExtendedValue
-        {
-            get { return value; }
-        }
+		object IExtensionPoint.ExtendedValue
+		{
+			get { return value; }
+		}
 
-        public Type ExtendedType
-        {
-            // TODO: value might not be null
-            get { return type ?? (value == null ? typeof (T) : value.GetType()); }
-        }
+		public Type ExtendedType
+		{
+			// TODO: value might not be null
+			get { return type ?? (value == null ? typeof (T) : value.GetType()); }
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

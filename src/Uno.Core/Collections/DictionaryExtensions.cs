@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,8 +39,8 @@ namespace Uno.Extensions
 		}
 
 		public static TValue FindOrCreate<TKey, TValue>(this SynchronizedDictionary<TKey, TValue> items, TKey key, Func<TValue> factory)
-        {
-            TValue value = default(TValue);
+		{
+			TValue value = default(TValue);
 
 			using (items.Lock.CreateWriterScope())
 			{
@@ -50,21 +51,21 @@ namespace Uno.Extensions
 
 				return value;
 			}
-        }
+		}
 
 		public static TValue FindOrCreate<TKey, TValue>(this ISynchronizable<IDictionary<TKey, TValue>> items, TKey key, Func<TValue> factory)
-        {
-            TValue value = default(TValue);
+		{
+			TValue value = default(TValue);
 
-            items.Lock.Write(d => d.TryGetValue(key, out value), d => d.Add(key, value = factory()));
+			items.Lock.Write(d => d.TryGetValue(key, out value), d => d.Add(key, value = factory()));
 
-            return value;
-        }
+			return value;
+		}
 
 		public static KeyValuePair<TKey, TValue>[] ToArrayLocked<TKey, TValue>(this ISynchronizable<IDictionary<TKey, TValue>> items)
-        {
-            return items.Lock.Read(d => d.ToArray());
-        }
+		{
+			return items.Lock.Read(d => d.ToArray());
+		}
 
 		/// <summary>
 		/// Gets the value associated with the specified key, or a default value.

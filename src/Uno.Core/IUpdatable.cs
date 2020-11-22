@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,8 +30,8 @@ namespace Uno
 	/// <remarks> This is useful for items bound to the view. When a newer instance with its Equals
 	/// returning true for the old item comes in play, the old item is kept, but updated from that
 	/// new instance.</remarks>
-    public interface IUpdatable<T>
-    {
+	public interface IUpdatable<T>
+	{
 		Task UpdateAsync(CancellationToken ct, T newerInstance);
-    }
+	}
 }

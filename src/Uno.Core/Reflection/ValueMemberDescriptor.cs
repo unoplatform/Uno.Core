@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,51 +14,52 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Reflection;
 
 namespace Uno.Reflection
 {
-    public abstract class ValueMemberDescriptor<TMemberInfo> : MemberDescriptor<TMemberInfo>, IValueMemberDescriptor
-        where TMemberInfo : MemberInfo
-    {
-        public ValueMemberDescriptor(TMemberInfo memberInfo)
-            : base(memberInfo)
-        {
-        }
+	public abstract class ValueMemberDescriptor<TMemberInfo> : MemberDescriptor<TMemberInfo>, IValueMemberDescriptor
+		where TMemberInfo : MemberInfo
+	{
+		public ValueMemberDescriptor(TMemberInfo memberInfo)
+			: base(memberInfo)
+		{
+		}
 
-        #region IValueMemberDescriptor Members
+		#region IValueMemberDescriptor Members
 
-        public virtual object GetValue(object instance)
-        {
-            throw new NotImplementedException();
-        }
+		public virtual object GetValue(object instance)
+		{
+			throw new NotImplementedException();
+		}
 
-        public virtual void SetValue(object instance, object value)
-        {
-            throw new NotImplementedException();
-        }
+		public virtual void SetValue(object instance, object value)
+		{
+			throw new NotImplementedException();
+		}
 
-        public virtual Action<object, object> ToCompiledSetValue()
-        {
-            throw new NotImplementedException();
-        }
+		public virtual Action<object, object> ToCompiledSetValue()
+		{
+			throw new NotImplementedException();
+		}
 
-        public virtual Action<object, object> ToCompiledSetValue(bool strict)
-        {
-            throw new NotImplementedException();
-        }
+		public virtual Action<object, object> ToCompiledSetValue(bool strict)
+		{
+			throw new NotImplementedException();
+		}
 
-        public virtual Func<object, object> ToCompiledGetValue()
-        {
-            throw new NotImplementedException();
-        }
+		public virtual Func<object, object> ToCompiledGetValue()
+		{
+			throw new NotImplementedException();
+		}
 
-        public virtual Func<object, object> ToCompiledGetValue(bool strict)
-        {
-            throw new NotImplementedException();
-        }
+		public virtual Func<object, object> ToCompiledGetValue(bool strict)
+		{
+			throw new NotImplementedException();
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

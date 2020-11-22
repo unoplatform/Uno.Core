@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 namespace Uno.Reflection
 {
-    public interface IEventDescriptor : IMemberDescriptor
-    {
-        IMethodDescriptor Add { get; }
-        IMethodDescriptor Remove { get; }
-    }
+	public interface IEventDescriptor : IMemberDescriptor
+	{
+		IMethodDescriptor Add { get; }
+		IMethodDescriptor Remove { get; }
+	}
 }

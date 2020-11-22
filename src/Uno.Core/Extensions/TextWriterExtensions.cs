@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,23 +14,24 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Globalization;
 using System.IO;
 
 namespace Uno.Extensions
 {
-    public static class TextWriterExtensions
-    {
-        public static void Write(this TextWriter writer, string format, params object[] args)
-        {
-            writer.Write(string.Format(CultureInfo.InvariantCulture, format, args));
-        }
-
-        public static void WriteLine(this TextWriter writer, string format, params object[] args)
-        {
+	public static class TextWriterExtensions
+	{
+		public static void Write(this TextWriter writer, string format, params object[] args)
+		{
 			writer.Write(string.Format(CultureInfo.InvariantCulture, format, args));
-        }
+		}
+
+		public static void WriteLine(this TextWriter writer, string format, params object[] args)
+		{
+			writer.Write(string.Format(CultureInfo.InvariantCulture, format, args));
+		}
 
 		public static void Write(this TextWriter writer, IFormatProvider formatProvider, string format, params object[] args)
 		{
