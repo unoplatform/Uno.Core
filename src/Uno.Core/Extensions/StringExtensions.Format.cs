@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,10 +32,7 @@ namespace Uno.Extensions
 		/// <param name="format"></param>
 		/// <param name="args"></param>
 		/// <returns></returns>
-		public static string Format(string format, params object[] args)
-		{
-			return Format(CultureInfo.CurrentUICulture, format, args);
-		}
+		public static string Format(string format, params object[] args) => Format(CultureInfo.CurrentUICulture, format, args);
 
 		/// <summary>
 		/// Improves upon <see cref="string.Format(IFormatProvider, string, object[])"/> to allow a 4th and 5th
@@ -61,7 +58,7 @@ namespace Uno.Extensions
 			var currentGroupBuilder = default(StringBuilder);
 			var originalGroupBuilder = new StringBuilder();
 
-			for (int position = 0; position < format.Length; position++)
+			for (var position = 0; position < format.Length; position++)
 			{
 				var builder = (currentGroupBuilder == null) ? finalBuilder : originalGroupBuilder;
 
@@ -94,7 +91,7 @@ namespace Uno.Extensions
 							{
 								if (currentGroupBuilder != null)
 								{
-									throw new ArgumentException("Invalid group format. Nested opening accolades.");
+									throw new FormatException("Invalid group format. Nested opening accolades.");
 								}
 
 								// No { in deconstructed groups.
@@ -116,7 +113,7 @@ namespace Uno.Extensions
 								if (currentGroupBuilder == null)
 								{
 									// string.Format does not tolerate this.
-									throw new ArgumentException("Format string contains an orphan closing accolade.");
+									throw new FormatException("Format string contains an orphan closing accolade.");
 								}
 								else
 								{
