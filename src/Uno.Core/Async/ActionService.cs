@@ -33,11 +33,11 @@ namespace Uno.Async
     {
         private List<ActionServiceEntry> entries = new List<ActionServiceEntry>();
 
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
+#if HAS_WINDOWS_IDENTITY
 		public WindowsIdentity Identity { get; set; }
 #endif
 
-		public void Register<T>(Func<T> provider, Action<T> action)
+        public void Register<T>(Func<T> provider, Action<T> action)
         {
             entries.Add(new ActionServiceEntry { Provider = provider, Action = action });
         }
@@ -70,7 +70,7 @@ namespace Uno.Async
 
             Func<T> selectorOnNewThread = () =>
                 {
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
+#if HAS_WINDOWS_IDENTITY
                     //2- 
 					WindowsImpersonationContext context = null;
 					try
@@ -81,9 +81,9 @@ namespace Uno.Async
 						}
 #endif
 
-					actionsOnNewThread.ForEach(x => x());
+                    actionsOnNewThread.ForEach(x => x());
 						return selector();
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
+#if HAS_WINDOWS_IDENTITY
 					}
 					finally
 					{
@@ -93,7 +93,7 @@ namespace Uno.Async
 						}
 					}
 #endif
-				};
+                };
 
             return selectorOnNewThread.BeginInvoke(
                 r =>

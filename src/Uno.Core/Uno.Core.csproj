@@ -1,10 +1,11 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras" ToolsVersion="15.0">
 	<PropertyGroup>
-		<TargetFrameworks>uap10.0;net46;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>uap10.0;net46;netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
 		<AssemblyName>Uno.Core</AssemblyName>
 		<RootNamespace>Uno.Core</RootNamespace>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
 		<NoWarn>$(NoWarn);1998;1591;1573;1572;1574;1712;1711;1570;NU5105</NoWarn>
+		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn> <!-- Binary formatter is obsolete -->
 		<BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
 		<DocumentationFile>bin\Release\$(TargetFramework)\Uno.Core.xml</DocumentationFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -27,11 +28,11 @@
 		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
 		<PackageReference Include="CommonServiceLocator" Version="2.0.5" />
 		<PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
-		<PackageReference Include="Uno.MonoAnalyzers" Version="1.0.0-dev.4">
+		<PackageReference Include="Uno.MonoAnalyzers" Version="1.0.0-dev.4" Condition="'$(TargetFramework)'=='netstandard2.0'">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.Memory" Version="4.5.2" />
+		<PackageReference Include="System.Memory" Version="4.5.2" Condition="'$(TargetFramework)'=='uap10.0' or '$(TargetFramework)'=='netstandard2.0' or '$(TargetFramework)'=='net46'"/>
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
