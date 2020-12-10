@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,23 +23,23 @@ using System.Runtime.Serialization;
 
 namespace Uno
 {
-    [DataContract(Namespace = "Uno.Contract")]
-    [Flags]
-    public enum DataStatus
-    {
-        [EnumMember]
-        NotInitialized = 0,
-        [EnumMember]
-        Unchanged = 1,
-        [EnumMember]
-        Created = 2,
-        [EnumMember]
-        Updated = 4,
-        [EnumMember]
-        Deleted = 8,
-        [EnumMember]
-        Added = 16,
-        [EnumMember]
-        Removed = 32
-    }
+	[DataContract(Namespace = "Uno.Contract")]
+	[Flags]
+	public enum DataStatus
+	{
+		[EnumMember]
+		NotInitialized = 0,
+		[EnumMember]
+		Unchanged = 1,
+		[EnumMember]
+		Created = 2,
+		[EnumMember]
+		Updated = 4,
+		[EnumMember]
+		Deleted = 8,
+		[EnumMember]
+		Added = 16,
+		[EnumMember]
+		Removed = 32
+	}
 }

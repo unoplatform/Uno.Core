@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,52 +14,53 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Runtime.Serialization;
 
 #if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN
 namespace Uno
 {
-    /// <summary>
-    /// A NotFoundException is thrown when demanding something that doesn't exist be found.
-    /// </summary>
-    public class NotFoundException : ApplicationException
-    {
-        /// <summary>
-        /// See Exception Pattern.
-        /// </summary>
-        public NotFoundException()
-        {
-        }
+	/// <summary>
+	/// A NotFoundException is thrown when demanding something that doesn't exist be found.
+	/// </summary>
+	public class NotFoundException : ApplicationException
+	{
+		/// <summary>
+		/// See Exception Pattern.
+		/// </summary>
+		public NotFoundException()
+		{
+		}
 
-        /// <summary>
-        /// See Exception Pattern.
-        /// </summary>
-        /// <param name="message"></param>
-        public NotFoundException(string message)
-            : base(message)
-        {
-        }
+		/// <summary>
+		/// See Exception Pattern.
+		/// </summary>
+		/// <param name="message"></param>
+		public NotFoundException(string message)
+			: base(message)
+		{
+		}
 
-        /// <summary>
-        /// See Exception Pattern.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        protected NotFoundException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+		/// <summary>
+		/// See Exception Pattern.
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
+		protected NotFoundException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-        /// <summary>
-        /// See Exception Pattern.
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
-        public NotFoundException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-    }
+		/// <summary>
+		/// See Exception Pattern.
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="innerException"></param>
+		public NotFoundException(string message, Exception innerException)
+			: base(message, innerException)
+		{
+		}
+	}
 }
 #endif

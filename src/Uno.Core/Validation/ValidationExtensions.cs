@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,41 +14,42 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using Uno.Validation;
 
 namespace Uno.Extensions
 {
-    public static class ValidationExtensions
-    {
-        public static ValidationExtensionPoint<T> Validation<T>(this T value) where T : class
-        {
-            return new ValidationExtensionPoint<T>(value);
-        }
+	public static class ValidationExtensions
+	{
+		public static ValidationExtensionPoint<T> Validation<T>(this T value) where T : class
+		{
+			return new ValidationExtensionPoint<T>(value);
+		}
 
-        public static T NotNull<T>(this ValidationExtensionPoint<T> extensionPoint, string name) where T : class
-        {
-            if (extensionPoint.ExtendedValue == null)
-            {
-                throw new ArgumentNullException(name);
-            }
+		public static T NotNull<T>(this ValidationExtensionPoint<T> extensionPoint, string name) where T : class
+		{
+			if (extensionPoint.ExtendedValue == null)
+			{
+				throw new ArgumentNullException(name);
+			}
 
-            return extensionPoint.ExtendedValue;
-        }
-        public static T Found<T>(this ValidationExtensionPoint<T> extensionPoint) where T : class
-        {
-            if (extensionPoint.ExtendedValue == null)
-            {
-                throw new ArgumentException();
-                //throw new NotFoundException();
-            }
+			return extensionPoint.ExtendedValue;
+		}
+		public static T Found<T>(this ValidationExtensionPoint<T> extensionPoint) where T : class
+		{
+			if (extensionPoint.ExtendedValue == null)
+			{
+				throw new ArgumentException();
+				//throw new NotFoundException();
+			}
 
-            return extensionPoint.ExtendedValue;
-        }
-        public static void NotSupported<T>(this ValidationExtensionPoint<T> extensionPoint) where T : class
-        {
-            throw new NotSupportedException();
-        }
+			return extensionPoint.ExtendedValue;
+		}
+		public static void NotSupported<T>(this ValidationExtensionPoint<T> extensionPoint) where T : class
+		{
+			throw new NotSupportedException();
+		}
 
 		public static T IsTrue<T>(this ValidationExtensionPoint<T> extensionPoint, Func<T, bool> validation, string paramName, string message = null) where T : class
 		{

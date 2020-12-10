@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,91 +22,91 @@ using System.Text;
 
 namespace Uno.Extensions
 {
-    public static class ComparableExtensions
-    {
-        public static T Min<T>(this T left, T right)
-            where T : IComparable
-        {
-            if (left == null)
-            {
-                return right;
-            }
-            else if (right == null)
-            {
-                return left;
-            }
-            else
-            {
-                return left.CompareTo(right) < 0 ? left : right;
-            }
-        }
+	public static class ComparableExtensions
+	{
+		public static T Min<T>(this T left, T right)
+			where T : IComparable
+		{
+			if (left == null)
+			{
+				return right;
+			}
+			else if (right == null)
+			{
+				return left;
+			}
+			else
+			{
+				return left.CompareTo(right) < 0 ? left : right;
+			}
+		}
 
-        public static T Max<T>(this T left, T right)
-            where T : IComparable
-        {
-            if (left == null)
-            {
-                return right;
-            }
-            else if (right == null)
-            {
-                return left;
-            }
-            else
-            {
-                return left.CompareTo(right) > 0 ? left : right;
-            }
-        }
+		public static T Max<T>(this T left, T right)
+			where T : IComparable
+		{
+			if (left == null)
+			{
+				return right;
+			}
+			else if (right == null)
+			{
+				return left;
+			}
+			else
+			{
+				return left.CompareTo(right) > 0 ? left : right;
+			}
+		}
 
-        public static T? Min<T>(this T? left, T? right)
-            where T : struct, IComparable
-        {
-            if (left == null)
-            {
-                return right;
-            }
-            else if (right == null)
-            {
-                return left;
-            }
-            else
-            {
-                return left.Value.CompareTo(right.Value) < 0 ? left.Value : right.Value;
-            }
-        }
+		public static T? Min<T>(this T? left, T? right)
+			where T : struct, IComparable
+		{
+			if (left == null)
+			{
+				return right;
+			}
+			else if (right == null)
+			{
+				return left;
+			}
+			else
+			{
+				return left.Value.CompareTo(right.Value) < 0 ? left.Value : right.Value;
+			}
+		}
 
-        public static T? Max<T>(this T? left, T? right)
-            where T : struct, IComparable
-        {
-            if (left == null)
-            {
-                return right;
-            }
-            else if (right == null)
-            {
-                return left;
-            }
-            else
-            {
-                return left.Value.CompareTo(right.Value) > 0 ? left.Value : right.Value;
-            }
-        }
+		public static T? Max<T>(this T? left, T? right)
+			where T : struct, IComparable
+		{
+			if (left == null)
+			{
+				return right;
+			}
+			else if (right == null)
+			{
+				return left;
+			}
+			else
+			{
+				return left.Value.CompareTo(right.Value) > 0 ? left.Value : right.Value;
+			}
+		}
 
-        public static int SafeCompareTo<T>(this T left, T right)
-            where T : IComparable
-        {
-            if(left != null)
-            {
-                return left.CompareTo(right);
-            }
-            else if(right == null)
-            {
-                return 0;
-            }
-            else
-            {
-                return -1;
-            }
-        }
-    }
+		public static int SafeCompareTo<T>(this T left, T right)
+			where T : IComparable
+		{
+			if(left != null)
+			{
+				return left.CompareTo(right);
+			}
+			else if(right == null)
+			{
+				return 0;
+			}
+			else
+			{
+				return -1;
+			}
+		}
+	}
 }

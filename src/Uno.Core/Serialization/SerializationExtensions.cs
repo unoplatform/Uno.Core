@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.IO;
 using System.Runtime.Serialization;
@@ -25,112 +26,112 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Uno.Extensions
 {
-    public static class SerializationExtensions
-    {
-        public static SerializationExtensionPoint<T> Serialization<T>(this T value)
-        {
-            return new SerializationExtensionPoint<T>(value);
-        }
+	public static class SerializationExtensions
+	{
+		public static SerializationExtensionPoint<T> Serialization<T>(this T value)
+		{
+			return new SerializationExtensionPoint<T>(value);
+		}
 
-        public static SerializationExtensionPoint<T> Serialization<T>(this Type type)
-        {
-            return new SerializationExtensionPoint<T>(type);
-        }
+		public static SerializationExtensionPoint<T> Serialization<T>(this Type type)
+		{
+			return new SerializationExtensionPoint<T>(type);
+		}
 
-        public static T DataContract<T>(this SerializationExtensionPoint<T> extensionPoint)
-        {
-            var serializer = new DataContractSerializer(extensionPoint.ExtendedType);
+		public static T DataContract<T>(this SerializationExtensionPoint<T> extensionPoint)
+		{
+			var serializer = new DataContractSerializer(extensionPoint.ExtendedType);
 
-            using (var stream = new MemoryStream())
-            {
-                serializer.WriteObject(stream, extensionPoint.ExtendedValue);
+			using (var stream = new MemoryStream())
+			{
+				serializer.WriteObject(stream, extensionPoint.ExtendedValue);
 
-                stream.Position = 0;
+				stream.Position = 0;
 
-                var newInstance = (T) serializer.ReadObject(stream);
+				var newInstance = (T) serializer.ReadObject(stream);
 
-                return newInstance;
-            }
-        }
+				return newInstance;
+			}
+		}
 
 #if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN
-        public static T Binary<T>(this SerializationExtensionPoint<T> extensionPoint)
-        {
-            var serializer = new BinaryFormatter();
+		public static T Binary<T>(this SerializationExtensionPoint<T> extensionPoint)
+		{
+			var serializer = new BinaryFormatter();
 
-            using (var stream = new MemoryStream())
-            {
-                serializer.Serialize(stream, extensionPoint.ExtendedValue);
+			using (var stream = new MemoryStream())
+			{
+				serializer.Serialize(stream, extensionPoint.ExtendedValue);
 
-                stream.Position = 0;
+				stream.Position = 0;
 
-                var newInstance = (T) serializer.Deserialize(stream);
+				var newInstance = (T) serializer.Deserialize(stream);
 
-                return newInstance;
-            }
-        }
+				return newInstance;
+			}
+		}
 
-        public static void Binary<T>(this SerializationExtensionPoint<T> extensionPoint, Stream output)
-        {
-            if (extensionPoint.ExtendedValue != null)
-            {
-                var serializer = new BinaryFormatter();
-                serializer.Serialize(output, extensionPoint.ExtendedValue);
-                output.Flush();
-            }
-        }
+		public static void Binary<T>(this SerializationExtensionPoint<T> extensionPoint, Stream output)
+		{
+			if (extensionPoint.ExtendedValue != null)
+			{
+				var serializer = new BinaryFormatter();
+				serializer.Serialize(output, extensionPoint.ExtendedValue);
+				output.Flush();
+			}
+		}
 
-        public static T Binary<T>(this SerializationExtensionPoint<T> extensionPoint, byte[] data)
-        {
-            var serializer = new BinaryFormatter();
-            using (var stream = new MemoryStream(data))
-            {
-                return (T)serializer.Deserialize(stream);
-            }
-        }
+		public static T Binary<T>(this SerializationExtensionPoint<T> extensionPoint, byte[] data)
+		{
+			var serializer = new BinaryFormatter();
+			using (var stream = new MemoryStream(data))
+			{
+				return (T)serializer.Deserialize(stream);
+			}
+		}
 #endif
-        public static T Xml<T>(this SerializationExtensionPoint<T> extensionPoint)
-        {
-            using (var stream = new MemoryStream())
-            {
-                Xml(extensionPoint, stream, extensionPoint.ExtendedValue);
+		public static T Xml<T>(this SerializationExtensionPoint<T> extensionPoint)
+		{
+			using (var stream = new MemoryStream())
+			{
+				Xml(extensionPoint, stream, extensionPoint.ExtendedValue);
 
-                stream.Position = 0;
+				stream.Position = 0;
 
-                return Xml(extensionPoint, stream);
-            }
-        }
+				return Xml(extensionPoint, stream);
+			}
+		}
 
 #if !WINDOWS_UWP && !XAMARIN
-        public static T Xml<T>(this SerializationExtensionPoint<T> extensionPoint, string path)
-        {
-            using (var stream = File.OpenRead(path))
-            {
-                return Xml(extensionPoint, stream);
-            }
-        }
+		public static T Xml<T>(this SerializationExtensionPoint<T> extensionPoint, string path)
+		{
+			using (var stream = File.OpenRead(path))
+			{
+				return Xml(extensionPoint, stream);
+			}
+		}
 
-        public static void Xml<T>(this SerializationExtensionPoint<T> extensionPoint, string path, T value)
-        {
-            using (var stream = File.OpenWrite(path))
-            {
-                Xml(extensionPoint, stream, value);
-            }
-        }
+		public static void Xml<T>(this SerializationExtensionPoint<T> extensionPoint, string path, T value)
+		{
+			using (var stream = File.OpenWrite(path))
+			{
+				Xml(extensionPoint, stream, value);
+			}
+		}
 #endif
 
-        public static T Xml<T>(this SerializationExtensionPoint<T> extensionPoint, Stream stream)
-        {
-            var serializer = new XmlSerializer(extensionPoint.ExtendedType);
+		public static T Xml<T>(this SerializationExtensionPoint<T> extensionPoint, Stream stream)
+		{
+			var serializer = new XmlSerializer(extensionPoint.ExtendedType);
 
-            return (T) serializer.Deserialize(stream);
-        }
+			return (T) serializer.Deserialize(stream);
+		}
 
-        public static void Xml<T>(this SerializationExtensionPoint<T> extensionPoint, Stream stream, T value)
-        {
-            var serializer = new XmlSerializer(extensionPoint.ExtendedType);
+		public static void Xml<T>(this SerializationExtensionPoint<T> extensionPoint, Stream stream, T value)
+		{
+			var serializer = new XmlSerializer(extensionPoint.ExtendedType);
 
-            serializer.Serialize(stream, value);
-        }
-    }
+			serializer.Serialize(stream, value);
+		}
+	}
 }

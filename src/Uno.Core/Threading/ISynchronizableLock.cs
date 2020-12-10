@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 
 namespace Uno.Threading
 {
-    public interface ISynchronizableLock<T>
-    {
-        TValue Read<TValue>(int millisecondsTimeout, Func<T, TValue> read);
+	public interface ISynchronizableLock<T>
+	{
+		TValue Read<TValue>(int millisecondsTimeout, Func<T, TValue> read);
 
-        TValue Write<TValue>(int millisecondsTimeout, Func<T, TValue> write);
+		TValue Write<TValue>(int millisecondsTimeout, Func<T, TValue> write);
 
 		/// <summary>
 		/// Performs a write operation if the read operation return false.
@@ -31,10 +32,10 @@ namespace Uno.Threading
 		/// <param name="read">A lambda that will test if the data can be read</param>
 		/// <param name="write">A lambda that will perform the write if the read failed</param>
 		/// <returns>true if the read succeeded, otherwise false.</returns>
-        bool Write(int millisecondsTimeout, Func<T, bool> read, Action<T> write);
+		bool Write(int millisecondsTimeout, Func<T, bool> read, Action<T> write);
 
-        IDisposable CreateReaderScope(int millisecondsTimeout);
+		IDisposable CreateReaderScope(int millisecondsTimeout);
 
-        IDisposable CreateWriterScope(int millisecondsTimeout);
-    }
+		IDisposable CreateWriterScope(int millisecondsTimeout);
+	}
 }

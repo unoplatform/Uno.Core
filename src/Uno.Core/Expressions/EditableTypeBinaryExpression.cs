@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -21,27 +22,27 @@ using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableTypeBinaryExpression : EditableExpression<TypeBinaryExpression>
-    {
-        public EditableTypeBinaryExpression(TypeBinaryExpression expression)
-            : base(expression, false)
-        {
-            TypeOperand = expression.TypeOperand;
-            Expression = expression.Expression.Edit();
-        }
+	public class EditableTypeBinaryExpression : EditableExpression<TypeBinaryExpression>
+	{
+		public EditableTypeBinaryExpression(TypeBinaryExpression expression)
+			: base(expression, false)
+		{
+			TypeOperand = expression.TypeOperand;
+			Expression = expression.Expression.Edit();
+		}
 
-        public Type TypeOperand { get; set; }
+		public Type TypeOperand { get; set; }
 
-        public IEditableExpression Expression { get; set; }
+		public IEditableExpression Expression { get; set; }
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get { yield return Expression; }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get { yield return Expression; }
+		}
 
-        public override TypeBinaryExpression DoToExpression()
-        {
-            return System.Linq.Expressions.Expression.TypeIs(Expression.ToExpression(), TypeOperand);
-        }
-    }
+		public override TypeBinaryExpression DoToExpression()
+		{
+			return System.Linq.Expressions.Expression.TypeIs(Expression.ToExpression(), TypeOperand);
+		}
+	}
 }

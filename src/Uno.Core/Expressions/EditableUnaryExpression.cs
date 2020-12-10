@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -21,27 +22,27 @@ using Uno.Extensions;
 
 namespace Uno.Expressions
 {
-    public class EditableUnaryExpression : EditableExpression<UnaryExpression>
-    {
-        public EditableUnaryExpression(UnaryExpression expression)
-            : base(expression)
-        {
-            Type = expression.Type;
-            Operand = expression.Operand.Edit();
-        }
+	public class EditableUnaryExpression : EditableExpression<UnaryExpression>
+	{
+		public EditableUnaryExpression(UnaryExpression expression)
+			: base(expression)
+		{
+			Type = expression.Type;
+			Operand = expression.Operand.Edit();
+		}
 
-        public Type Type { get; set; }
+		public Type Type { get; set; }
 
-        public IEditableExpression Operand { get; set; }
+		public IEditableExpression Operand { get; set; }
 
-        public override IEnumerable<IEditableExpression> Nodes
-        {
-            get { yield return Operand; }
-        }
+		public override IEnumerable<IEditableExpression> Nodes
+		{
+			get { yield return Operand; }
+		}
 
-        public override UnaryExpression DoToExpression()
-        {
-            return Expression.MakeUnary(NodeType, Operand.ToExpression(), Type);
-        }
-    }
+		public override UnaryExpression DoToExpression()
+		{
+			return Expression.MakeUnary(NodeType, Operand.ToExpression(), Type);
+		}
+	}
 }

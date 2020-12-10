@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +40,8 @@ namespace Uno.Core.Tests.Threading
 
 		[TestMethod]
 		[Timeout(_timeout)]
-        [Ignore] // https://github.com/nventive/Uno.Core/issues/48
-        public async Task TestUnlockReleaseNextSynchronously()
+		[Ignore] // https://github.com/nventive/Uno.Core/issues/48
+		public async Task TestUnlockReleaseNextSynchronously()
 		{
 			Console.WriteLine($"Running on thread {Thread.CurrentThread.ManagedThreadId}");
 

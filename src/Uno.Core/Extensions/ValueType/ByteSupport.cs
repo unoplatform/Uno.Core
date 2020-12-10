@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,48 +14,25 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 namespace Uno.Extensions.ValueType
 {
-    public class ByteSupport : ValueSupport<byte>
-    {
-        protected override byte CoreAnd(byte lhs, byte rhs)
-        {
-            return (byte) (lhs & rhs);
-        }
+	public class ByteSupport : ValueSupport<byte>
+	{
+		protected override byte CoreAnd(byte lhs, byte rhs) => (byte) (lhs & rhs);
 
-        protected override byte CoreOr(byte lhs, byte rhs)
-        {
-            return (byte) (lhs | rhs);
-        }
+		protected override byte CoreOr(byte lhs, byte rhs) => (byte) (lhs | rhs);
 
-        protected override byte CoreNegate(byte instance)
-        {
-            return (byte) (-instance);
-        }
+		protected override byte CoreNegate(byte instance) => (byte) (-instance);
 
-        protected override byte CoreNot(byte instance)
-        {
-            return (byte) (~instance);
-        }
+		protected override byte CoreNot(byte instance) => (byte) (~instance);
 
-        protected override byte CoreAdd(byte lhs, byte rhs)
-        {
-            return (byte) (lhs + rhs);
-        }
+		protected override byte CoreAdd(byte lhs, byte rhs) => (byte) (lhs + rhs);
 
-        protected override byte CoreSubstract(byte lhs, byte rhs)
-        {
-            return (byte) (lhs - rhs);
-        }
+		protected override byte CoreSubstract(byte lhs, byte rhs) => (byte) (lhs - rhs);
 
-        protected override byte CoreMultiply(byte lhs, byte rhs)
-        {
-            return (byte) (lhs*rhs);
-        }
+		protected override byte CoreMultiply(byte lhs, byte rhs) => (byte) (lhs*rhs);
 
-        protected override byte CoreDivide(byte lhs, byte rhs)
-        {
-            return (byte) (lhs/rhs);
-        }
-    }
+		protected override byte CoreDivide(byte lhs, byte rhs) => (byte) (lhs/rhs);
+	}
 }

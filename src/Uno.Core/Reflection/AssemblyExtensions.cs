@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Reflection;
 using System.Text;
@@ -21,13 +22,13 @@ using System.Text.RegularExpressions;
 
 namespace Uno.Extensions
 {
-    public static class AssemblyExtensions
-    {
-        public static Version GetVersionNumber(this Assembly assembly)
-        {
-            // Note: Assembly.GetExecutingAssembly().GetName() is not accessible in WP7
-            return new Version(Regex.Match(assembly.FullName, @"(\d+)(.\d+)(.\d+)?(.\d+)?").ToString());
-        }
+	public static class AssemblyExtensions
+	{
+		public static Version GetVersionNumber(this Assembly assembly)
+		{
+			// Note: Assembly.GetExecutingAssembly().GetName() is not accessible in WP7
+			return new Version(Regex.Match(assembly.FullName, @"(\d+)(.\d+)(.\d+)?(.\d+)?").ToString());
+		}
 
 		public static string GetProductName(this Assembly assembly)
 		{
@@ -35,7 +36,7 @@ namespace Uno.Extensions
 			return productNameAttribute == null ? null : productNameAttribute.Product;
 		}
 
-    	public static string GetCopyright(this Assembly assembly)
+		public static string GetCopyright(this Assembly assembly)
 		{
 			var assemblyCopyrightAttribute = assembly.GetAssemblyAttribute<AssemblyCopyrightAttribute>();
 			return assemblyCopyrightAttribute == null ? null : assemblyCopyrightAttribute.Copyright;

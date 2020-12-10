@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,25 +14,26 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 
 namespace Uno
 {
-    [Flags]
-    public enum DateTimeUnit
-    {
-        Year = 1,
-        Month = 2,
-        Day = 4,
-        Hour = 8,
-        Minute = 16,
-        Second = 32,
-        Millisecond = 64,
-        ToMonth = Year | Month,
-        ToDay = ToMonth | Day,
-        ToHour = ToDay | Hour,
-        ToMinute = ToHour | Minute,
-        ToSecond = ToMinute | Second,
-        ToMillisecond = ToSecond | Millisecond
-    }
+	[Flags]
+	public enum DateTimeUnit
+	{
+		Year = 1,
+		Month = 2,
+		Day = 4,
+		Hour = 8,
+		Minute = 16,
+		Second = 32,
+		Millisecond = 64,
+		ToMonth = Year | Month,
+		ToDay = ToMonth | Day,
+		ToHour = ToDay | Hour,
+		ToMinute = ToHour | Minute,
+		ToSecond = ToMinute | Second,
+		ToMillisecond = ToSecond | Millisecond
+	}
 }

@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,22 +22,22 @@ using System.Text;
 
 namespace Uno
 {
-    public class DisposableAction : IDisposable
-    {
-        public DisposableAction(Action action)
-        {
-            Action = action;
-        }
+	public class DisposableAction : IDisposable
+	{
+		public DisposableAction(Action action)
+		{
+			Action = action;
+		}
 
-        public Action Action { get; private set; }
+		public Action Action { get; private set; }
 
-        #region IDisposable Members
+		#region IDisposable Members
 
-        public void Dispose()
-        {
-            Action();
-        }
+		public void Dispose()
+		{
+			Action();
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

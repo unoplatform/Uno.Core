@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +14,12 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Globalization;
 using System.Linq;
+using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uno.Extensions;
 
@@ -28,71 +31,81 @@ namespace Uno.Tests.Extensions
 		[TestMethod]
 		public void IsNullOrEmpty()
 		{
-			Assert.IsTrue(((string)null).IsNullOrEmpty());
-			Assert.IsTrue("".IsNullOrEmpty());
-			Assert.IsFalse("A".IsNullOrEmpty());
+			using var _ = new AssertionScope();
+
+			((string)null).IsNullOrEmpty().Should().BeTrue();
+			"".IsNullOrEmpty().Should().BeTrue();
+			string.Empty.IsNullOrEmpty().Should().BeTrue();
+			"A".IsNullOrEmpty().Should().BeFalse();
 		}
 
 		[TestMethod]
 		public void HasValue()
 		{
-			Assert.IsFalse(((string)null).HasValue());
-			Assert.IsFalse("".HasValue());
-			Assert.IsTrue("A".HasValue());
+			using var _ = new AssertionScope();
+
+			((string)null).HasValue().Should().BeFalse();
+			"".HasValue().Should().BeFalse();
+			string.Empty.HasValue().Should().BeFalse();
+			"A".HasValue().Should().BeTrue();
 		}
 
 		[TestMethod]
 		public void IsNumber()
 		{
-			Assert.IsTrue("123".IsNumber());
-			Assert.IsTrue("123 ".IsNumber());
-			Assert.IsTrue(" 123".IsNumber());
-			Assert.IsTrue("\t\t123".IsNumber());
+			using var _ = new AssertionScope();
 
-			Assert.IsTrue("₀₁₂₃₄₅₆₇₈₉".IsNumber(), "subscripts");
-			Assert.IsTrue("⁰¹²³⁴⁵⁶⁷⁸⁹".IsNumber(), "superscripts");
+			"123".IsNumber().Should().BeTrue();
+			"123 ".IsNumber().Should().BeTrue();
+			" 123".IsNumber().Should().BeTrue();
+			"\t\t123".IsNumber().Should().BeTrue();
 
-			Assert.IsTrue("¼½¾".IsNumber(), "fractions 1");
-			Assert.IsTrue("⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞".IsNumber(), "fractions 2");
+			"₀₁₂₃₄₅₆₇₈₉".IsNumber().Should().BeTrue("subscripts");
+			"⁰¹²³⁴⁵⁶⁷⁸⁹".IsNumber().Should().BeTrue("superscripts");
+
+			"¼½¾".IsNumber().Should().BeTrue("fractions 1");
+			"⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞".IsNumber().Should().BeTrue("fractions 2");
 			//Assert.IsTrue("⅐⅑⅒".IsNumber());  THOSE ARE NOT SUPPORTED BY .NET!
 
 			// Roman numerals http://www.unicode.org/charts/PDF/U2150.pdf
-			Assert.IsTrue("ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ".IsNumber(), "romans upper"); // watch-out, those are not letters! ;-)
-			Assert.IsTrue("ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ".IsNumber(), "romans lower"); // watch-out, those are not letters! ;-)
+			"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ".IsNumber().Should().BeTrue("romans upper"); // watch-out, those are not letters! ;-)
+			"ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ".IsNumber().Should().BeTrue("romans lower"); // watch-out, those are not letters! ;-)
 
 			// Umbrella are not supporting Aegean numbers, as they are 32bits unicode characters
 
-			Assert.IsTrue("٠١٢٣٤٥٦٧٨٩".IsNumber(), "Eastern Arabic numerals");
-			Assert.IsTrue("۰۱۲۳۴۵۶۷۸۹".IsNumber(), "Persian numerals");
+			"٠١٢٣٤٥٦٧٨٩".IsNumber().Should().BeTrue("Eastern Arabic numerals");
+			"۰۱۲۳۴۵۶۷۸۹".IsNumber().Should().BeTrue("Persian numerals");
 
-			Assert.IsFalse("1A2".IsNumber());
-			Assert.IsFalse("1A2".IsNumber());
+			"1A2".IsNumber().Should().BeFalse();
+			"1A2".IsNumber().Should().BeFalse();
 		}
 
 		[TestMethod]
 		public void IsDigit()
 		{
-			Assert.IsTrue("0123456789".IsDigit(), "Normal digits");
-			Assert.IsTrue("٠١٢٣٤٥٦٧٨٩".IsDigit(), "Eastern Arabic numerals");
-			Assert.IsTrue("۰۱۲۳۴۵۶۷۸۹".IsDigit(), "Persian numerals");
+			using var _ = new AssertionScope();
 
-			Assert.IsTrue(" 123".IsDigit(), "space before");
-			Assert.IsTrue("123 ".IsDigit(), "space after");
-			Assert.IsTrue("\t\t123".IsDigit(), "tab before");
+			"0123456789".IsDigit().Should().BeTrue("Normal digits");
+			"٠١٢٣٤٥٦٧٨٩".IsDigit().Should().BeTrue("Eastern Arabic numerals");
+			"۰۱۲۳۴۵۶۷۸۹".IsDigit().Should().BeTrue("Persian numerals");
 
-			Assert.IsFalse("₀₁₂₃₄₅₆₇₈₉".IsDigit());
-			Assert.IsFalse("⁰¹²³⁴⁵⁶⁷⁸⁹".IsDigit());
-			Assert.IsFalse("¼½¾".IsDigit());
-			Assert.IsFalse("⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞".IsDigit());
-			Assert.IsFalse("⅐⅑⅒".IsDigit());
-			Assert.IsFalse("ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ".IsDigit()); // watch-out, those are not letters! ;-)
-			Assert.IsFalse("ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ".IsDigit()); // watch-out, those are not letters! ;-)
+			" 123".IsDigit().Should().BeTrue("space before");
+			"123 ".IsDigit().Should().BeTrue("space after");
+			"\t\t123".IsDigit().Should().BeTrue("tab before");
+
+			"₀₁₂₃₄₅₆₇₈₉".IsDigit().Should().BeFalse();
+			"⁰¹²³⁴⁵⁶⁷⁸⁹".IsDigit().Should().BeFalse();
+			"¼½¾".IsDigit().Should().BeFalse();
+			"⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞".IsDigit().Should().BeFalse();
+			"⅐⅑⅒".IsDigit().Should().BeFalse();
+			"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ".IsDigit().Should().BeFalse(); // watch-out, those are not letters! ;-)
+			"ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ".IsDigit().Should().BeFalse(); // watch-out, those are not letters! ;-)
 
 			// Full Width digits http://www.unicode.org/charts/PDF/UFF00.pdf
 			var fullWidthDigits = "\uFF10\uFF11\uFF12\uFF13\uFF14\uFF15\uFF16\uFF17\uFF18\uFF19";
-			Assert.IsTrue(fullWidthDigits.IsNumber(), "Full Width Digits");
+			fullWidthDigits.IsNumber().Should().BeTrue("Full Width Digits");
 
-			Assert.IsFalse("1A2".IsDigit());
+			"1A2".IsDigit().Should().BeFalse();
 		}
 
 		[TestMethod]
@@ -126,6 +139,8 @@ namespace Uno.Tests.Extensions
 		[TestMethod]
 		public void StringFormatsAreCompatible()
 		{
+			using var _ = new AssertionScope();
+
 			var formats = new[]
 			{
 				"{0:+#.#;-#.#;ZERO}",
@@ -139,6 +154,7 @@ namespace Uno.Tests.Extensions
 				CultureInfo.InvariantCulture,
 				new CultureInfo("fr-CA"),
 				new CultureInfo("en-US"),
+				new CultureInfo("ja-JP"),
 				new CultureInfo("ru")
 			};
 
@@ -146,15 +162,13 @@ namespace Uno.Tests.Extensions
 			{
 				foreach (var value in values)
 				{
-					Assert.AreEqual(
-						string.Format(format, value),
-						StringExtensions.Format(format, value));
+					var noCultureFormat = StringExtensions.Format(format, value);
+					noCultureFormat.Should().Be(string.Format(format, value));
 
 					foreach (var culture in cultures)
 					{
-						Assert.AreEqual(
-							string.Format(culture, format, value),
-							StringExtensions.Format(culture, format, value));
+						var cultureFormat = StringExtensions.Format(culture, format, value);
+						cultureFormat.Should().Be(string.Format(culture, format, value));
 					}
 				}
 			}
@@ -163,6 +177,8 @@ namespace Uno.Tests.Extensions
 		[TestMethod]
 		public void StringFormatsAreComplementary()
 		{
+			using var _ = new AssertionScope();
+
 			var formats = new[]
 			{
 				"{0:+#.##;-#.##;ZERO;ONE;MINUS ONE}",
@@ -184,29 +200,26 @@ namespace Uno.Tests.Extensions
 			{
 				foreach (var value in identicalValues)
 				{
-					Assert.AreEqual(
-						string.Format(format, value),
-						StringExtensions.Format(format, value));
+					var identicalValueFormat = StringExtensions.Format(format, value);
+					identicalValueFormat.Should().Be(string.Format(format, value), "using current culture");
 
 					foreach (var culture in cultures)
 					{
-						Assert.AreEqual(
-							string.Format(culture, format, value),
-							StringExtensions.Format(culture, format, value));
+						var identicalValueFormatWithCulture = StringExtensions.Format(culture, format, value);
+						identicalValueFormatWithCulture.Should().Be(string.Format(culture, format, value), "using culture " + culture);
 					}
 				}
 
 				foreach (var value in differentValues)
 				{
-					Assert.AreNotEqual(
-						string.Format(format, value),
-						StringExtensions.Format(format, value));
+					var differentValueFormat = StringExtensions.Format(format, value);
+					differentValueFormat.Should().NotBe(string.Format(format, value), "using current culture");
 
 					foreach (var culture in cultures)
 					{
-						Assert.AreNotEqual(
-							string.Format(culture, format, value),
-							StringExtensions.Format(culture, format, value));
+						var differenceValueFOrmatWithCulture = StringExtensions.Format(culture, format, value);
+						differenceValueFOrmatWithCulture
+							.Should().NotBe(string.Format(culture, format, value), "using culture " + culture);
 					}
 				}
 			}
@@ -215,6 +228,8 @@ namespace Uno.Tests.Extensions
 		[TestMethod]
 		public void CustomStringFormatIsTolerant()
 		{
+			using var _ = new AssertionScope();
+
 			var formats = new[]
 			{
 				"This has no value",
@@ -241,13 +256,15 @@ namespace Uno.Tests.Extensions
 
 			foreach (var pair in formats.Zip(expectedResults, (format, expected) => new { format, expected }))
 			{
-				Assert.AreEqual(StringExtensions.Format(pair.format, 42), pair.expected);
+				StringExtensions.Format(pair.format, 42).Should().Be(pair.expected);
 			}
 		}
 
 		[TestMethod]
 		public void StringFormatHasEscapedChars()
 		{
+			using var _ = new AssertionScope();
+
 			var formats = new[]
 			{
 				@"{0:\;#.##\;;(#.##);\;\-\-\;;\'XXX\'}",
@@ -264,7 +281,7 @@ namespace Uno.Tests.Extensions
 					var original = string.Format(format, value);
 					var custom = StringExtensions.Format(format, value);
 
-					Assert.AreEqual(original, custom);
+					custom.Should().Be(original);
 				}
 			}
 		}
@@ -272,6 +289,8 @@ namespace Uno.Tests.Extensions
 		[TestMethod]
 		public void StringFormatsErrorHandlingAreIdentical()
 		{
+			using var _ = new AssertionScope();
+
 			var formats = new[]
 			{
 				@"{0:#.##;(#.##);ZERO",
@@ -290,23 +309,24 @@ namespace Uno.Tests.Extensions
 					{
 						var custom = StringExtensions.Format(format, 42);
 
-						Assert.AreEqual(original, custom);
+						custom.Should().Be(original);
 					}
 					catch
 					{
-						Assert.Fail($"string.Format did not fail for {format}. StringExtensions.Format shouldn't have failed either.");
+						AssertionScope.Current.FailWith("string.Format did not fail for {0}. StringExtensions.Format shouldn't have failed either.", format);
 					}
 				}
-				catch
+				catch(Exception originalEx)
 				{
 					try
 					{
 						StringExtensions.Format(format, 42);
 
-						Assert.Fail($"string.Format failed for {format}. StringExtensions.Format should have failed too.");
+						AssertionScope.Current.FailWith("string.Format failed for {0}. StringExtensions.Format should have failed too.", format);
 					}
-					catch
+					catch(Exception exceptionEx)
 					{
+						exceptionEx.Should().BeOfType(originalEx.GetType());
 					}
 				}
 			}
@@ -315,15 +335,17 @@ namespace Uno.Tests.Extensions
 		[TestMethod]
 		public void CustomStringFormatsWithMultipleValues()
 		{
-			Assert.AreEqual(
-				StringExtensions.Format("For {0} and {1}?", 42, 3.1416),
-				"For 42 and 3.1416?");
-			Assert.AreEqual(
-				StringExtensions.Format("For {0:#.##;(#.##);ZERO} and {1:#.##;(#.##);ZERO}?", 42, 3.1416),
-				"For 42 and 3.14?");
-			Assert.AreEqual(
-				StringExtensions.Format("For {0:#.##;(#.##);ZERO;ONE}, {1:#.##;(#.##);ZERO;ONE} and {2:#.##;(#.##);ZERO;ONE}?", 42, 3.1416, 1.004),
-				"For 42, 3.14 and ONE?");
+			using var _ = new AssertionScope();
+
+			StringExtensions
+				.Format("For {0} and {1}?", 42, 3.1416)
+				.Should().Be("For 42 and 3.1416?");
+			StringExtensions
+				.Format("For {0:#.##;(#.##);ZERO} and {1:#.##;(#.##);ZERO}?", 42, 3.1416)
+				.Should().Be("For 42 and 3.14?");
+			StringExtensions
+				.Format("For {0:#.##;(#.##);ZERO;ONE}, {1:#.##;(#.##);ZERO;ONE} and {2:#.##;(#.##);ZERO;ONE}?", 42, 3.1416, 1.004)
+				.Should().Be("For 42, 3.14 and ONE?");
 		}
 	}
 }

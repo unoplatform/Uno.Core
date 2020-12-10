@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,19 +14,20 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Uno
 {
-    public static class FieldsExtensions
-    {
-        public static Func<TDerived, IEnumerable<object>> Concat<TBase, TDerived>(
-            this Func<TBase, IEnumerable<object>> baseFields, Func<TDerived, IEnumerable<object>> derivedFields)
-            where TDerived : TBase
-        {
-            return item => baseFields(item).Concat(derivedFields(item));
-        }
-    }
+	public static class FieldsExtensions
+	{
+		public static Func<TDerived, IEnumerable<object>> Concat<TBase, TDerived>(
+			this Func<TBase, IEnumerable<object>> baseFields, Func<TDerived, IEnumerable<object>> derivedFields)
+			where TDerived : TBase
+		{
+			return item => baseFields(item).Concat(derivedFields(item));
+		}
+	}
 }

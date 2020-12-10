@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,55 +14,56 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 #if !WINDOWS_UWP
 using System;
 
 namespace Uno.Reflection
 {
-    public class TypeDescriptor : MemberDescriptor<Type>
-    {
-        public TypeDescriptor(Type type)
-            : base(type)
-        {
-        }
+	public class TypeDescriptor : MemberDescriptor<Type>
+	{
+		public TypeDescriptor(Type type)
+			: base(type)
+		{
+		}
 
-        public override Type Type
-        {
-            get { return MemberInfo; }
-        }
+		public override Type Type
+		{
+			get { return MemberInfo; }
+		}
 
-        public override bool IsStatic
-        {
-            get { return MemberInfo.IsAbstract && MemberInfo.IsSealed; }
-        }
+		public override bool IsStatic
+		{
+			get { return MemberInfo.IsAbstract && MemberInfo.IsSealed; }
+		}
 
-        public override bool IsGeneric
-        {
-            get { return MemberInfo.IsGenericType; }
-        }
+		public override bool IsGeneric
+		{
+			get { return MemberInfo.IsGenericType; }
+		}
 
-        public override bool IsOpen
-        {
-            get { return MemberInfo.IsGenericTypeDefinition; }
-        }
+		public override bool IsOpen
+		{
+			get { return MemberInfo.IsGenericTypeDefinition; }
+		}
 
-        public override IMemberDescriptor Open()
-        {
-            return IsClosed ? new TypeDescriptor(MemberInfo.GetGenericTypeDefinition()) : base.Open();
-        }
+		public override IMemberDescriptor Open()
+		{
+			return IsClosed ? new TypeDescriptor(MemberInfo.GetGenericTypeDefinition()) : base.Open();
+		}
 
-        // TODO: params are ignored
-        public override IMemberDescriptor Close(params Type[] types)
-        {
-            if (!IsOpen)
-            {
-                return base.Close(types);
-            }
-            
-            var closedType = MemberInfo.MakeGenericType(types);
+		// TODO: params are ignored
+		public override IMemberDescriptor Close(params Type[] types)
+		{
+			if (!IsOpen)
+			{
+				return base.Close(types);
+			}
+			
+			var closedType = MemberInfo.MakeGenericType(types);
 
-            return new TypeDescriptor(closedType);
-        }
-    }
+			return new TypeDescriptor(closedType);
+		}
+	}
 }
 #endif

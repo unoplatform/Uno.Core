@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,31 +14,32 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Uno.Expressions
 {
-    public class EditableElementInit
-    {
-        private readonly EditableExpressionCollection<Expression> arguments;
+	public class EditableElementInit
+	{
+		private readonly EditableExpressionCollection<Expression> arguments;
 
-        public EditableElementInit(ElementInit elementInit)
-        {
-            AddMethod = elementInit.AddMethod;
-            arguments = new EditableExpressionCollection<Expression>(elementInit.Arguments);
-        }
+		public EditableElementInit(ElementInit elementInit)
+		{
+			AddMethod = elementInit.AddMethod;
+			arguments = new EditableExpressionCollection<Expression>(elementInit.Arguments);
+		}
 
-        public MethodInfo AddMethod { get; set; }
+		public MethodInfo AddMethod { get; set; }
 
-        public EditableExpressionCollection<Expression> Arguments
-        {
-            get { return arguments; }
-        }
+		public EditableExpressionCollection<Expression> Arguments
+		{
+			get { return arguments; }
+		}
 
-        public ElementInit ToElementInit()
-        {
-            return Expression.ElementInit(AddMethod, Arguments.ToExpression());
-        }
-    }
+		public ElementInit ToElementInit()
+		{
+			return Expression.ElementInit(AddMethod, Arguments.ToExpression());
+		}
+	}
 }

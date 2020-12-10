@@ -19,7 +19,7 @@
 		<PackageIconUrl>https://nv-assets.azurewebsites.net/logos/uno.png</PackageIconUrl>
 		<RepositoryUrl>https://github.com/nventive/Uno.Core</RepositoryUrl>
 		<Description>A package that includes Uno.Core as a dependency for build tasks and Uno.SourceGeneration binaries.</Description>
-		<Copyright>Copyright (C) 2015-2018 nventive inc. - all rights reserved</Copyright>
+		<Copyright>Copyright (C) 2015-2020 nventive inc. - all rights reserved</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup> 

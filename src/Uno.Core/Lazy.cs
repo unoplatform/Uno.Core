@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Threading.Tasks;
 
 namespace Uno
 {
-    [Legacy("NV0049")]
+	[Legacy("NV0049")]
 	public static class Lazy
-    {
-        public static T Get<T>(ref T value, Func<T> factory)
+	{
+		public static T Get<T>(ref T value, Func<T> factory)
 			where T : class
-        {
-            if (value == null)
-            {
-                value = factory();
-            }
+		{
+			if (value == null)
+			{
+				value = factory();
+			}
 
-            return value;
-        }
+			return value;
+		}
 
 		public static T Get<T>(ref T value)
 			where T : class
@@ -44,5 +45,5 @@ namespace Uno
 		{
 			return Get(ref value, () => new T());
 		}
-    }
+	}
 }

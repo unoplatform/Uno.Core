@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 
 namespace Uno.Threading
 {
-    public class Synchronizable<T> : ISynchronizable<T>
-    {
+	public class Synchronizable<T> : ISynchronizable<T>
+	{
 #if WINDOWS_PHONE
 		
 		// Prior to WP 8.0.10322 (GDR2), ReaderWriterLockSlim had a severe bug. Falling back to a standard lock
@@ -27,10 +28,10 @@ namespace Uno.Threading
 		private readonly static bool UseExclusiveLock = Environment.OSVersion.Version < new Version(8, 0, 10322);
 #endif
 
-        private readonly ISynchronizableLock<T> syncLock;
+		private readonly ISynchronizableLock<T> syncLock;
 
-        public Synchronizable(T instance)
-        {
+		public Synchronizable(T instance)
+		{
 #if XAMARIN
 			// RWLockSlim on mono (3.2 as of writing) seems to be time consuming, particularly when performing unusually long SpinLocks.
 			// Until this is resolved, revert to standard locking.
@@ -47,15 +48,15 @@ namespace Uno.Threading
 				syncLock = new SynchronizableLock<T>(instance);
 			}
 #endif // XAMARIN
-        }
+		}
 
-        #region ISynchronizable<T> Members
+		#region ISynchronizable<T> Members
 
-        public ISynchronizableLock<T> Lock
-        {
-            get { return syncLock; }
-        }
+		public ISynchronizableLock<T> Lock
+		{
+			get { return syncLock; }
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

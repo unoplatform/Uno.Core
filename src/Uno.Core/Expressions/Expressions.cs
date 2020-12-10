@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,14 +14,15 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Linq.Expressions;
 
 namespace Uno.Expressions
 {
-    public class Expressions<T>
-    {
-        public static readonly Expression<Func<T, bool>> False = item => false;
-        public static readonly Expression<Func<T, bool>> True = item => true;
-    }
+	public class Expressions<T>
+	{
+		public static readonly Expression<Func<T, bool>> False = item => false;
+		public static readonly Expression<Func<T, bool>> True = item => true;
+	}
 }

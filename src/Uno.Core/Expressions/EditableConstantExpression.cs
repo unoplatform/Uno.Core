@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,23 +14,24 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System.Linq.Expressions;
 
 namespace Uno.Expressions
 {
-    public class EditableConstantExpression : EditableExpression<ConstantExpression>
-    {
-        public EditableConstantExpression(ConstantExpression expression)
-            : base(expression, false)
-        {
-            Value = expression.Value;
-        }
+	public class EditableConstantExpression : EditableExpression<ConstantExpression>
+	{
+		public EditableConstantExpression(ConstantExpression expression)
+			: base(expression, false)
+		{
+			Value = expression.Value;
+		}
 
-        public object Value { get; set; }
+		public object Value { get; set; }
 
-        public override ConstantExpression DoToExpression()
-        {
-            return Expression.Constant(Value);
-        }
-    }
+		public override ConstantExpression DoToExpression()
+		{
+			return Expression.Constant(Value);
+		}
+	}
 }

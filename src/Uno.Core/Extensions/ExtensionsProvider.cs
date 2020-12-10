@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,32 +14,33 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using CommonServiceLocator;
 
 namespace Uno.Extensions
 {
-    public static class ExtensionsProvider
-    {
-        public static TService Get<TService, TConcrete>()
-            where TConcrete : TService, new()
+	public static class ExtensionsProvider
+	{
+		public static TService Get<TService, TConcrete>()
+			where TConcrete : TService, new()
 			where TService : class
-        {
-            var service = ServiceLocator.IsLocationProviderSet ? ServiceLocator.Current.GetInstance<TService>() : null;
+		{
+			var service = ServiceLocator.IsLocationProviderSet ? ServiceLocator.Current.GetInstance<TService>() : null;
 
-            if (service == null)
-            {
-                service = new TConcrete();
-            }
+			if (service == null)
+			{
+				service = new TConcrete();
+			}
 
-            return service;
-        }
+			return service;
+		}
 
 		public static TService Get<TService>(Func<TService> defaultFactory)
 			where TService : class
 		{
 			var service =
-                ServiceLocator.IsLocationProviderSet ? ServiceLocator.Current.GetInstance<TService>() : null
+				ServiceLocator.IsLocationProviderSet ? ServiceLocator.Current.GetInstance<TService>() : null
 				?? defaultFactory();
 
 			return service;

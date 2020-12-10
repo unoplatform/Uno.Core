@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
-#region Using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +22,12 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-#endregion
-
 namespace Uno.Extensions
 {
 	public static partial class StringExtensions
 	{
 #if (!SILVERLIGHT && !WINDOWS_UWP && HAS_COMPILEDREGEX) || WINDOWS_PHONE || HAS_COMPILEDREGEX
-        private static readonly Regex _newLineRegex = new Regex(@"^", RegexOptions.Compiled | RegexOptions.Multiline);
+		private static readonly Regex _newLineRegex = new Regex(@"^", RegexOptions.Compiled | RegexOptions.Multiline);
 #else
 		private static readonly Lazy<Regex> _newLineRegex = new Lazy<Regex>(() => new Regex(@"^", RegexOptions.Multiline));
 #endif

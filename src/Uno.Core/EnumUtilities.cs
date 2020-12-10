@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -103,7 +104,7 @@ namespace Uno
 			}
 
 			result = null;
-            return false;
+			return false;
 		}
 
 		public static System.Tuple<string, object, object>[] GetValues(Type enumType, bool ignoreCase)
@@ -117,7 +118,7 @@ namespace Uno
 					var enumParsedValue = Enum.Parse(enumType, info.Name, ignoreCase);
 					var enumUnderlyingValue = Convert.ChangeType(enumValue, Enum.GetUnderlyingType(enumValue.GetType()), CultureInfo.InvariantCulture);
 					return System.Tuple.Create(info.Name, enumParsedValue, enumUnderlyingValue);
-                })
+				})
 				.ToArray();
 		}
 

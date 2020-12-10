@@ -1,5 +1,5 @@
 // ******************************************************************
-// Copyright � 2015-2018 nventive inc. All rights reserved.
+// Copyright � 2015-2020 nventive inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // ******************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,24 +23,24 @@ using System.Text.RegularExpressions;
 
 namespace Uno.Extensions
 {
-    /// <summary>
-    /// Provide extentions for the System.Text.RegularExpressions.Match class
-    /// </summary>
-    public static class MatchExtensions
-    {
-        /// <summary>
-        /// Converts a Regular Expression Match instance to an enumerable of Regular Expression Match instances
-        /// </summary>
-        /// <param name="match">A Regular Expression Match instance</param>
-        /// <returns>An enumerable of matches</returns>
-        public static IEnumerable<Match> AsEnumerable(this Match match)
-        {
-            while (match.Success)
-            {
-                yield return match;
+	/// <summary>
+	/// Provide extentions for the System.Text.RegularExpressions.Match class
+	/// </summary>
+	public static class MatchExtensions
+	{
+		/// <summary>
+		/// Converts a Regular Expression Match instance to an enumerable of Regular Expression Match instances
+		/// </summary>
+		/// <param name="match">A Regular Expression Match instance</param>
+		/// <returns>An enumerable of matches</returns>
+		public static IEnumerable<Match> AsEnumerable(this Match match)
+		{
+			while (match.Success)
+			{
+				yield return match;
 
-                match = match.NextMatch();
-            }
-        }
-    }
+				match = match.NextMatch();
+			}
+		}
+	}
 }
