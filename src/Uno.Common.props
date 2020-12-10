@@ -5,8 +5,9 @@
     <UnoDefineConstants>$(UnoDefineConstants);HAS_GEOCOORDINATE_WATCHER;HAS_GEOCOORDINATE;HAS_COMPILED_REGEX;USE_FAST_REPLAYONE</UnoDefineConstants>
     <UnoDefineConstants>$(UnoDefineConstants);HAS_SEMAPHORE</UnoDefineConstants>
     <UnoDefineConstants>$(UnoDefineConstants);HAS_FILE_IO</UnoDefineConstants>
-    <UnoDefineConstants>$(UnoDefineConstants);HAS_THREADS</UnoDefineConstants>
-  </PropertyGroup>
+		<UnoDefineConstants>$(UnoDefineConstants);HAS_THREADS</UnoDefineConstants>
+		<UnoDefineConstants>$(UnoDefineConstants);HAS_WINDOWS_IDENTITY</UnoDefineConstants>
+	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
 		<UnoDefineConstants>$(UnoDefineConstants);WINDOWS_UAP;WINDOWS_UWP</UnoDefineConstants>

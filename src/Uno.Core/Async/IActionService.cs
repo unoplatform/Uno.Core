@@ -27,7 +27,7 @@ namespace Uno.Async
 
 		IAsyncResult Begin<T>(AsyncCallback callback, object asyncState, Func<T> selector);
 
-#if !SILVERLIGHT && !WINDOWS_UWP && !XAMARIN && !NETSTANDARD2_0
+#if HAS_WINDOWS_IDENTITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification="Security feature")]
 		WindowsIdentity Identity { set; }
 #endif
