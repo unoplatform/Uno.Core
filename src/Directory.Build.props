@@ -2,14 +2,15 @@
 
 	<PropertyGroup>
     <Authors>nventive</Authors>
-    <PackageProjectUrl>https://github.com/nventive/Uno.Core</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/unoplatform/uno.core</PackageProjectUrl>
     <PackageIconUrl>https://nv-assets.azurewebsites.net/logos/uno.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/nventive/Uno.Core</RepositoryUrl>
+    <RepositoryUrl>https://github.com/unoplatform/uno.core</RepositoryUrl>
 		<RepositoryUrl>$(BUILD_REPOSITORY_URI)</RepositoryUrl>
 		<Copyright>Copyright (C) 2015-$([System.DateTime]::Now.ToString(`yyyy`)) nventive inc. - all rights reserved</Copyright>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<LangVersion>8.0</LangVersion>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageIcon>uno-logo.png</PackageIcon>
 	</PropertyGroup>
 
