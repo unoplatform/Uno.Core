@@ -117,6 +117,21 @@ namespace Uno.Extensions
 		}
 
 		/// <summary>
+		/// Fluently adds an item to the given list.
+		/// </summary>
+		/// <typeparam name="TList">Type of the list</typeparam>
+		/// <param name="list">The list to which the given item has to be added</param>
+		/// <param name="item">The item to add to the list</param>
+		/// <returns>The source list for fluent declaration.</returns>
+		public static TList FluentAdd<TList>(this TList list, object item)
+			where TList : IList
+		{
+			list.Add(item);
+
+			return list;
+		}
+
+		/// <summary>
 		/// Remove all items after <paramref name="index"/>.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>

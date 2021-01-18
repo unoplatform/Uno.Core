@@ -15,10 +15,12 @@
 //
 // ******************************************************************
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Uno.Collections;
 using Uno.Disposables;
+using Uno.Extensions.ValueType;
 
 namespace Uno.Extensions
 {
@@ -65,6 +67,22 @@ namespace Uno.Extensions
 		{
 			collection.Add(item);
 			return Disposable.Create(() => collection.Remove(item));
+		}
+
+		/// <summary>
+		/// Fluently adds an item to the given collection.
+		/// </summary>
+		/// <typeparam name="TCollection">Type of the collection</typeparam>
+		/// <typeparam name="TItem">Type of the items of the collection</typeparam>
+		/// <param name="collection">The collection to which the given item has to be added</param>
+		/// <param name="item">The item to add to the collection</param>
+		/// <returns>The source collection for fluent declaration.</returns>
+		public static TCollection FluentAdd<TCollection, TItem>(this TCollection collection, TItem item)
+			where TCollection : ICollection<TItem>
+		{
+			collection.Add(item);
+
+			return collection;
 		}
 
 		/// <summary>

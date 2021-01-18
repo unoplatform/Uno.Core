@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uno.Extensions;
 
@@ -69,6 +70,100 @@ namespace Uno.Core.Tests.Collections
 			public bool Equals(object left, object right) => _equals(left, right);
 
 			public int GetHashCode(object obj) => throw new System.NotImplementedException();
+		}
+
+		[TestMethod]
+		public void When_FluentAdd_Then_InferTypeProperly()
+		{
+			new MyList().FluentAdd(new MyItem());
+		}
+
+		[TestMethod]
+		public void When_FluentAdd_Then_Add()
+		{
+			new MyList().FluentAdd(new MyItem()).Should().HaveCount(1);
+		}
+
+		[TestMethod]
+		public void When_FluentAdd_Then_Fluent()
+		{
+			var c1 = new MyList();
+			var c2 = c1.FluentAdd(new MyItem());
+
+			c1.Should().BeSameAs(c2);
+		}
+
+		private class MyList : IList
+		{
+			private IList _inner;
+
+			/// <inheritdoc />
+			public IEnumerator GetEnumerator() => _inner.GetEnumerator();
+
+			/// <inheritdoc />
+			public void CopyTo(Array array, int index)
+			{
+				_inner.CopyTo(array, index);
+			}
+
+			/// <inheritdoc />
+			public int Count => _inner.Count;
+
+			/// <inheritdoc />
+			public object SyncRoot => _inner.SyncRoot;
+
+			/// <inheritdoc />
+			public bool IsSynchronized => _inner.IsSynchronized;
+
+			/// <inheritdoc />
+			public int Add(object value) => _inner.Add(value);
+
+			/// <inheritdoc />
+			public bool Contains(object value) => _inner.Contains(value);
+
+			/// <inheritdoc />
+			public void Clear()
+			{
+				_inner.Clear();
+			}
+
+			/// <inheritdoc />
+			public int IndexOf(object value) => _inner.IndexOf(value);
+
+			/// <inheritdoc />
+			public void Insert(int index, object value)
+			{
+				_inner.Insert(index, value);
+			}
+
+			/// <inheritdoc />
+			public void Remove(object value)
+			{
+				_inner.Remove(value);
+			}
+
+			/// <inheritdoc />
+			public void RemoveAt(int index)
+			{
+				_inner.RemoveAt(index);
+			}
+
+			/// <inheritdoc />
+			public object this[int index]
+			{
+				get => _inner[index];
+				set => _inner[index] = value;
+			}
+
+			/// <inheritdoc />
+			public bool IsReadOnly => _inner.IsReadOnly;
+
+			/// <inheritdoc />
+			public bool IsFixedSize => _inner.IsFixedSize;
+		}
+
+		private class MyItem
+		{
 		}
 	}
 }
