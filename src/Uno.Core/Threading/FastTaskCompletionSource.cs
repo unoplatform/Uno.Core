@@ -367,13 +367,13 @@ namespace Uno.Threading
 			var originalContext = SynchronizationContext.Current;
 			try
 			{
-				SynchronizationContext.SetSynchronizationContext(ImmediatePostSyncContext.Instance);
+				//SynchronizationContext.SetSynchronizationContext(ImmediatePostSyncContext.Instance);
 
 				return await this;
 			}
 			finally
 			{
-				SynchronizationContext.SetSynchronizationContext(originalContext);
+				//SynchronizationContext.SetSynchronizationContext(originalContext);
 			}
 		}
 

@@ -70,7 +70,7 @@ namespace Uno.Threading
 			private readonly FastAsyncLock _owner;
 
 			private int _state = State.Waiting;
-			private FastTaskCompletionSource<IDisposable> _enterAsync;
+			private TaskCompletionSource<IDisposable> _enterAsync;
 			private int _count;
 			private AsyncLocalMonitor _next;
 
@@ -131,11 +131,11 @@ namespace Uno.Threading
 				// If so, return sync (note: the '_count' was already incremented)
 				if (_state == State.Waiting)
 				{
-					_enterAsync = new FastTaskCompletionSource<IDisposable>();
+					_enterAsync = new TaskCompletionSource<IDisposable>();
 
 					if (ct.CanBeCanceled)
 					{
-						_enterAsync.OnCompleted(ct.Register(Abort).Dispose);
+						_enterAsync.Task.GetAwaiter().OnCompleted(ct.Register(Abort).Dispose);
 
 						void Abort()
 						{

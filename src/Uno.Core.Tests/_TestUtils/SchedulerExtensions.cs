@@ -33,7 +33,7 @@ namespace Uno.Core.Tests.TestUtils
 		/// <returns>A task that will provide the result of the execution.</returns>
 		public static Task<T> Run<T>(this IScheduler source, Func<CancellationToken, Task<T>> taskBuilder, CancellationToken cancellationToken)
 		{
-			var completion = new FastTaskCompletionSource<T>();
+			var completion = new TaskCompletionSource<T>();
 
 			var disposable = new SingleAssignmentDisposable();
 			var ctr = default(CancellationTokenRegistration);

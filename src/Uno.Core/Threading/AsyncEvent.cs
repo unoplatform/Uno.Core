@@ -27,9 +27,9 @@ namespace Uno.Threading
 	public class AsyncEvent
 	{
 #if HAS_NO_CONCURRENT_DICT
-		private Queue<FastTaskCompletionSource<bool>> _queue = new Queue<FastTaskCompletionSource<bool>>();
+		private Queue<TaskCompletionSource<bool>> _queue = new Queue<TaskCompletionSource<bool>>();
 #else
-		private ConcurrentQueue<FastTaskCompletionSource<bool>> _queue = new ConcurrentQueue<FastTaskCompletionSource<bool>>();
+		private ConcurrentQueue<TaskCompletionSource<bool>> _queue = new ConcurrentQueue<TaskCompletionSource<bool>>();
 #endif
 		private int _currentCount = 0;
 
@@ -45,7 +45,7 @@ namespace Uno.Threading
 
 		public Task<bool> Wait(CancellationToken cancellationToken)
 		{
-			var src = new FastTaskCompletionSource<bool>();
+			var src = new TaskCompletionSource<bool>();
 
 			bool shouldWait;
 			int result;
@@ -103,7 +103,7 @@ namespace Uno.Threading
 
 			} while (Interlocked.CompareExchange(ref _currentCount, newValue, oldValue) != oldValue);
 
-			FastTaskCompletionSource<bool> result;
+			TaskCompletionSource<bool> result;
 
 			if (DequeueWaiter(out result))
 			{
@@ -111,7 +111,7 @@ namespace Uno.Threading
 			}
 		}
 
-		private bool DequeueWaiter(out FastTaskCompletionSource<bool> result)
+		private bool DequeueWaiter(out TaskCompletionSource<bool> result)
 		{
 #if HAS_NO_CONCURRENT_DICT
 			lock(_queue)

@@ -15,13 +15,17 @@
 //
 // ******************************************************************
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using nVentive.Umbrella.Concurrency;
 using Uno.Core.Tests.TestUtils;
 using Uno.Threading;
 
@@ -33,7 +37,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetResultSynchronously1()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			sut.SetResult("1234");
 
@@ -47,7 +51,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetResultSynchronously2()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			// The task is created BEFORE the result being set
 			var task = sut.Task;
@@ -64,7 +68,7 @@ namespace Uno.Core.Tests.Threading
 		public void TestSetResultAsynchronously()
 		{
 			var scheduler = new TestScheduler();
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			var threadId = Thread.CurrentThread.ManagedThreadId;
 
@@ -96,7 +100,7 @@ namespace Uno.Core.Tests.Threading
 		public void TestSetResultAsynchronously_AndAwaitDirectly1()
 		{
 			var scheduler = new TestScheduler();
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			var threadId = Thread.CurrentThread.ManagedThreadId;
 
@@ -104,7 +108,7 @@ namespace Uno.Core.Tests.Threading
 				.Run(async ct =>
 				{
 					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
-					var r = await sut;
+					var r = await sut.Task;
 					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
 					return r;
 				}, CancellationToken.None);
@@ -128,7 +132,7 @@ namespace Uno.Core.Tests.Threading
 		public void TestSetResultAsynchronously_AndAwaitDirectly2()
 		{
 			var scheduler = new TestScheduler();
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			var threadId = Thread.CurrentThread.ManagedThreadId;
 
@@ -140,7 +144,7 @@ namespace Uno.Core.Tests.Threading
 				.Run(async ct =>
 				{
 					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
-					var r = await sut;
+					var r = await sut.Task;
 					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
 					return r;
 				}, CancellationToken.None);
@@ -157,7 +161,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetCanceledSynchronously1()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			sut.SetCanceled();
 
@@ -170,7 +174,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetCanceledSynchronously2()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			// The task is created BEFORE the task being canceled
 			var task = sut.Task;
@@ -186,7 +190,7 @@ namespace Uno.Core.Tests.Threading
 		public void TestSetCanceledAsynchronously()
 		{
 			var scheduler = new TestScheduler();
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			var threadId = Thread.CurrentThread.ManagedThreadId;
 
@@ -216,7 +220,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetExceptionSynchronously1()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			try
 			{
@@ -243,7 +247,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetExceptionSynchronously2()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			// The task is created BEFORE the task being canceled
 			var task = sut.Task;
@@ -272,7 +276,7 @@ namespace Uno.Core.Tests.Threading
 		public void TestSetExceptionAsynchronously()
 		{
 			var scheduler = new TestScheduler();
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			var threadId = Thread.CurrentThread.ManagedThreadId;
 
@@ -315,7 +319,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetExceptionSynchronously_UsingExceptionDispatchInfo1()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			try
 			{
@@ -323,7 +327,7 @@ namespace Uno.Core.Tests.Threading
 			}
 			catch (ArgumentNullException ex)
 			{
-				sut.SetException(ExceptionDispatchInfo.Capture(ex));
+				sut.SetException(ex);
 			}
 
 			// The task is created AFTER the task being canceled
@@ -341,7 +345,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetExceptionSynchronously_UsingExceptionDispatchInfo2()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			// The task is created BEFORE the task being canceled
 			var task = sut.Task;
@@ -353,7 +357,7 @@ namespace Uno.Core.Tests.Threading
 			}
 			catch (ArgumentNullException ex)
 			{
-				sut.SetException(ExceptionDispatchInfo.Capture(ex));
+				sut.SetException(ex);
 			}
 
 			task.IsCompleted.Should().BeTrue();
@@ -369,7 +373,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetExceptionSynchronously_WithTaskCanceledException1()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			// The task is created BEFORE the task being canceled
 			var task = sut.Task;
@@ -392,7 +396,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetExceptionSynchronously_WithTaskCanceledException2()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			try
 			{
@@ -413,7 +417,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetResultTwice_ThrowException()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			Action action = () => sut.SetResult("1234");
 
@@ -424,7 +428,7 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetCanceledTwice_ThrowException()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			Action action = () => sut.SetCanceled();
 
@@ -435,13 +439,213 @@ namespace Uno.Core.Tests.Threading
 		[TestMethod]
 		public void TestSetExceptionTwice_ThrowException()
 		{
-			var sut = new FastTaskCompletionSource<string>();
+			var sut = new TaskCompletionSource<string>();
 
 			Action action = () => sut.SetException(new ArgumentNullException("xxx"));
 
 			action.Should().NotThrow();
 			action.Should().Throw<InvalidOperationException>();
 		}
+
+		[TestMethod]
+		public async Task Test()
+		{
+			var testCtx = GetScheduler();
+			var syncCtx = SynchronizationContext.Current;
+			var scheCtx = TaskScheduler.Current;
+
+			var tcs = new TaskCompletionSource<object>();
+
+			Task t = default(Task);
+			//t = Task.Run(async () =>
+			//{
+			//	var syncCtx2 = SynchronizationContext.Current;
+			//	var scheCtx2 = TaskScheduler.Current;
+
+			//	t.ToString();
+
+			//	await Task.Delay(5000);
+
+			//	tcs.SetResult(default(object));
+
+			//	"".ToString();
+			//});
+
+			t = Factory().StartNew(async () =>
+			{
+				var syncCtx2 = SynchronizationContext.Current;
+				var scheCtx2 = TaskScheduler.Current;
+
+				t.ToString();
+
+				//await Blabla();
+				//await Blabla2();
+				await Blabla3();
+
+				var syncCtx3 = SynchronizationContext.Current;
+				var scheCtx3 = TaskScheduler.Current;
+
+
+				await Task.Delay(50000);
+
+				tcs.SetResult(default(object));
+
+				"".ToString();
+			});
+
+			var t2 =  tcs.Task;
+
+			_testScheduler.AdvanceBy(100000 * TimeSpan.TicksPerMillisecond);
+
+			await t2;
+
+			"".ToString();
+		}
+
+		private async Task Blabla()
+		{
+			var syncCtx = SynchronizationContext.Current;
+			var scheCtx = TaskScheduler.Current;
+
+			var tcs = new TaskCompletionSource<object>();
+
+			new Thread(Run).Start();
+
+			var result = await tcs.Task;
+
+			result.ToString();
+
+			var syncCtx2 = SynchronizationContext.Current;
+			var scheCtx2 = TaskScheduler.Current;
+
+			void Run()
+			{
+				var syncCtx3 = SynchronizationContext.Current;
+				var scheCtx3 = TaskScheduler.Current;
+
+				Thread.Sleep(5000);
+
+				tcs.SetResult(new object());
+			}
+		}
+
+
+		private async Task Blabla2()
+		{
+			var syncCtx = SynchronizationContext.Current;
+			var scheCtx = TaskScheduler.Current;
+
+			var buffer = new byte[24];
+			int read;
+			while((read = await File.OpenRead(@"C:\Users\David.Rey\Desktop\Test.txt").ReadAsync(buffer, 0, 24)) > 0)
+			{
+				read.ToString();
+				Thread.Sleep(100);
+			}
+
+			var syncCtx2 = SynchronizationContext.Current;
+			var scheCtx2 = TaskScheduler.Current;
+		}
+
+		private async Task Blabla3()
+		{
+			var syncCtx = SynchronizationContext.Current;
+			var scheCtx = TaskScheduler.Current;
+
+			var tcs = new TaskCompletionSource<object>();
+
+
+			_testScheduler.Schedule(async () =>
+			{
+				tcs.SetResult(new object());
+			});
+
+			await tcs.Task;
+		}
+
+		private TaskFactory Factory()
+		{
+			return new TaskFactory(
+				CancellationToken.None,
+				TaskCreationOptions.AttachedToParent,
+				TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.AttachedToParent,
+				GetScheduler());
+		}
+
+		private class SchedulerTaskScheduler : TaskScheduler
+		{
+			private readonly IScheduler _scheduler;
+			//private SchedulerSynchronizationContext _ctx;
+
+			public SchedulerTaskScheduler(IScheduler scheduler)
+			{
+				_scheduler = scheduler;
+				//_ctx = new SchedulerSynchronizationContext(scheduler);
+			}
+
+			/// <inheritdoc />
+			protected override void QueueTask(Task task)
+			{
+				_scheduler.Schedule(task, InvokeTask);
+				//_ctx.Post(s_postCallback, task);
+			}
+
+			private IDisposable InvokeTask(IScheduler scheduler, Task task)
+			{
+				var syncCtx = SynchronizationContext.Current;
+				var scheCtx = TaskScheduler.Current;
+
+				TryExecuteTask(task);
+
+				return Disposable.Empty;
+			}
+
+			/// <inheritdoc />
+			protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
+			{
+				return TryExecuteTask(task);
+			}
+
+			/// <inheritdoc />
+			protected override IEnumerable<Task> GetScheduledTasks() => throw new NotSupportedException();
+
+
+			//private static SendOrPostCallback s_postCallback = new SendOrPostCallback(PostCallback);
+
+			//// this is where the actual task invocation occures
+			//private static void PostCallback(object obj)
+			//{
+			//	Task task = (Task)obj;
+
+			//	// calling ExecuteEntry with double execute check enabled because a user implemented SynchronizationContext could be buggy
+			//	((IThreadPoolWorkItem)task).RunSynchronously();
+			//}
+		}
+
+		private TestScheduler _testScheduler;
+
+		private TaskScheduler GetScheduler()
+		{
+			_testScheduler = new TestScheduler();
+
+			return new SchedulerTaskScheduler(_testScheduler);
+
+
+			//var ctx = new SchedulerSynchronizationContext(_testScheduler);
+
+			//try
+			//{
+			//	SynchronizationContext.SetSynchronizationContext(ctx);
+
+			//	return TaskScheduler.FromCurrentSynchronizationContext();
+			//}
+			//finally
+			//{
+			//	SynchronizationContext.SetSynchronizationContext(null);
+			//}
+		}
+
+
 
 		[TestMethod]
 		public void TestContinuationWhenSetResultUsingAnotherSyncContext()
@@ -453,14 +657,28 @@ namespace Uno.Core.Tests.Threading
 			var isRunning = false;
 			var error = default(Exception);
 
+			var ctx = new ErrorSyncContext();
+
 			scheduler.Schedule(async () =>
 			{
 				isRunning = true;
 				try
 				{
-					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+					//new TaskFactory(TaskScheduler.Default);
 
-					await sut.Task;
+					//Task.Factory
+
+					//new Task(default(Action), CancellationToken.None, )
+
+					//TaskScheduler.FromCurrentSynchronizationContext().
+
+					//Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
+
+					SynchronizationContext.SetSynchronizationContext(ctx);
+					var task = sut.Task;
+
+					await task;
+					SynchronizationContext.SetSynchronizationContext(null);
 
 					Thread.CurrentThread.ManagedThreadId.Should().Be(threadId);
 				}
@@ -477,7 +695,7 @@ namespace Uno.Core.Tests.Threading
 			{
 				isRunning.Should().BeTrue();
 
-				SynchronizationContext.SetSynchronizationContext(new ErrorSyncContext());
+				SynchronizationContext.SetSynchronizationContext(ctx);
 				sut.SetResult("1234");
 
 				isRunning.Should().BeFalse();
