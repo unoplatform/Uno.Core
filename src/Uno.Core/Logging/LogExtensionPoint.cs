@@ -25,7 +25,7 @@ namespace Uno.Extensions
     {
         private static ILoggerFactory _loggerFactory;
 
-        private static class Container<T>
+		private static class Container<T>
         {
             internal static readonly ILogger Logger = AmbientLoggerFactory.CreateLogger<T>();
         }
@@ -33,8 +33,11 @@ namespace Uno.Extensions
 		/// <summary>
 		/// Retreives the <see cref="ILoggerFactory"/> for this the Uno extension point.
 		/// </summary>
-		public static ILoggerFactory AmbientLoggerFactory 
-			=> Transactional.Update(ref _loggerFactory, l => l ?? GetFactory());
+		public static ILoggerFactory AmbientLoggerFactory
+		{
+			get => Transactional.Update(ref _loggerFactory, l => l ?? GetFactory());
+			set => Transactional.Update(ref _loggerFactory, l => value);
+		}
 
 		/// <summary>
 		/// Gets a <see cref="ILogger"/> for the specified type.
