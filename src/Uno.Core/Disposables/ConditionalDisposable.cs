@@ -31,6 +31,7 @@ namespace Uno.Disposables
 		private readonly Action _action;
 		private bool _disposed;
 		private readonly WeakReference _conditionSource;
+		private readonly List<IDisposable> _list;
 
 #if DEBUG
 		private readonly WeakReference _target;
@@ -52,15 +53,15 @@ namespace Uno.Disposables
 			_target = new WeakReference(target);
 #endif
 
-			var list = _registrations.GetValue(target, CreateList);
+			_list = _registrations.GetValue(target, CreateList);
 
-			lock (list)
+			lock (_list)
 			{
 				// The _registrations member is used to associate the target instane to the
 				// current disposable instance. This way, when the target instance gets collected
 				// the ConditionalWeakTable will make the "list" instance collectable, as well as
 				// its content, making this instance collectable.
-				list.Add(this);
+				_list.Add(this);
 			}
 		}
 
@@ -76,6 +77,11 @@ namespace Uno.Disposables
 			if(disposing)
 			{
 				GC.SuppressFinalize(this);
+			}
+
+			lock (_list)
+			{
+				_list.Remove(this);
 			}
 
 			if (_conditionSource?.IsAlive ?? true)
