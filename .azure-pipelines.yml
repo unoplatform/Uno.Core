@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'windows-2022'
 
 trigger:
   branches:
@@ -21,30 +21,57 @@ pr:
 
 steps:
   - checkout: self
-    clean: true
+    clean: 'true'
 
-  - task: GitVersion@5
+  # Restore nuget.org to the list of existing sources, .NET 6 Pre 2 may somehow remove it
+  - powershell: |
+      dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org | Out-Null
+      $global:LASTEXITCODE = 0
+    displayName: Adjust nuget.org source
+
+  - task: gitversion/setup@0
+    inputs:
+      versionSpec: '5.6.8'
+
+  - task: gitversion/execute@0
     inputs:
       useConfigFile: true
-      configFilePath: GitVersion.yml
-      updateAssemblyInfo: false
+      configFilePath: gitversion.yml
+    displayName: Use GitVersion
 
-  - powershell: './build/build.ps1 -Script build/build.cake'
+  # This SDK version is needed as long as `uap10.0` will be supported in Uno.Core
+  - powershell: .\build\Install-WindowsSdkISO.ps1 17763
+    displayName: Install Windows SDK 17763
+
+  - powershell: |
+      dotnet tool update -g dotnet-vs
+      $MSBUILDPREVIEWPATH="$(vs where preview --prop=InstallationPath)\MSBuild\Current\Bin"
+      Write-Host "##vso[task.setvariable variable=MSBUILDPREVIEWPATH;]$MSBUILDPREVIEWPATH"
+      echo MSBUILDPREVIEWPATH: $MSBUILDPREVIEWPATH
+    displayName: Setup VS17 Path
+
+  - task: MSBuild@1
+    inputs:
+      solution: src/Uno.Core.sln
+      msbuildLocationMethod: location
+      msbuildLocation: $(MSBUILDPREVIEWPATH)
+      msbuildArchitecture: x86
+      msbuildArguments: /r /p:Configuration=Release "/p:PackageOutputPath=$(build.artifactstagingdirectory)\vs2017" "/p:PackageVersion=%GITVERSION_FullSemVer%" "/p:InformationalVersion=%GITVERSION_InformationalVersion%" /detailedsummary
+      clean: false
+      maximumCpuCount: true
+      restoreNugetPackages: false
+      logProjectEvents: false
+      createLogFile: false
+
+  - task: VisualStudioTestPlatformInstaller@1
 
   - task: VSTest@2
     inputs:
       testAssemblyVer2: |
         **\*test*.dll
         !**\obj\**
-      vstestLocationMethod: version
-      vsTestVersion: latest
+      vsTestVersion: toolsInstaller
       testSelector: testAssemblies
-
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: $(Build.SourcesDirectory)/build
-      Contents: '*.nupkg'
-      TargetFolder: $(Build.ArtifactStagingDirectory)/vs2017
 
   - task: PowerShell@2
     displayName: Authenticode Sign Packages

@@ -24,7 +24,9 @@ namespace Uno
 	{
 		public WebRequest Create(Uri uri)
 		{
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
 			return WebRequest.Create(uri);
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
 		}
 	}
 

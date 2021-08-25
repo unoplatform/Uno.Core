@@ -15,6 +15,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<DisableImplicitNamespaceImports>True</DisableImplicitNamespaceImports> <!-- To remove when .NET 6 RC1 is released -->
 		<IsTestProject>$(MSBuildProjectName.Contains('Test'))</IsTestProject>
 		<IsSampleProject>$(MSBuildProjectName.Contains('Sample'))</IsSampleProject>
 	</PropertyGroup>
