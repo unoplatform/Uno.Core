@@ -96,6 +96,6 @@ namespace Uno
 		/// <summary>
 		/// Implicit conversion of T to <see cref="Some{T}"/>
 		/// </summary>
-		public static implicit operator Some<T>(T o) => Some(o);
+		public static implicit operator Some<T>(T o) => Some(o) as Some<T>;
 	}
 }

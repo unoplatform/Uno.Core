@@ -29,7 +29,7 @@ namespace Uno
 		/// <summary>
 		/// Creates an option for a given value.
 		/// </summary>
-		public static Some<T> Some<T>(T value) => new Some<T>(value);
+		public static Option<T> Some<T>(T value) => new Some<T>(value);
 
 		protected internal Option(OptionType type)
 		{
