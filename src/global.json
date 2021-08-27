@@ -1,9 +1,5 @@
 {
   "msbuild-sdks": {
-    "MSBuild.Sdk.Extras": "3.0.22"
-  },
-  "sdk": {
-    "version": "5.0.100",
-    "rollForward": "latestPatch"
+    "MSBuild.Sdk.Extras": "3.0.23"
   }
 }
