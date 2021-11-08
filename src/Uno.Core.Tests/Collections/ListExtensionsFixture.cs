@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Uno.Core.Collections;
 using Uno.Extensions;
 
 namespace Uno.Core.Tests.Collections

@@ -1,11 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras" ToolsVersion="15.0">
-	
-	<!--<Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.7.21379.12" />-->
-
 	<PropertyGroup>
 		<TargetFrameworks>uap10.0.17763;uap10.0.19041;net46;netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
-		<AssemblyName>Uno.Core</AssemblyName>
-		<RootNamespace>Uno.Core</RootNamespace>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
 		<NoWarn>$(NoWarn);1998;1591;1573;1572;1574;1712;1711;1570;NU5105</NoWarn>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn> <!-- Binary formatter is obsolete -->
@@ -17,51 +12,34 @@
 		<DebugType>portable</DebugType>
 		<DebugSymbols>True</DebugSymbols>
 		<Nullable>disable</Nullable>
-
-		<!--
-		Turn on after 4.0
-		<EnablePackageValidation>true</EnablePackageValidation>
-		<PackageValidationBaselineVersion>4.0.0</PackageValidationBaselineVersion>
-		-->
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Description>This package provides a set of helpers and extension methods used to accelerate development.</Description>
+		<Description>This package provides a set of collection specialized helpers and extension methods used to accelerate development.</Description>
 	</PropertyGroup>
 
 	<Import Project="..\Uno.CrossTargeting.props" />
 	<Import Project="..\Uno.Common.props" />
 
 	<ItemGroup>
-		<PackageReference Include="CommonServiceLocator" Version="2.0.5" />
-		<PackageReference Include="System.Memory" Version="4.5.2" Condition="$(TargetFramework.StartsWith('uap10.0')) or '$(TargetFramework)'=='netstandard2.0' or '$(TargetFramework)'=='net46'" />
+		<PackageReference Include="System.Memory" Version="4.5.2" Condition="$(TargetFramework.StartsWith('uap10.0')) or '$(TargetFramework)'=='netstandard2.0' or '$(TargetFramework)'=='net46'"/>
 	</ItemGroup>
 
 	<Choose>
 		<When Condition="$(TargetFramework.StartsWith('net')) and !$(TargetFramework.StartsWith('netstandard')) and '$(TargetFramework)'!='net46' and '$(TargetFramework.Substring(3))'&gt;='6.0'">
 			<ItemGroup>
-				<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
 			</ItemGroup>
 		</When>
 		<Otherwise>
 			<ItemGroup>
-				<PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
 				<PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
 				<PackageReference Include="System.ValueTuple" Version="4.4.0" />
 				<PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
 			</ItemGroup>
 		</Otherwise>
-	</Choose>
-
+	</Choose>	
 	<ItemGroup>
-		<ProjectReference Include="..\Uno.Core.Extensions.Logging\Uno.Core.Extensions.Logging.csproj" />
-		<ProjectReference Include="..\Uno.Core.Extensions.Logging.Singleton\Uno.Core.Extensions.Logging.Singleton.csproj" />
 		<ProjectReference Include="..\Uno.Core.Extensions.Disposables\Uno.Core.Extensions.Disposables.csproj" />
-		<ProjectReference Include="..\Uno.Core.Extensions.Collections\Uno.Core.Extensions.Collections.csproj" />
 		<ProjectReference Include="..\Uno.Core.Extensions.Equality\Uno.Core.Extensions.Equality.csproj" />
-		<ProjectReference Include="..\Uno.Core.Extensions.Threading\Uno.Core.Extensions.Threading.csproj" />
-		<ProjectReference Include="..\Uno.Core.Extensions\Uno.Core.Extensions.csproj" />
-		<ProjectReference Include="..\Uno.Core.Extensions.Compatibility\Uno.Core.Extensions.Compatibility.csproj" />
 	</ItemGroup>
-
 </Project>
