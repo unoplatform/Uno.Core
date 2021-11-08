@@ -1,0 +1,13 @@
+<Project ToolsVersion="15.0">
+
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('uap10.0'))">
+		<DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;HAS_DICT_GETVALUEORDEFAULT</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
+		<DefineConstants>$(DefineConstants);HAS_DICT_GETVALUEORDEFAULT</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<DefineConstants>$(DefineConstants);HAS_DICT_GETVALUEORDEFAULT</DefineConstants>
+	</PropertyGroup>
+	
+</Project>
