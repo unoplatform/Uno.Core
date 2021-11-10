@@ -19,14 +19,16 @@
 
 	<Import Project="..\Uno.CrossTargeting.props" />
 	<Import Project="..\Uno.Common.props" />
-	
 	<ItemGroup>
-		<ProjectReference Include="..\Uno.Core.Extensions.Logging\Uno.Core.Extensions.Logging.csproj" />
-		<ProjectReference Include="..\Uno.Core.Extensions.Threading\Uno.Core.Extensions.Threading.csproj" />
+	  <Compile Include="..\Uno.Core.Extensions.Threading\Transactional.cs" Link="Helper\Transactional.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommonServiceLocator" Version="2.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Helper\" />
 	</ItemGroup>
 
 	<Choose>

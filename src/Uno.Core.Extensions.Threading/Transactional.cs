@@ -15,14 +15,16 @@
 //
 // ******************************************************************
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Text;
 using System.Threading;
 
 namespace Uno
 {
-	public static partial class Transactional
+#if IS_THREADING_PROJECT
+	public 
+#else
+	internal 
+#endif
+	static partial class Transactional
 	{
 		/// <summary>
 		/// Transactionally updates the <paramref name="original"/> reference using the provided <paramref name="selector"/>.
