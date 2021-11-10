@@ -10,6 +10,7 @@
 		<TreatSpecificWarningsAsErrors />
 		<DebugType>portable</DebugType>
 		<DebugSymbols>True</DebugSymbols>
+		<DefineConstants>$(DefineConstants);IS_THREADING_PROJECT</DefineConstants>
 	</PropertyGroup>
 	
 	<PropertyGroup>
