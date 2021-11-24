@@ -9,10 +9,10 @@ The following packages are available:
 - `Uno.Core.Extensions.Disposables` is a set of `IDisposable` implementations
 - `Uno.Core.Extensions.Equality` is a set of specialized equality comparers
 - `Uno.Core.Extensions.Logging` is a set of extension methods for `Microsoft.Logging.Extensions` provided types
-- `Uno.Core.Extensions.Logging.Singleton` is a helper to get a singleton-based `this.Log()` logging.
-- `Uno.Core.Extensions.Threading` is a set of helpers for threading such as `Uno.Transactional` or `Uno.Threading.FastAsyncLock`.
+- `Uno.Core.Extensions.Logging.Singleton` is a helper to get a singleton-based `this.Log()` logging
+- `Uno.Core.Extensions.Threading` is a set of helpers for threading such as `Uno.Transactional` or `Uno.Threading.FastAsyncLock`
 - `Uno.Core.Extensions.Compatibility` is present for compatibility with existing applications
-- `Uno.Core` is a meta-package which references all above packages.
+- `Uno.Core` is a meta-package which references all above packages
 
 ## Build status
 
