@@ -31,6 +31,38 @@
 			<Pack>true</Pack>
 			<PackagePath>build</PackagePath>
 		</Content>
+		<Content Include="..\Uno.Core.Extensions\bin\$(Configuration)\net46\Uno.Core.Extensions.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core.Extensions.Collections\bin\$(Configuration)\net46\Uno.Core.Extensions.Collections.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core.Extensions.Compatibility\bin\$(Configuration)\net46\Uno.Core.Extensions.Compatibility.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core.Extensions.Disposables\bin\$(Configuration)\net46\Uno.Core.Extensions.Disposables.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core.Extensions.Equality\bin\$(Configuration)\net46\Uno.Core.Extensions.Equality.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core.Extensions.Logging\bin\$(Configuration)\net46\Uno.Core.Extensions.Logging.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core.Extensions.Logging.Singleton\bin\$(Configuration)\net46\Uno.Core.Extensions.Logging.Singleton.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="..\Uno.Core.Extensions.Threading\bin\$(Configuration)\net46\Uno.Core.Extensions.Threading.dll">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
 		<Content Include="..\Uno.Core\bin\$(Configuration)\net46\Microsoft.Extensions.*.dll">
 			<Pack>true</Pack>
 			<PackagePath>build</PackagePath>
