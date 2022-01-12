@@ -22,6 +22,13 @@ using Uno.Extensions.ValueType;
 using Uno.Reflection;
 using System.Linq.Expressions;
 
+#if HAS_CRIPPLEDREFLECTION && !XAMARIN
+using MemberTypes = Uno.Reflection.MemberTypes;
+#else
+using MemberTypes = System.Reflection.MemberTypes;
+#endif
+
+
 namespace Uno.Extensions
 {
     public static class TypeExtensions

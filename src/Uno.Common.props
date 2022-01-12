@@ -9,7 +9,7 @@
 		<UnoDefineConstants>$(UnoDefineConstants);HAS_WINDOWS_IDENTITY</UnoDefineConstants>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+	<PropertyGroup Condition="'$(TargetFramework.StartsWith(uap10.0))'">
 		<UnoDefineConstants>$(UnoDefineConstants);WINDOWS_UAP;WINDOWS_UWP</UnoDefineConstants>
 
 		<UnoDefineConstants>$(UnoDefineConstants);NETFX_CORE</UnoDefineConstants>
