@@ -71,7 +71,6 @@
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.BindingContract))]
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.DefaultReflectionExtensions))]
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.EventDescriptor))]
-[assembly: TypeForwardedTo(typeof(Uno.Reflection.FieldDescriptor))]
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.IEventDescriptor))]
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.IMemberDescriptor))]
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.IMethodDescriptor))]
@@ -272,5 +271,6 @@
 [assembly: TypeForwardedTo(typeof(Uno.WeakReference<>))]
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.NestedTypeDescriptor))]
 [assembly: TypeForwardedTo(typeof(Uno.Reflection.TypeDescriptor))]
+[assembly: TypeForwardedTo(typeof(Uno.Reflection.FieldDescriptor))]
 [assembly: TypeForwardedTo(typeof(Uno.Localisation.CultureContext))]
 #endif
