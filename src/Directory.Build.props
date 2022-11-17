@@ -18,6 +18,7 @@
 
 	<PropertyGroup>
 
+		<NoWarn>$(NoWarn);NU1701</NoWarn> <!-- Ignore Microsoft.CodeAnalysis.Common 1.2.0 nuget warnings -->
 		<IsTestProject>$(MSBuildProjectName.Contains('Test'))</IsTestProject>
 		<IsSampleProject>$(MSBuildProjectName.Contains('Sample'))</IsSampleProject>
 	</PropertyGroup>
