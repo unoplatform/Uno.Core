@@ -132,7 +132,7 @@
 [assembly: TypeForwardedTo(typeof(Uno.Core.Funcs<>))]
 [assembly: TypeForwardedTo(typeof(Uno.Core.Funcs<,>))]
 [assembly: TypeForwardedTo(typeof(Uno.Core.Collections.CollectionsExtensionsLegacy))]
-[assembly: TypeForwardedTo(typeof(Uno.Core.Collections.DictionaryExtensionsLegacy))]
+[assembly: TypeForwardedTo(typeof(Uno.Collections.DictionaryExtensionsLegacy))]
 [assembly: TypeForwardedTo(typeof(Uno.Core.Collections.EnumerableExtensionsLegacy))]
 [assembly: TypeForwardedTo(typeof(Uno.Core.Collections.ListExtensionsLegacy))]
 [assembly: TypeForwardedTo(typeof(Uno.Collections.CollectionAdapter<,>))]

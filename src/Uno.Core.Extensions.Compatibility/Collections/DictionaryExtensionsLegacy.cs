@@ -8,7 +8,7 @@ using Uno.Collections;
 using Uno.Extensions;
 using Uno.Threading;
 
-namespace Uno.Core.Collections
+namespace Uno.Collections
 {
 	public static class DictionaryExtensionsLegacy
 	{
