@@ -2,6 +2,11 @@
 
 ## Next version
 
+* `Uno.Extensions.ListExtensions.AsReadOnly` is now removed on net7.0 and later as it will be ambiguous with the BCL one (`System.Collections.Generic.CollectionExtensions.AsReadOnly`). Use the method from BCL.
+
+* `Uno.Extensions.EnumerableExtensions.SkipLast` is now removed on net7.0 and later and netstandard2.1 as it will be ambiguous with the BCL one (`System.Linq.Enumerable.SkipLast`). Use the method from BCL.
+
+
 ### Features
 * 
 ### Breaking changes

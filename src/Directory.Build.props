@@ -25,13 +25,6 @@
 	<ItemGroup>
 		<None Include="$(MSBuildThisFileDirectory)..\build\uno-logo.png" Pack="true" Visible="false" PackagePath="\"/>
 	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Uno.MonoAnalyzers" Version="1.0.0-dev.4" Condition="'$(TargetFramework)'=='netstandard2.0'">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
 	
 	<Choose>
 		<When Condition="'$(IsTestProject)' != 'true' and '$(SourceLinkEnabled)' != 'false' and '$(IsSampleProject)' != 'true'">
