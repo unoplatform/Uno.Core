@@ -29,6 +29,7 @@ namespace Uno.Extensions
 	/// </summary>
 	public static class ListExtensions
 	{
+#if !NET7_0
 		/// <summary>
 		/// Returns a readonly instance of the specified list.
 		/// </summary>
@@ -39,6 +40,7 @@ namespace Uno.Extensions
 		{
 			return new ReadOnlyCollection<T>(items);
 		}
+#endif
 
 		public static void AddRange(this IList destination, IEnumerable source)
 		{
@@ -47,7 +49,6 @@ namespace Uno.Extensions
 				destination.Add(item);
 			}
 		}
-
 
 		/// <summary>
 		/// Adds the items of the specified collection to the end of the ICollection, but only if they

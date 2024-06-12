@@ -3,7 +3,7 @@
 	<!--<Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.7.21379.12" />-->
 
 	<PropertyGroup>
-		<TargetFrameworks>uap10.0.17763;uap10.0.19041;net46;netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>uap10.0.17763;uap10.0.19041;net46;netstandard2.0;netstandard2.1;net5.0;net6.0;net7.0</TargetFrameworks>
 		<AssemblyName>Uno.Core</AssemblyName>
 		<RootNamespace>Uno.Core</RootNamespace>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>

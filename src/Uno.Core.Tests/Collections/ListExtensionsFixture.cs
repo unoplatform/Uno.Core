@@ -28,6 +28,7 @@ namespace Uno.Core.Tests.Collections
 	{
 		private static readonly int[] list = new [] { 1, 2, 3};
 
+#if !NET7_0_OR_GREATER
 		[TestMethod]
 		public void AsReadOnly()
 		{
@@ -35,6 +36,7 @@ namespace Uno.Core.Tests.Collections
 
 			Assert.IsTrue(list2.AsReadOnly().IsReadOnly);
 		}
+#endif
 
 		[TestMethod]
 		public void Adapt()

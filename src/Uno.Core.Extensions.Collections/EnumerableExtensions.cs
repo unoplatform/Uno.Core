@@ -900,7 +900,7 @@ namespace Uno.Extensions
 			}
 		}
 
-#if !XAMARIN
+#if !XAMARIN && !NET7_0 && !NETSTANDARD2_1
 		/// <summary>
 		/// Skips the last <paramref name="count"/> items from an enumerable sequence.
 		/// </summary>
