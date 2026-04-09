@@ -23,6 +23,10 @@
 			<Project>{abb4f177-6966-4c24-a465-a5e941a70680}</Project>
 			<Name>Uno.Core</Name>
 		</ProjectReference>
+		<ProjectReference Include="..\Uno.Core.Extensions.Logging.Singleton\Uno.Core.Extensions.Logging.Singleton.csproj">
+			<Project>{3C89A174-E48B-40F4-8280-71496FC15648}</Project>
+			<Name>Uno.Core.Extensions.Logging.Singleton</Name>
+		</ProjectReference>
 	</ItemGroup>
 
 	<ItemGroup>

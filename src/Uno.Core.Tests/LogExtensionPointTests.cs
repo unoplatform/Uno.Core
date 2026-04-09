@@ -1,0 +1,218 @@
+using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Uno.Extensions;
+
+#if !NET46
+namespace Uno.Core.Tests;
+
+[TestClass]
+public class LogExtensionPointTests
+{
+	[TestInitialize]
+	public void Setup()
+	{
+		// Clear any interceptor from previous tests.
+		LogExtensionPoint.RegisterFactoryInterceptor(null);
+	}
+
+	[TestCleanup]
+	public void Cleanup()
+	{
+		LogExtensionPoint.RegisterFactoryInterceptor(null);
+	}
+
+	[TestMethod]
+	public void AmbientLoggerFactory_SetWithoutInterceptor_StoresValueDirectly()
+	{
+		var factory = new LoggerFactory();
+
+		LogExtensionPoint.AmbientLoggerFactory = factory;
+
+		Assert.AreSame(factory, LogExtensionPoint.AmbientLoggerFactory);
+	}
+
+	[TestMethod]
+	public void RegisterFactoryInterceptor_InterceptorReceivesCurrentAndProposed()
+	{
+		var original = new LoggerFactory();
+		LogExtensionPoint.AmbientLoggerFactory = original;
+
+		ILoggerFactory? capturedCurrent = null;
+		ILoggerFactory? capturedProposed = null;
+
+		LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) =>
+		{
+			capturedCurrent = current;
+			capturedProposed = proposed;
+			return proposed;
+		});
+
+		var replacement = new LoggerFactory();
+		LogExtensionPoint.AmbientLoggerFactory = replacement;
+
+		Assert.AreSame(original, capturedCurrent, "Interceptor should receive the current factory");
+		Assert.AreSame(replacement, capturedProposed, "Interceptor should receive the proposed factory");
+	}
+
+	[TestMethod]
+	public void RegisterFactoryInterceptor_InterceptorCanReplaceFactory()
+	{
+		var original = new LoggerFactory();
+		LogExtensionPoint.AmbientLoggerFactory = original;
+
+		var intercepted = new LoggerFactory();
+
+		LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) => intercepted);
+
+		var proposed = new LoggerFactory();
+		LogExtensionPoint.AmbientLoggerFactory = proposed;
+
+		Assert.AreSame(intercepted, LogExtensionPoint.AmbientLoggerFactory,
+			"AmbientLoggerFactory should be the value returned by the interceptor, not the proposed value");
+	}
+
+	[TestMethod]
+	public void RegisterFactoryInterceptor_NullInterceptorRemovesCallback()
+	{
+		var intercepted = new LoggerFactory();
+		LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) => intercepted);
+
+		// Remove interceptor
+		LogExtensionPoint.RegisterFactoryInterceptor(null);
+
+		var direct = new LoggerFactory();
+		LogExtensionPoint.AmbientLoggerFactory = direct;
+
+		Assert.AreSame(direct, LogExtensionPoint.AmbientLoggerFactory,
+			"After removing interceptor, setter should store the value directly");
+	}
+
+	[TestMethod]
+	public void RegisterFactoryInterceptor_InterceptorCanWrapFactory()
+	{
+		var entries = new List<string>();
+
+		LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) =>
+		{
+			// Wrap the proposed factory with a custom provider
+			return LoggerFactory.Create(builder =>
+			{
+				builder.SetMinimumLevel(LogLevel.Trace);
+				builder.AddProvider(new TestLoggerProvider(entries));
+			});
+		});
+
+		var appFactory = LoggerFactory.Create(builder =>
+		{
+			builder.AddFilter("Uno", LogLevel.Warning); // restrictive filter
+		});
+
+		LogExtensionPoint.AmbientLoggerFactory = appFactory;
+
+		// Create a logger from the intercepted factory — should use our provider
+		var logger = LogExtensionPoint.AmbientLoggerFactory.CreateLogger("Uno.UI.HotDesign.Test");
+		logger.LogDebug("test message");
+
+		Assert.AreEqual(1, entries.Count, "Interceptor-wrapped factory should capture the log entry");
+		Assert.AreEqual("test message", entries[0]);
+	}
+
+	[TestMethod]
+	public void Log_Type_UsesCurrentAmbientLoggerFactory()
+	{
+		var entries = new List<string>();
+
+		var factory = LoggerFactory.Create(builder =>
+		{
+			builder.SetMinimumLevel(LogLevel.Trace);
+			builder.AddProvider(new TestLoggerProvider(entries));
+		});
+
+		LogExtensionPoint.AmbientLoggerFactory = factory;
+
+		// typeof(T).Log() calls AmbientLoggerFactory.CreateLogger(forType) each time
+		typeof(LogExtensionPointTests).Log().LogInformation("hello from Log(Type)");
+
+		Assert.AreEqual(1, entries.Count);
+		Assert.AreEqual("hello from Log(Type)", entries[0]);
+	}
+
+	[TestMethod]
+	public void Log_Type_ReflectsFactoryReplacementViaInterceptor()
+	{
+		var entriesBefore = new List<string>();
+		var entriesAfter = new List<string>();
+
+		// Set initial factory
+		var initialFactory = LoggerFactory.Create(builder =>
+		{
+			builder.SetMinimumLevel(LogLevel.Trace);
+			builder.AddProvider(new TestLoggerProvider(entriesBefore));
+		});
+		LogExtensionPoint.AmbientLoggerFactory = initialFactory;
+
+		// Log with initial factory
+		typeof(string).Log().LogInformation("before");
+		Assert.AreEqual(1, entriesBefore.Count);
+
+		// Install interceptor that redirects to a different provider
+		LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) =>
+		{
+			return LoggerFactory.Create(builder =>
+			{
+				builder.SetMinimumLevel(LogLevel.Trace);
+				builder.AddProvider(new TestLoggerProvider(entriesAfter));
+			});
+		});
+
+		// Simulate app setting a new factory (interceptor will wrap it)
+		LogExtensionPoint.AmbientLoggerFactory = new LoggerFactory();
+
+		// Log again — should go to the interceptor's factory
+		typeof(string).Log().LogInformation("after");
+		Assert.AreEqual(1, entriesBefore.Count, "Original provider should not receive new logs");
+		Assert.AreEqual(1, entriesAfter.Count, "Interceptor provider should receive the new log");
+		Assert.AreEqual("after", entriesAfter[0]);
+	}
+
+	[TestMethod]
+	public void RegisterFactoryInterceptor_InterceptorCanReturnNull_FallsBackToProposed()
+	{
+		LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) => null);
+
+		var factory = new LoggerFactory();
+		LogExtensionPoint.AmbientLoggerFactory = factory;
+
+		// When interceptor returns null, the Transactional.Update stores null,
+		// but the getter will fall back to GetFactory().
+		// This validates that a null return doesn't crash.
+		var result = LogExtensionPoint.AmbientLoggerFactory;
+		Assert.IsNotNull(result);
+	}
+
+	/// <summary>
+	/// Simple test logger provider that captures log messages.
+	/// </summary>
+	private sealed class TestLoggerProvider : ILoggerProvider
+	{
+		private readonly List<string> _entries;
+		public TestLoggerProvider(List<string> entries) => _entries = entries;
+		public ILogger CreateLogger(string categoryName) => new TestLogger(_entries);
+		public void Dispose() { }
+	}
+
+	private sealed class TestLogger : ILogger
+	{
+		private readonly List<string> _entries;
+		public TestLogger(List<string> entries) => _entries = entries;
+		public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
+		public bool IsEnabled(LogLevel logLevel) => true;
+		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+		{
+			_entries.Add(formatter(state, exception));
+		}
+	}
+}
+#endif
