@@ -24,6 +24,7 @@ namespace Uno.Extensions
     public static class LogExtensionPoint
     {
         private static ILoggerFactory? _loggerFactory;
+        private static Func<ILoggerFactory?, ILoggerFactory?, ILoggerFactory?>? _factoryInterceptor;
 
 		private static class Container<T>
         {
@@ -36,7 +37,23 @@ namespace Uno.Extensions
 		public static ILoggerFactory AmbientLoggerFactory
 		{
 			get => Transactional.Update(ref _loggerFactory, l => l ?? GetFactory())!;
-			set => Transactional.Update(ref _loggerFactory, l => value);
+			set => Transactional.Update(ref _loggerFactory, l => _factoryInterceptor?.Invoke(l, value) ?? value);
+		}
+
+		/// <summary>
+		/// Registers an optional interceptor that is invoked whenever <see cref="AmbientLoggerFactory"/>
+		/// is set. The callback receives the current factory and the proposed new factory, and returns
+		/// the factory that should actually be stored. This allows a host (e.g. Studio Live) to wrap
+		/// or replace the factory before it takes effect — ensuring forwarding providers and filter
+		/// overrides are applied before any loggers are created from the new factory.
+		/// </summary>
+		/// <param name="interceptor">
+		/// A function that receives (currentFactory, proposedFactory) and returns the factory to use.
+		/// Pass <c>null</c> to remove a previously registered interceptor.
+		/// </param>
+		public static void RegisterFactoryInterceptor(Func<ILoggerFactory?, ILoggerFactory?, ILoggerFactory?>? interceptor)
+		{
+			_factoryInterceptor = interceptor;
 		}
 
 		/// <summary>
