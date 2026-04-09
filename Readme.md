@@ -1,6 +1,6 @@
 # Uno.Core
 
-Uno.Core is nventive's attempt at filling some gaps in the existing .NET Base Class Library and related technologies. It reduces friction
+Uno.Core fills some gaps in the existing .NET Base Class Library and related technologies. It reduces friction
 and increases the predictability of the API. It consists of a set of helpers, extension methods and additional abstractions.
 
 The following packages are available:
