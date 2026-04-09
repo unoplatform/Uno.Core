@@ -10,7 +10,7 @@ trigger:
       - stable
       - release/stable/*
 
-pr: 
+pr:
   branches:
     include:
       - master
@@ -18,6 +18,9 @@ pr:
       - release/beta/*
       - stable
       - release/stable/*
+
+variables:
+  - group: uno-codesign-vault
 
 steps:
   - checkout: self
