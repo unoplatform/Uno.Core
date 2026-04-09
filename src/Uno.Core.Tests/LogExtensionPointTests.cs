@@ -78,7 +78,7 @@ namespace Uno.Core.Tests
 			var intercepted = new LoggerFactory();
 			LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) => intercepted);
 
-			// Remove interceptor
+			// Remove interceptor via null
 			LogExtensionPoint.RegisterFactoryInterceptor(null);
 
 			var direct = new LoggerFactory();
@@ -86,6 +86,40 @@ namespace Uno.Core.Tests
 
 			Assert.AreSame(direct, LogExtensionPoint.AmbientLoggerFactory,
 				"After removing interceptor, setter should store the value directly");
+		}
+
+		[TestMethod]
+		public void RegisterFactoryInterceptor_Dispose_RemovesInterceptor()
+		{
+			var intercepted = new LoggerFactory();
+			var registration = LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) => intercepted);
+
+			// Dispose removes the interceptor
+			registration.Dispose();
+
+			var direct = new LoggerFactory();
+			LogExtensionPoint.AmbientLoggerFactory = direct;
+
+			Assert.AreSame(direct, LogExtensionPoint.AmbientLoggerFactory,
+				"After disposing registration, setter should store the value directly");
+		}
+
+		[TestMethod]
+		public void RegisterFactoryInterceptor_Dispose_RevertsAmbientLoggerFactory()
+		{
+			var originalFactory = new LoggerFactory();
+			LogExtensionPoint.AmbientLoggerFactory = originalFactory;
+
+			var registration = LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) => new LoggerFactory());
+
+			// Set a new factory through the interceptor
+			LogExtensionPoint.AmbientLoggerFactory = new LoggerFactory();
+
+			// Disposing should restore the factory to what it was before RegisterFactoryInterceptor was called
+			registration.Dispose();
+
+			Assert.AreSame(originalFactory, LogExtensionPoint.AmbientLoggerFactory,
+				"Dispose should restore AmbientLoggerFactory to the value held at registration time");
 		}
 
 		[TestMethod]

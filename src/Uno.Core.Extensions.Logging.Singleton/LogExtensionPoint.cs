@@ -60,9 +60,48 @@ namespace Uno.Extensions
 		/// A function that receives (currentFactory, proposedFactory) and returns the factory to use.
 		/// The return value must not be null. Pass <c>null</c> to remove a previously registered interceptor.
 		/// </param>
-		public static void RegisterFactoryInterceptor(Func<ILoggerFactory?, ILoggerFactory, ILoggerFactory>? interceptor)
+		/// <returns>
+		/// An <see cref="IDisposable"/> that, when disposed, removes the interceptor and restores
+		/// <see cref="AmbientLoggerFactory"/> to the value it held at the time of registration.
+		/// Disposing the token when <paramref name="interceptor"/> is <c>null</c> is a no-op.
+		/// </returns>
+		public static IDisposable RegisterFactoryInterceptor(Func<ILoggerFactory?, ILoggerFactory, ILoggerFactory>? interceptor)
 		{
+			if (interceptor is null)
+			{
+				_factoryInterceptor = null;
+				return NullDisposable.Instance;
+			}
+
+			var previousFactory = Volatile.Read(ref _loggerFactory);
 			_factoryInterceptor = interceptor;
+			return new InterceptorRegistration(previousFactory);
+		}
+
+		private sealed class NullDisposable : IDisposable
+		{
+			internal static readonly NullDisposable Instance = new NullDisposable();
+			public void Dispose() { }
+		}
+
+		private sealed class InterceptorRegistration : IDisposable
+		{
+			private readonly ILoggerFactory? _previousFactory;
+			private int _disposed;
+
+			internal InterceptorRegistration(ILoggerFactory? previousFactory)
+			{
+				_previousFactory = previousFactory;
+			}
+
+			public void Dispose()
+			{
+				if (Interlocked.Exchange(ref _disposed, 1) == 0)
+				{
+					_factoryInterceptor = null;
+					Volatile.Write(ref _loggerFactory, _previousFactory);
+				}
+			}
 		}
 
 		/// <summary>
