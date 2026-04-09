@@ -162,18 +162,39 @@ namespace Uno.Core.Tests
 		}
 
 		[TestMethod]
-		public void RegisterFactoryInterceptor_InterceptorCanReturnNull_FallsBackToGetFactory()
+		public void RegisterFactoryInterceptor_InterceptorMustReturnNonNull()
 		{
-			LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) => null);
+			// The interceptor contract requires a non-null return (ILoggerFactory, not ILoggerFactory?).
+			// This validates the interceptor can pass through the proposed factory unchanged.
+			var passedThrough = false;
+			LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) =>
+			{
+				passedThrough = true;
+				return proposed;
+			});
 
 			var factory = new LoggerFactory();
 			LogExtensionPoint.AmbientLoggerFactory = factory;
 
-			// When interceptor returns null, the Transactional.Update stores null,
-			// but the getter will fall back to GetFactory().
-			// This validates that a null return doesn't crash.
-			var result = LogExtensionPoint.AmbientLoggerFactory;
-			Assert.IsNotNull(result);
+			Assert.IsTrue(passedThrough);
+			Assert.AreSame(factory, LogExtensionPoint.AmbientLoggerFactory);
+		}
+
+		[TestMethod]
+		public void AmbientLoggerFactory_Set_InterceptorRunsOnceEvenUnderContention()
+		{
+			// Validates the interceptor runs exactly once per set (not multiple times
+			// due to Transactional.Update retry loop).
+			var callCount = 0;
+			LogExtensionPoint.RegisterFactoryInterceptor((current, proposed) =>
+			{
+				System.Threading.Interlocked.Increment(ref callCount);
+				return proposed;
+			});
+
+			LogExtensionPoint.AmbientLoggerFactory = new LoggerFactory();
+
+			Assert.AreEqual(1, callCount, "Interceptor should run exactly once per set");
 		}
 
 		/// <summary>
