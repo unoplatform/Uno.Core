@@ -14,12 +14,14 @@ namespace Uno.Core.Tests
 		{
 			// Clear any interceptor from previous tests.
 			LogExtensionPoint.RegisterFactoryInterceptor(null);
+			LogExtensionPoint.ServiceProvider = null;
 		}
 
 		[TestCleanup]
 		public void Cleanup()
 		{
 			LogExtensionPoint.RegisterFactoryInterceptor(null);
+			LogExtensionPoint.ServiceProvider = null;
 		}
 
 		[TestMethod]
@@ -229,6 +231,77 @@ namespace Uno.Core.Tests
 			LogExtensionPoint.AmbientLoggerFactory = new LoggerFactory();
 
 			Assert.AreEqual(1, callCount, "Interceptor should run exactly once per set");
+		}
+
+		[TestMethod]
+		public void ServiceProvider_RoundTripsAssignedValue()
+		{
+			var provider = new StubServiceProvider(t => null);
+
+			LogExtensionPoint.ServiceProvider = provider;
+
+			Assert.AreSame(provider, LogExtensionPoint.ServiceProvider);
+		}
+
+		[TestMethod]
+		public void AmbientLoggerFactory_ServiceProviderNotSet_UsesDefaultFactory()
+		{
+			ResetAmbientFactory();
+
+			Assert.IsNotNull(LogExtensionPoint.AmbientLoggerFactory);
+		}
+
+		[TestMethod]
+		public void AmbientLoggerFactory_ServiceProviderResolvesFactory_UsesResolvedFactory()
+		{
+			var expected = new LoggerFactory();
+			LogExtensionPoint.ServiceProvider = new StubServiceProvider(
+				t => t == typeof(ILoggerFactory) ? expected : null);
+			ResetAmbientFactory();
+
+			Assert.AreSame(expected, LogExtensionPoint.AmbientLoggerFactory);
+		}
+
+		[TestMethod]
+		public void AmbientLoggerFactory_ServiceProviderReturnsWrongType_FallsBackToDefaultFactory()
+		{
+			LogExtensionPoint.ServiceProvider = new StubServiceProvider(t => "not a logger factory");
+			ResetAmbientFactory();
+
+			Assert.IsNotNull(LogExtensionPoint.AmbientLoggerFactory);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(NotSupportedException))]
+		public void AmbientLoggerFactory_ServiceProviderThrowsUnexpectedException_Rethrows()
+		{
+			// Only NullReference/InvalidOperation fall back to a default factory; anything
+			// else indicates a broken container and must surface to the caller.
+			LogExtensionPoint.ServiceProvider = new StubServiceProvider(
+				t => { throw new NotSupportedException(); });
+			ResetAmbientFactory();
+
+			var unused = LogExtensionPoint.AmbientLoggerFactory;
+		}
+
+		/// <summary>
+		/// Clears the cached ambient factory so the next read resolves one again.
+		/// </summary>
+		private static void ResetAmbientFactory()
+		{
+			LogExtensionPoint.AmbientLoggerFactory = null;
+		}
+
+		/// <summary>
+		/// Minimal <see cref="IServiceProvider"/> driven by a resolver delegate.
+		/// </summary>
+		private sealed class StubServiceProvider : IServiceProvider
+		{
+			private readonly Func<Type, object> _resolve;
+
+			public StubServiceProvider(Func<Type, object> resolve) { _resolve = resolve; }
+
+			public object GetService(Type serviceType) { return _resolve(serviceType); }
 		}
 
 		/// <summary>
