@@ -1,3 +1,6 @@
+# Major bumps are driven by a '+semver: major' directive in a commit message on
+# master, not by next-version -- see 094419a, which removed next-version when the
+# 4.0 line was cut.
 assembly-versioning-scheme: MajorMinorPatch
 mode: Mainline
 
@@ -15,6 +18,17 @@ branches:
     tag: 'PullRequest'
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
     increment: Inherit
+
+  # A servicing/* branch continues a previous version line after master has moved
+  # on to a newer one, and publishes dev packages like master, hence the same 'dev'
+  # tag. increment: Minor takes it one minor above the last stable tag and then
+  # holds there, so only the build counter advances as fixes land.
+  servicing:
+    mode: ContinuousDeployment
+    regex: ^servicing/.*
+    tag: dev
+    increment: Minor
+    source-branches: ['master']
 
   beta:
     mode: ContinuousDeployment
