@@ -1,3 +1,6 @@
+# Major bumps are driven by a '+semver: major' directive in a commit message on
+# master, not by next-version -- see 094419a, which removed next-version when the
+# 4.0 line was cut.
 assembly-versioning-scheme: MajorMinorPatch
 mode: Mainline
 
