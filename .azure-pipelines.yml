@@ -53,9 +53,14 @@ steps:
       logProjectEvents: false
       createLogFile: false
 
+  # Publish the binlog file only. Publishing the whole staging directory put a
+  # second copy of vs2017/*.nupkg in this artifact, so the release pushed every
+  # package twice -- the second push failing with HTTP 409. The internal feed
+  # tolerated it via allowPackageConflicts; nuget.org does not honour that option
+  # for external endpoints, so the release has failed since 2022.
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/Uno.Core.binlog'
       ArtifactName: 'binlog'
       publishLocation: 'Container'
     condition: always()
