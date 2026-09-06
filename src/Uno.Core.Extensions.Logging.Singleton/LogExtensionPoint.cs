@@ -16,7 +16,6 @@
 // ******************************************************************
 using System;
 using System.Threading;
-using CommonServiceLocator;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
@@ -26,6 +25,7 @@ namespace Uno.Extensions
     {
         private static ILoggerFactory? _loggerFactory;
         private static Func<ILoggerFactory?, ILoggerFactory, ILoggerFactory>? _factoryInterceptor;
+        private static IServiceProvider? _serviceProvider;
 
 		private static class Container<T>
         {
@@ -47,6 +47,21 @@ namespace Uno.Extensions
 				var resolved = interceptor is not null ? interceptor(Volatile.Read(ref _loggerFactory), value) : value;
 				Volatile.Write(ref _loggerFactory, resolved);
 			}
+		}
+
+		/// <summary>
+		/// An optional <see cref="IServiceProvider"/> used to resolve the ambient
+		/// <see cref="ILoggerFactory"/> the first time one is requested.
+		/// </summary>
+		/// <remarks>
+		/// Assign this before the first logger is created; once <see cref="AmbientLoggerFactory"/>
+		/// has resolved a factory it is cached. When left <c>null</c>, a default
+		/// <see cref="LoggerFactory"/> is used.
+		/// </remarks>
+		public static IServiceProvider? ServiceProvider
+		{
+			get => Volatile.Read(ref _serviceProvider);
+			set => Volatile.Write(ref _serviceProvider, value);
 		}
 
 		/// <summary>
@@ -122,37 +137,30 @@ namespace Uno.Extensions
 
 		private static ILoggerFactory GetFactory()
 		{
-			if (ServiceLocator.IsLocationProviderSet)
+			var serviceProvider = Volatile.Read(ref _serviceProvider);
+
+			if (serviceProvider is null)
 			{
-				try
-				{
-					var service = ServiceLocator.Current.GetService(typeof(ILoggerFactory));
-
-					if (service is ILoggerFactory factory)
-					{
-						return factory;
-					}
-
-					throw new InvalidOperationException($"The service {service?.GetType()} is not of type ILoggerFactory.");
-				}
-				catch (Exception e)
-				{
-					if (e is NullReferenceException || e is InvalidOperationException)
-					{
-#if HAS_CONSOLE
-						Console.WriteLine("***** WARNING *****");
-						Console.WriteLine("Unable to get the service locator ({0}), using the default logger to System.Diagnostics.Debug", e.Message);
-#endif
-						return new LoggerFactory();
-					}
-					else
-					{
-						throw;
-					}
-				}
+				return new LoggerFactory();
 			}
-			else
+
+			try
 			{
+				var service = serviceProvider.GetService(typeof(ILoggerFactory));
+
+				if (service is ILoggerFactory factory)
+				{
+					return factory;
+				}
+
+				throw new InvalidOperationException($"The service {service?.GetType()} is not of type ILoggerFactory.");
+			}
+			catch (Exception e) when (e is NullReferenceException or InvalidOperationException)
+			{
+#if HAS_CONSOLE
+				Console.WriteLine("***** WARNING *****");
+				Console.WriteLine("Unable to resolve an ILoggerFactory from the service provider ({0}), using the default logger to System.Diagnostics.Debug", e.Message);
+#endif
 				return new LoggerFactory();
 			}
 		}
