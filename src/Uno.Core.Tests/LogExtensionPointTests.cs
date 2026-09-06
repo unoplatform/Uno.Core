@@ -22,6 +22,10 @@ namespace Uno.Core.Tests
 		{
 			LogExtensionPoint.RegisterFactoryInterceptor(null);
 			LogExtensionPoint.ServiceProvider = null;
+
+			// Drop the cached factory so a test that disposes its own never leaks a
+			// disposed instance to the next one.
+			LogExtensionPoint.AmbientLoggerFactory = null;
 		}
 
 		[TestMethod]
@@ -254,7 +258,7 @@ namespace Uno.Core.Tests
 		[TestMethod]
 		public void AmbientLoggerFactory_ServiceProviderResolvesFactory_UsesResolvedFactory()
 		{
-			var expected = new LoggerFactory();
+			using var expected = new LoggerFactory();
 			LogExtensionPoint.ServiceProvider = new StubServiceProvider(
 				t => t == typeof(ILoggerFactory) ? expected : null);
 			ResetAmbientFactory();
