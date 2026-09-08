@@ -24,10 +24,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommonServiceLocator" Version="2.0.5" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Folder Include="Helper\" />
 	</ItemGroup>
 
