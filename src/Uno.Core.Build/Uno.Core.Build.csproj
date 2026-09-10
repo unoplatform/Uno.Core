@@ -67,10 +67,6 @@
 			<Pack>true</Pack>
 			<PackagePath>build</PackagePath>
 		</Content>
-		<Content Include="..\Uno.Core\bin\$(Configuration)\net46\CommonServiceLocator.dll">
-			<Pack>true</Pack>
-			<PackagePath>build</PackagePath>
-		</Content>
 		<Content Include="build\Uno.Core.Build.targets">
 			<Pack>true</Pack>
 			<PackagePath>build</PackagePath>

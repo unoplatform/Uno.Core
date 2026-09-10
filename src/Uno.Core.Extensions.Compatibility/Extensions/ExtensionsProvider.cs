@@ -15,34 +15,40 @@
 //
 // ******************************************************************
 using System;
-using CommonServiceLocator;
+using System.Threading;
 
 namespace Uno.Extensions
 {
-    public static class ExtensionsProvider
-    {
-        public static TService Get<TService, TConcrete>()
-            where TConcrete : TService, new()
+	public static class ExtensionsProvider
+	{
+		private static IServiceProvider _serviceProvider;
+
+		/// <summary>
+		/// An optional <see cref="IServiceProvider"/> used to resolve the extension
+		/// implementations returned by <see cref="Get{TService, TConcrete}"/> and
+		/// <see cref="Get{TService}(Func{TService})"/>.
+		/// </summary>
+		/// <remarks>
+		/// When left <c>null</c>, or when it does not provide the requested service,
+		/// the default implementation is used instead.
+		/// </remarks>
+		public static IServiceProvider ServiceProvider
+		{
+			get => Volatile.Read(ref _serviceProvider);
+			set => Volatile.Write(ref _serviceProvider, value);
+		}
+
+		public static TService Get<TService, TConcrete>()
+			where TConcrete : TService, new()
 			where TService : class
-        {
-            var service = ServiceLocator.IsLocationProviderSet ? ServiceLocator.Current.GetInstance<TService>() : null;
-
-            if (service == null)
-            {
-                service = new TConcrete();
-            }
-
-            return service;
-        }
+			=> Resolve<TService>() ?? new TConcrete();
 
 		public static TService Get<TService>(Func<TService> defaultFactory)
 			where TService : class
-		{
-			var service =
-                ServiceLocator.IsLocationProviderSet ? ServiceLocator.Current.GetInstance<TService>() : null
-				?? defaultFactory();
+			=> Resolve<TService>() ?? defaultFactory();
 
-			return service;
-		}
+		private static TService Resolve<TService>()
+			where TService : class
+			=> Volatile.Read(ref _serviceProvider)?.GetService(typeof(TService)) as TService;
 	}
 }
