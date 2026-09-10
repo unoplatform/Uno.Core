@@ -16,26 +16,26 @@
 // ******************************************************************
 using System;
 using System.Collections.Generic;
-using Funq;
-using CommonServiceLocator;
 
 namespace Uno.Core.Tests.Conversions
 {
-	internal class FunqAdapter : IServiceLocator
+	/// <summary>
+	/// A minimal <see cref="IServiceProvider"/> whose registrations are resolved once
+	/// and then cached, so a test can mutate the very instance the code under test uses.
+	/// </summary>
+	internal class TestServiceProvider : IServiceProvider
 	{
-		private readonly Container _container;
+		private readonly Dictionary<Type, Lazy<object>> _services = new Dictionary<Type, Lazy<object>>();
 
-		public FunqAdapter(Container container)
-		{
-			_container = container;
-		}
+		public void Register<TService>(Func<TService> factory)
+			where TService : class
+			=> _services[typeof(TService)] = new Lazy<object>(() => factory());
 
-		public IEnumerable<object> GetAllInstances(Type serviceType) => throw new NotSupportedException();
-		public IEnumerable<TService> GetAllInstances<TService>() => new[] { _container.Resolve<TService>() };
-		public object GetInstance(Type serviceType) => throw new NotSupportedException();
-		public object GetInstance(Type serviceType, string key) => throw new NotSupportedException();
-		public TService GetInstance<TService>() => _container.Resolve<TService>();
-		public TService GetInstance<TService>(string key) => _container.ResolveNamed<TService>(key);
-		public object GetService(Type serviceType) => throw new NotSupportedException();
+		public TService Resolve<TService>()
+			where TService : class
+			=> (TService)GetService(typeof(TService));
+
+		public object GetService(Type serviceType)
+			=> _services.TryGetValue(serviceType, out var service) ? service.Value : null;
 	}
 }

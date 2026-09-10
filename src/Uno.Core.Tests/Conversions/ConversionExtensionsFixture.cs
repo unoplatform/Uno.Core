@@ -15,12 +15,10 @@
 //
 // ******************************************************************
 using System;
-using CommonServiceLocator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uno.Extensions;
 using Uno.Conversion;
 using Uno.Reflection;
-using Funq;
 
 namespace Uno.Core.Tests.Conversions
 {
@@ -30,17 +28,17 @@ namespace Uno.Core.Tests.Conversions
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			var container = new Container();
-			ServiceLocator.SetLocatorProvider(() => new FunqAdapter(container));
+			var container = new TestServiceProvider();
+			ExtensionsProvider.ServiceProvider = container;
 
-			container.Register<IReflectionExtensions>(c => new DefaultReflectionExtensions());
-			container.Register<IConversionExtensions>(c => new DefaultConversionExtensions());
+			container.Register<IReflectionExtensions>(() => new DefaultReflectionExtensions());
+			container.Register<IConversionExtensions>(() => new DefaultConversionExtensions());
 		}
 
 		[TestCleanup]
 		public void TearDown()
 		{
-			ServiceLocator.SetLocatorProvider(() => throw new InvalidOperationException("ServiceLocator provider not set."));
+			ExtensionsProvider.ServiceProvider = null;
 		}
 
 		[TestMethod]

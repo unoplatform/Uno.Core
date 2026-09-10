@@ -15,34 +15,32 @@
 //
 // ******************************************************************
 using System;
-using CommonServiceLocator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uno.Extensions;
 using Uno.Conversion;
 using Uno.Reflection;
-using Funq;
 
 namespace Uno.Core.Tests.Conversions
 {
 	[TestClass]
 	public class CustomConversionStrategyFixture
 	{
-		private Container _container;
+		private TestServiceProvider _container;
 
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			_container = new Container();
-			ServiceLocator.SetLocatorProvider(() => new FunqAdapter(_container));
+			_container = new TestServiceProvider();
+			ExtensionsProvider.ServiceProvider = _container;
 
-			_container.Register<IReflectionExtensions>(c => new DefaultReflectionExtensions());
-			_container.Register<IConversionExtensions>(c => new DefaultConversionExtensions(false));
+			_container.Register<IReflectionExtensions>(() => new DefaultReflectionExtensions());
+			_container.Register<IConversionExtensions>(() => new DefaultConversionExtensions(false));
 		}
 
 		[TestCleanup]
 		public void TearDown()
 		{
-			ServiceLocator.SetLocatorProvider(() => throw new InvalidOperationException("ServiceLocator provider not set."));
+			ExtensionsProvider.ServiceProvider = null;
 		}
 
 		[TestMethod]
