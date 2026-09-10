@@ -30,7 +30,8 @@ namespace Uno.Extensions
 		/// </summary>
 		/// <remarks>
 		/// When left <c>null</c>, or when it does not provide the requested service,
-		/// the default implementation is used instead.
+		/// the default implementation is used instead. A service that is provided but is
+		/// not of the requested type is a wiring error, and throws.
 		/// </remarks>
 		public static IServiceProvider ServiceProvider
 		{
@@ -49,6 +50,16 @@ namespace Uno.Extensions
 
 		private static TService Resolve<TService>()
 			where TService : class
-			=> Volatile.Read(ref _serviceProvider)?.GetService(typeof(TService)) as TService;
+		{
+			var service = Volatile.Read(ref _serviceProvider)?.GetService(typeof(TService));
+
+			if (service == null)
+			{
+				return null;
+			}
+
+			return service as TService
+				?? throw new InvalidOperationException($"The service {service.GetType()} is not of type {typeof(TService)}.");
+		}
 	}
 }
