@@ -22,7 +22,6 @@
 	<Import Project="..\Uno.Common.props" />
 
 	<ItemGroup>
-		<PackageReference Include="CommonServiceLocator" Version="2.0.5" />
 		<PackageReference Include="System.Memory" Version="4.5.2" Condition="$(TargetFramework.StartsWith('uap10.0')) or '$(TargetFramework)'=='netstandard2.0' or '$(TargetFramework)'=='net46'" />
 	</ItemGroup>
 

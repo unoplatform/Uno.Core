@@ -16,20 +16,18 @@
 // ******************************************************************
 using System;
 using System.Globalization;
-using CommonServiceLocator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uno.Extensions;
 using Uno.Conversion;
 using Uno.Reflection;
 using SystemDescription = System.ComponentModel.DescriptionAttribute;
-using Funq;
 
 namespace Uno.Core.Tests.Conversions
 {
 	[TestClass]
 	public class DefaultConversionsExtensionsFixture
 	{
-		private Container _container;
+		private TestServiceProvider _container;
 
 		private enum DummyEnum : byte
 		{
@@ -42,22 +40,22 @@ namespace Uno.Core.Tests.Conversions
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			_container = new Container();
-			ServiceLocator.SetLocatorProvider(() => new FunqAdapter(_container));
+			_container = new TestServiceProvider();
+			ExtensionsProvider.ServiceProvider = _container;
 
-			_container.Register<IReflectionExtensions>(c => new DefaultReflectionExtensions());
+			_container.Register<IReflectionExtensions>(() => new DefaultReflectionExtensions());
 		}
 
 		[TestCleanup]
 		public void TearDown()
 		{
-			ServiceLocator.SetLocatorProvider(() => throw new InvalidOperationException("ServiceLocator provider not set."));
+			ExtensionsProvider.ServiceProvider = null;
 		}
 
 		[TestMethod]
 		public void TestWithEnumToStringStrategy()
 		{
-			_container.Register<IConversionExtensions>(c => new DefaultConversionExtensions());
+			_container.Register<IConversionExtensions>(() => new DefaultConversionExtensions());
 
 			var result1 = DummyEnum.Value1.Conversion().To<string>();
 			var result2 = DummyEnum.Value2.Conversion().To<string>();
@@ -69,7 +67,7 @@ namespace Uno.Core.Tests.Conversions
 		[TestMethod]
 		public void TestWithStringToEnumStrategy()
 		{
-			_container.Register<IConversionExtensions>(c => new DefaultConversionExtensions());
+			_container.Register<IConversionExtensions>(() => new DefaultConversionExtensions());
 
 			var result1 = "Value1".Conversion().To<DummyEnum>();
 			var result2 = "vAlUe1".Conversion().To<DummyEnum>();
@@ -90,7 +88,7 @@ namespace Uno.Core.Tests.Conversions
 		[ExpectedException(typeof(FormatException))]
 		public void TestWithStringToEnumStrategyWhenInvalidInput()
 		{
-			_container.Register<IConversionExtensions>(c => new DefaultConversionExtensions());
+			_container.Register<IConversionExtensions>(() => new DefaultConversionExtensions());
 
 			"InvalidValue-XXX".Conversion().To<DummyEnum>();
 		}
@@ -99,7 +97,7 @@ namespace Uno.Core.Tests.Conversions
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void TestWithEnumStrategyWhenNoStrategiesRegistered()
 		{
-			_container.Register<IConversionExtensions>(c => new DefaultConversionExtensions(false));
+			_container.Register<IConversionExtensions>(() => new DefaultConversionExtensions(false));
 
 			DummyEnum.Value1.Conversion().To<string>();
 		}
@@ -107,7 +105,7 @@ namespace Uno.Core.Tests.Conversions
 		[TestMethod]
 		public void TestWithCustomRegistration()
 		{
-			_container.Register<IConversionExtensions>(c => new DefaultConversionExtensions(false));
+			_container.Register<IConversionExtensions>(() => new DefaultConversionExtensions(false));
 
 			var sut = _container.Resolve<IConversionExtensions>();
 			sut.RegisterStrategy<CustomStrategy>();

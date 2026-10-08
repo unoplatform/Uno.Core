@@ -16,14 +16,26 @@
 // ******************************************************************
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CommonServiceLocator;
 
-namespace Uno
+namespace Uno.Core.Tests.Conversions
 {
-    public interface IServiceLocatorProvider
-    {
-        IServiceLocator ServiceLocator { get; }
-    }
+	/// <summary>
+	/// A minimal <see cref="IServiceProvider"/> whose registrations are resolved once
+	/// and then cached, so a test can mutate the very instance the code under test uses.
+	/// </summary>
+	internal class TestServiceProvider : IServiceProvider
+	{
+		private readonly Dictionary<Type, Lazy<object>> _services = new Dictionary<Type, Lazy<object>>();
+
+		public void Register<TService>(Func<TService> factory)
+			where TService : class
+			=> _services[typeof(TService)] = new Lazy<object>(() => factory());
+
+		public TService Resolve<TService>()
+			where TService : class
+			=> (TService)GetService(typeof(TService));
+
+		public object GetService(Type serviceType)
+			=> _services.TryGetValue(serviceType, out var service) ? service.Value : null;
+	}
 }

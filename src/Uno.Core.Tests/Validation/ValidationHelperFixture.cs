@@ -241,7 +241,11 @@ namespace Uno.Core.Validation
 			culture = new CultureInfo("fr-fr");
 			culture.NumberFormat.CurrencySymbol = "£";
 			Assert.IsTrue(ValidationHelper.IsCurrency("£1,2", culture));
-			Assert.IsTrue(ValidationHelper.IsCurrency("1 121,2", culture));
+
+			// fr-FR's group separator moved from a plain space to U+202F in newer locale data,
+			// so take it from the culture instead of hardcoding it.
+			var groupSeparator = culture.NumberFormat.CurrencyGroupSeparator;
+			Assert.IsTrue(ValidationHelper.IsCurrency($"1{groupSeparator}121,2", culture));
 
 			Assert.IsFalse(ValidationHelper.IsCurrency(null));
 			Assert.IsFalse(ValidationHelper.IsCurrency(string.Empty));
