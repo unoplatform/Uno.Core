@@ -11,7 +11,7 @@ ISSUES MISSING IMPORTANT INFORMATION MAY BE CLOSED WITHOUT INVESTIGATION.
 <!-- - Feature request --> 
 <!-- - Sample app request -->
 <!-- - Documentation issue or request -->
-<!-- - Question of Support request => Please do not submit support request here, instead see https://github.com/nventive/Uno.Core/blob/master/Readme.md#have-questions-feature-requests-issues -->
+<!-- - Question of Support request => Please do not submit support request here, instead see https://github.com/unoplatform/uno/discussions -->
 
 ## Current behavior
 <!-- Describe how the issue manifests. -->
@@ -35,17 +35,24 @@ Nuget Package:
 Package Version(s): 
 
 Affected platform(s):
-- [ ] iOS
-- [ ] Android
+- [ ] All platforms
 - [ ] WebAssembly
-- [ ] Windows
+- [ ] Android
+- [ ] iOS
+- [ ] tvOS
+- [ ] Desktop (Windows)
+- [ ] Desktop (macOS)
+- [ ] Desktop (X11)
+- [ ] Desktop (Linux Framebuffer)
+- [ ] Windows App SDK
 - [ ] Build tasks
 
-Visual Studio
-- [ ] 2017 (version: )
-- [ ] 2017 Preview (version: )
-- [ ] for Mac (version: )
+IDE
+- [ ] Visual Studio 2022
+- [ ] Visual Studio Code
+- [ ] Rider Windows
+- [ ] Rider macOS
+- [ ] Rider Linux
 
-Relevant plugins
-- [ ] Resharper (version: )
+IDE version: 
 ```
