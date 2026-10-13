@@ -26,7 +26,6 @@ What kind of change does this PR introduce?
 
 Please check if your PR fulfills the following requirements:
 
-- [ ] Tested code with current [supported SDKs](../README.md)
 - [ ] Docs have been added/updated which fit [documentation template](https://github.com/unoplatform/Uno.Core/blob/master/doc/.feature-template.md). (for bug fixes / features)
 - [ ] Tests for the changes have been added (for bug fixes / features) (if applicable)
 - [ ] Contains **NO** breaking changes
